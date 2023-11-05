@@ -6,13 +6,14 @@ import Shop from './container/shop'
 import Footer from './components/footer'
 import Profile from './container/profile'
 
+
 function App() {
 
 
   return (
     <>
       <Header/>
-      {/* <Shop/> */}
+      <Shop/>
       <Profile/>
       <Footer/>
     </>

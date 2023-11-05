@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import '../styles/cart.css'
 
 import TextField from '@mui/material/TextField';
@@ -65,7 +65,7 @@ export default function Cart() {
 
     return (
         <div>
-                <h2>Your Cart</h2>
+            <h2>Your Cart</h2>
             <div className="cart-header">
                 {cartItems.length != 0 && <h3 className="grand-total"> Total: Rs.{grandTotal}</h3>}
                 {cartItems.length != 0 && <Button
@@ -80,7 +80,7 @@ export default function Cart() {
                 </Button>}
             </div>
             <div className="cart-container">
-                {cartItems.length === 0 && <h3 className="product-name">Nothing Here :( <br/>Please add items to your cart.</h3>}
+                {cartItems.length === 0 && <h3 className="product-name">Nothing Here :( <br />Please add items to your cart.</h3>}
                 {cartItems.length != 0 && <table className="cart-tabel">
                     <thead>
                         <tr className="headding">

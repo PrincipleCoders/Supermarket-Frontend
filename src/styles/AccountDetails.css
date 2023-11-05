@@ -4,7 +4,7 @@
 .account-details{
 display: flex;
 flex-direction: column;
-gap: 20px;
+gap: 30px;
 width:"100%";
 }
 .profile-name{

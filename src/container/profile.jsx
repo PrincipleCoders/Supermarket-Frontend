@@ -50,10 +50,9 @@ export default function Profile() {
 
     return (
         <Box
-            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
+            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex',width:'100%' }}
         >
             <Tabs
-                centered
                 orientation="vertical"
                 value={value}
                 onChange={handleChange}
