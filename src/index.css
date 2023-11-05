@@ -44,3 +44,7 @@ body {
 .form--hidden{
     display: none;
 }
+
+#snackbar{
+    max-width: 350px;
+}
