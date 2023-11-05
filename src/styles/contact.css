@@ -1,0 +1,23 @@
+.contact-us-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 24px;
+  }
+  
+  p {
+    font-size: 16px;
+  }
+  
+  .contact-info {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .contact-details {
+    text-align: left;
+    margin: 20px;
+  }
+  

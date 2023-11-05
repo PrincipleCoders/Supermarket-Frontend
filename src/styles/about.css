@@ -1,0 +1,67 @@
+/* Reset default margin and padding and set box-sizing to border-box */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif;
+    background-color: aquamarine;
+  }
+  
+  /* Container for the whole page */
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Styling for the image */
+  .item-image {
+    width: 50%;
+    background-color: aquamarine;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Center the h1 header */
+  h1 {
+    text-align: center;
+    margin: 10px 0; /* Adjust the margin without changing left or right margin */
+  }
+  
+  /* Styling for the main content */
+  p {
+    margin: 10px 0; 
+    padding-left: 200;/* Adjust the margin without changing left or right margin */
+  }
+  
+  /* Additional styling for the "Recognized for our efforts" section */
+  h2 {
+    margin: 10px 0; /* Adjust the margin without changing left or right margin */
+  }
+  
+  /* Styling for the main content */
+  .main-content {
+    margin: 10px 0; /* Adjust the margin without changing left or right margin */
+    font-size: 12px;
+    padding-left: 200;
+    padding-right: 200;
+  }
+  
+  /* Styling for the "Recognized for our efforts" section */
+  .sub-content {
+    margin: 10px 0; /* Adjust the margin without changing left or right margin */
+    font-size: 10px;
+  }
+  
+  /* Add bullet points to sub-content */
+  .sub-content ul {
+    list-style-type: disc;
+    padding-left: 200px;
+  }
+  
+  /* Style list items within sub-content */
+  .sub-content li {
+    margin-bottom: 10px;
+  }
+  
