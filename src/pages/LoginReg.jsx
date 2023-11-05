@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
 import {startFirebaseAuthUI} from '../services/firebase-service';
-import {Alert, Button, Snackbar, TextField} from '@mui/material';
+import {Button, TextField} from '@mui/material';
+import Snackbar from "../components/SnackbarAlert.jsx";
+import SnackbarAlert from "../components/SnackbarAlert.jsx";
 
 export default function LoginReg() {
     const [loginEmail, setLoginEmail] = useState('');
@@ -48,7 +50,7 @@ export default function LoginReg() {
             return;
         }
         if (!validateInput(regPassword, 'pwd')) {
-            showAlert('Password must contain atleast 1 capital letter, simple letter and number with minimum 8 characters', 'error');
+            showAlert('Password must contain at least 1 capital letter, simple letter and number with minimum 8 characters', 'error');
             return;
         }
         if (regPassword !== regConfirmPassword) {
@@ -74,15 +76,7 @@ export default function LoginReg() {
     }
 
     return (<div>
-            <Snackbar
-                open={alertStatus.open}
-                anchorOrigin={{vertical:'top',horizontal:'right'}}
-                autoHideDuration={6000}
-                onClose={() => setAlertStatus({...alertStatus,open:false})}
-                id={'snackbar'}
-            >
-                <Alert severity={alertStatus.type} variant={"filled"}>{alertStatus.message}</Alert>
-            </Snackbar>
+            <SnackbarAlert alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
             <div className="form">
                 <h3>Sign In with Email</h3>
                 <form onSubmit={handleLogin}>

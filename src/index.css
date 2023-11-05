@@ -45,6 +45,6 @@ body {
     display: none;
 }
 
-#snackbar{
+#snackbarAlert{
     max-width: 350px;
 }
