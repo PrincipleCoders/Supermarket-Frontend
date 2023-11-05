@@ -29,7 +29,7 @@ export default function LoginReg() {
             showAlert('Password must contain atleast\n 1 capital letter, simple letter and number\n with minimum 8 characters', 'error');
             return;
         }
-        console.log(loginEmail, loginPassword);
+        console.log(event.target.email.value);
     };
 
     const handleRegister = (event) => {
@@ -50,15 +50,27 @@ export default function LoginReg() {
             showAlert('Confirm Password do not match', 'error');
             return;
         }
+        if (event.target.profilePicture.files[0].size > 5000000) {
+            showAlert('Profile Picture size must be less than 5MB', 'error');
+            return;
+        }
 
-        const userData = new FormData();
-        userData.append('firstName', event.target.firstName.value);
-        userData.append('lastName', event.target.lastName.value);
-        userData.append('email', event.target.email.value);
-        userData.append('password', event.target.password.value);
-        userData.append('profilePicture', event.target.profilePicture.files[0]);
+        const userData = {
+            firstName: event.target.firstName.value,
+            lastName: event.target.lastName.value,
+            email: event.target.email.value,
+            password: event.target.password.value,
+            profilePicture: event.target.profilePicture.files[0]
+        };
 
-        register(userData);
+        register(userData).then((response) => {
+            console.log(response);
+            handleFormSwap();
+            showAlert('Registration Successful, Please proceed to Login', 'success');
+        }).catch((error) => {
+            console.log(error);
+            showAlert('Registration Failed', 'error');
+        });
     }
 
     const showAlert = (message, type) => {
@@ -171,6 +183,7 @@ export default function LoginReg() {
                         focused={true}
                         margin="normal"
                         name={"profilePicture"}
+                        required
                     />
                     <Button variant="contained" color="primary" size="medium" type={"submit"}>
                         Sign Up
