@@ -6,13 +6,18 @@
 .cart-container{
     display: flex;
     flex-direction: nowrap;
-    padding-left: 20px;
+    
 }
 
 .cart-header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-left: 20px ;
+}
+
+.grand-total{
+    color:#f50057
 }
 .product-name{
     color:#3bb77e

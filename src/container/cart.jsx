@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import '../styles/cart.css'
 
 import TextField from '@mui/material/TextField';
@@ -54,11 +54,20 @@ export default function Cart() {
         setCartItems([]);
     };
 
+    const [grandTotal, setGrandTotal] = useState(0);
+
+    useEffect(() => {
+        // Calculate the grand total based on cart items
+        const total = cartItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
+        setGrandTotal(total);
+    }, [cartItems]);
+
 
     return (
         <div>
-            <div className="cart-header">
                 <h2>Your Cart</h2>
+            <div className="cart-header">
+                {cartItems.length != 0 && <h3 className="grand-total"> Total: Rs.{grandTotal}</h3>}
                 {cartItems.length != 0 && <Button
                     variant='contained'
                     color='success'
