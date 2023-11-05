@@ -11,7 +11,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 
-export default function startFirebaseAuthUI(containerId, loaderId) {
+export function startFirebaseAuthUI(containerId, loaderId) {
     return new Promise((resolve, reject) => {
         const uiConfig = {
             callbacks: {
