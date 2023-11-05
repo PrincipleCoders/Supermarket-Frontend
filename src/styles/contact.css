@@ -1,23 +1,36 @@
-.contact-us-container {
-    text-align: center;
+/* Style the Message Box and its content */
+.message-box {
+    background-color: #110f8d;
     padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
   }
   
-  h1 {
-    font-size: 24px;
+  .message-box h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
   }
   
-  p {
-    font-size: 16px;
+  /* Add hover effect to the Submit button */
+  .message-box button:hover {
+    background-color: #4285F4;
+    color: #ffffff;
+    cursor: pointer;
+    
   }
   
-  .contact-info {
-    display: flex;
-    justify-content: center;
+  /* Add a transition for smoother hover effect */
+  /* .contact-details, .form-group {
+    transition: transform 0.3s ease, opacity 0.3s ease;
   }
-  
-  .contact-details {
-    text-align: left;
-    margin: 20px;
+   */
+  /* Add hover effect for contact details and form groups */
+  /* .contact-details:hover, .form-group:hover {
+    transform: scale(1.05);
+  }
+   */
+  /* Add a subtle box shadow on hover */
+  .contact-details:hover, .form-group:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   }
   

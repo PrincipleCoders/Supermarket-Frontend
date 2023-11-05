@@ -1,10 +1,10 @@
 import React from 'react'
-import smkt from '../assets/smkt.jpg'
+import smkt3 from '../assets/smkt3.jpg'
 import '../styles/about.css'
 import { Container } from '@mui/material';
 
 function About() {
-  const image1 = smkt; 
+  const image1 = smkt3; 
   const name = "super market"
 
   return (

@@ -13,8 +13,8 @@ function App() {
     <>
       {/* <Header/> 
       <Shop/> */}
-      {/* <About/> */}
-       <Contact/> 
+      <About/> 
+       {/* <Contact/>  */}
 
     </>
   )
