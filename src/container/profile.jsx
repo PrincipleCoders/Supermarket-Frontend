@@ -5,6 +5,8 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import AccountDetails from './accountDetails';
+import Orders from './orders';
+import Cart from './cart';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -55,10 +57,22 @@ export default function Profile() {
                 orientation="vertical"
                 value={value}
                 onChange={handleChange}
-                textColor="secondary"
-                indicatorColor="secondary"
-                aria-label="Vertical tabs example"
-                sx={{ borderRight: 1, borderColor: 'divider' }}
+                // textColor="secondary" 
+                // indicatorColor="secondary"
+                aria-label="profile-tabs"
+                sx={{
+                    borderRight: 1,
+                    borderColor: 'divider',
+                    "& .MuiTabs-indicator": {
+                        backgroundColor: '#3bb77e', 
+                    },
+                    "& .MuiTab-root": {
+                        justifyContent: 'flex-start', 
+                        "&.Mui-selected": {
+                            color: '#F28330', 
+                        },
+                    },
+                }}
             >
                 <Tab label="Account Details" {...a11yProps(0)} />
                 <Tab label="Orders" {...a11yProps(1)} />
@@ -68,13 +82,19 @@ export default function Profile() {
 
             </Tabs>
             <TabPanel value={value} index={0}>
-                <AccountDetails/>
+                <AccountDetails
+                    fname="Harshana"
+                    lname='Batagalla'
+                    email='harshanabatagalla@gmail.com'
+                    address='Palapathwela,Matale.'
+                    telephone='0715698778'
+                    />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <Orders/>
             </TabPanel>
             <TabPanel value={value} index={2}>
-                Item Three
+                <Cart/>
             </TabPanel>
             <TabPanel value={value} index={3}>
                 Item Four
