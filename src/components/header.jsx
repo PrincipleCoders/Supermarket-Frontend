@@ -38,11 +38,11 @@ function Header() {
     };
 
     return (
-        
-        <AppBar position="fixed" elevation={0} sx={{ backgroundColor: 'white',boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)' }}>
+        <div style={{ marginBottom: '90px' }}>
+        <AppBar position="fixed" elevation={0} sx={{ backgroundColor: '#191919',boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-                    <ShoppingBagIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, }} color='success' />
+                    <ShoppingBagIcon sx={{ display: { xs: 'none', md: 'flex', color:'#3bb77e' }, mr: 1, }} color='success' />
                     <Typography
                         variant="h6"
                         noWrap
@@ -54,7 +54,7 @@ function Header() {
                             fontFamily: 'Segoe UI',
                             fontWeight: 700,
                             letterSpacing: '.2rem',
-                            color: '#282c34',
+                            color: '#3bb77e',
                             textDecoration: 'none',
                         }}
                     >
@@ -80,7 +80,7 @@ function Header() {
                             onClick={handleOpenNavMenu}
                             color="#282c34"
                         >
-                            <MenuIcon />
+                            <MenuIcon sx={{color:'#3bb77e'}} />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -102,17 +102,15 @@ function Header() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                                    <Typography  textAlign="center">{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
                     </Box>
-                    <ShoppingBagIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+                    <ShoppingBagIcon sx={{ display: { xs: 'flex', md: 'none',color:"#3bb77e" }, mr: 1 }} />
                     <Typography
                         variant="h5"
                         noWrap
-                        component="a"
-                        href="#home"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
@@ -120,7 +118,7 @@ function Header() {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: '#282c34',
+                            color: '#fffff',
                             textDecoration: 'none',
                         }}
                     >
@@ -132,7 +130,7 @@ function Header() {
                                 key={page}
                                 onClick={handleCloseNavMenu}
                                 sx={{
-                                    my: 2, color: '#282c34', display: 'block', fontFamily: 'roboto',
+                                    my: 2, color: '#ffffff', display: 'block', fontFamily: 'roboto',
                                     fontWeight: 700, margin: "0 15px"
                                 }}
                             >
@@ -141,7 +139,7 @@ function Header() {
                         ))}
                     </Box>
                     <IconButton>
-                        <ShoppingCartIcon sx={{ color: '#253d4e', margin: '0px 20px' }} />
+                        <ShoppingCartIcon sx={{ color: '#ffffff', margin: '0px 20px' }} />
                     </IconButton>
                     {!isSigned && <Button variant="contained" color='success'> Sign In</Button>}
                     {isSigned && <Box sx={{ flexGrow: 0 }}>
@@ -176,6 +174,7 @@ function Header() {
                 </Toolbar>
             </Container>
         </AppBar>
+        </div>
     );
 }
 export default Header;
