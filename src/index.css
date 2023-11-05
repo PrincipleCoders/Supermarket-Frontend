@@ -11,8 +11,36 @@
 
 body {
   margin: 0;
-  display: flex;
+  display: grid;
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+/* login reg */
+.form{
+    width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    background-color: #fff;
+    box-shadow: 0 0 1rem rgba(0,0,0,0.1);
+    display: grid;
+    justify-items: center;
+    text-align: center;
+    left: 0;
+    right: 0;
+}
+
+.form .MuiFormControl-root{
+    width: 65%;
+}
+
+.form .MuiButton-root{
+    width: 65%;
+    margin-top: 1rem;
+}
+
+.form--hidden{
+    display: none;
 }
