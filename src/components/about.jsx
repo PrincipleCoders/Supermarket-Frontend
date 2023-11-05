@@ -1,9 +1,15 @@
 import React from 'react'
-import Header from './header'
+import smkt from '../assets/smkt.jpg'
+
+
 
 function About() {
+     const image1 = smkt;
+     const name= "super market"
+
   return (
     <div>
+         <img src={image1} className='item-image' alt={name}/>
       <div>
     <h1>Welcome to <b>ShopX</b></h1>
     <div>
