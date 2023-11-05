@@ -1,17 +1,10 @@
 import {useEffect, useState} from 'react';
 import {startFirebaseAuthUI} from '../services/firebase-service';
 import {Button, TextField} from '@mui/material';
-import Snackbar from "../components/SnackbarAlert.jsx";
 import SnackbarAlert from "../components/SnackbarAlert.jsx";
+import {register} from "../services/LoginReg-service.jsx";
 
 export default function LoginReg() {
-    const [loginEmail, setLoginEmail] = useState('');
-    const [loginPassword, setLoginPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [regEmail, setRegEmail] = useState('');
-    const [regPassword, setRegPassword] = useState('');
-    const [regConfirmPassword, setRegConfirmPassword] = useState('');
     const [alertStatus, setAlertStatus] = useState({type:'success',message:'',open:false});
 
     useEffect(() => {
@@ -32,7 +25,7 @@ export default function LoginReg() {
 
     const handleLogin = (event) => {
         event.preventDefault();
-        if (!validateInput(loginPassword, 'pwd')) {
+        if (!validateInput(event.target.password.value, 'pwd')) {
             showAlert('Password must contain atleast\n 1 capital letter, simple letter and number\n with minimum 8 characters', 'error');
             return;
         }
@@ -41,23 +34,31 @@ export default function LoginReg() {
 
     const handleRegister = (event) => {
         event.preventDefault();
-        if (!validateInput(firstName, 'name')) {
+        if (!validateInput(event.target.firstName.value, 'name')) {
             showAlert('Name can only contain letters', 'error');
             return;
         }
-        if (!validateInput(lastName, 'name')) {
+        if (!validateInput(event.target.lastName.value, 'name')) {
             showAlert('Name can only contain letters', 'error');
             return;
         }
-        if (!validateInput(regPassword, 'pwd')) {
+        if (!validateInput(event.target.password.value, 'pwd')) {
             showAlert('Password must contain at least 1 capital letter, simple letter and number with minimum 8 characters', 'error');
             return;
         }
-        if (regPassword !== regConfirmPassword) {
+        if (event.target.password.value !== event.target.confirmPassword.value) {
             showAlert('Confirm Password do not match', 'error');
             return;
         }
-        console.log(firstName, lastName, regEmail, regPassword, regConfirmPassword);
+
+        const userData = new FormData();
+        userData.append('firstName', event.target.firstName.value);
+        userData.append('lastName', event.target.lastName.value);
+        userData.append('email', event.target.email.value);
+        userData.append('password', event.target.password.value);
+        userData.append('profilePicture', event.target.profilePicture.files[0]);
+
+        register(userData);
     }
 
     const showAlert = (message, type) => {
@@ -86,8 +87,8 @@ export default function LoginReg() {
                         size="small"
                         type="email"
                         margin="normal"
-                        required value={loginEmail}
-                        onChange={event => setLoginEmail(event.target.value)}
+                        required
+                        name={"email"}
                     />
                     <TextField
                         label="Password"
@@ -96,8 +97,7 @@ export default function LoginReg() {
                         type="password"
                         margin="normal"
                         required
-                        value={loginPassword}
-                        onChange={event => setLoginPassword(event.target.value)}
+                        name={"password"}
                     />
                     <Button variant="contained" color="primary" size="medium" type={"submit"}>
                         Sign In
@@ -126,8 +126,7 @@ export default function LoginReg() {
                         type="text"
                         margin="normal"
                         required
-                        value={firstName}
-                        onChange={event => setFirstName(event.target.value)}
+                        name={"firstName"}
                     />
                     <TextField
                         label="Last Name"
@@ -136,8 +135,7 @@ export default function LoginReg() {
                         type="text"
                         margin="normal"
                         required
-                        value={lastName}
-                        onChange={event => setLastName(event.target.value)}
+                        name={"lastName"}
                     />
                     <TextField
                         label="Email"
@@ -146,8 +144,7 @@ export default function LoginReg() {
                         type="email"
                         margin="normal"
                         required
-                        value={regEmail}
-                        onChange={event => setRegEmail(event.target.value)}
+                        name={"email"}
                     />
                     <TextField
                         label="Password"
@@ -156,8 +153,7 @@ export default function LoginReg() {
                         type="password"
                         margin="normal"
                         required
-                        value={regPassword}
-                        onChange={event => setRegPassword(event.target.value)}
+                        name={"password"}
                     />
                     <TextField
                         label="Confirm Password"
@@ -166,8 +162,7 @@ export default function LoginReg() {
                         type="password"
                         margin="normal"
                         required
-                        value={regConfirmPassword}
-                        onChange={event => setRegConfirmPassword(event.target.value)}
+                        name={"confirmPassword"}
                     />
                     <TextField
                         label="Profile Picture"
@@ -175,6 +170,7 @@ export default function LoginReg() {
                         type="file"
                         focused={true}
                         margin="normal"
+                        name={"profilePicture"}
                     />
                     <Button variant="contained" color="primary" size="medium" type={"submit"}>
                         Sign Up
