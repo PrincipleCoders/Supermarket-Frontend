@@ -1,11 +1,11 @@
 import { initializeApp } from "firebase/app";
-import {EmailAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider} from "firebase/auth";
+import {GithubAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider} from "firebase/auth";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -30,11 +30,11 @@ export default function startFirebaseAuthUI(containerId, loaderId) {
                 },
             },
             signInFlow: 'popup',
-            signInSuccessUrl: 'http://localhost:5173/login',
+            signInSuccessUrl: 'http://localhost:5173',
             signInOptions: [
-                EmailAuthProvider.PROVIDER_ID,
-                GoogleAuthProvider.PROVIDER_ID,
-                FacebookAuthProvider.PROVIDER_ID,
+                {provider: GoogleAuthProvider.PROVIDER_ID, fullLabel: 'Google'},
+                {provider: FacebookAuthProvider.PROVIDER_ID, fullLabel: 'Facebook'},
+                {provider: GithubAuthProvider.PROVIDER_ID, fullLabel: 'Github'},
             ],
             // Terms of service url.
             tosUrl: '<your-tos-url>',
