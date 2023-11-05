@@ -38,7 +38,8 @@ function Header() {
     };
 
     return (
-        <AppBar position="static" elevation={0} sx={{ backgroundColor: 'white',boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)' }}>
+        
+        <AppBar position="fixed" elevation={0} sx={{ backgroundColor: 'white',boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.05)' }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <ShoppingBagIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1, }} color='success' />
@@ -50,14 +51,24 @@ function Header() {
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
+                            fontFamily: 'Segoe UI',
                             fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            letterSpacing: '.2rem',
                             color: '#282c34',
                             textDecoration: 'none',
                         }}
                     >
-                        ShopX
+                        shop 
+                        <Typography   variant="h6"
+                        sx={{mr: 2,
+                            display: { xs: 'none', md: 'flex' },
+                            fontFamily: 'Segoe UI',
+                            fontWeight: 700,
+                            letterSpacing: '.2rem',
+                            color: '#cd853f',
+                            textDecoration: 'none',}}>
+                                X
+                                </Typography>
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
