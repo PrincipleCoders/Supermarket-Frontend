@@ -48,3 +48,9 @@ body {
 #snackbarAlert{
     max-width: 350px;
 }
+
+#loader{
+    top:5px;
+    margin: 0 5px;
+    border-radius: 10px;
+}
