@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {GithubAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider} from "firebase/auth";
+import {GithubAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
@@ -26,7 +26,7 @@ export function startFirebaseAuthUI(containerId, loaderId) {
                     return false;
                 },
                 uiShown: function() {
-                    document.getElementById(loaderId).style.display = 'none';
+                    toggleLoader(loaderId);
                 },
             },
             signInFlow: 'popup',
@@ -48,4 +48,21 @@ export function startFirebaseAuthUI(containerId, loaderId) {
             new firebaseui.auth.AuthUI(auth).start(containerId, uiConfig);
         }
     });
+}
+
+export function toggleLoader(loaderId){
+    if (document.getElementById(loaderId).style.display === 'none'){
+        document.getElementById(loaderId).style.display = 'block';
+    }
+    else {
+        document.getElementById(loaderId).style.display = 'none';
+    }
+}
+
+export function signInWithEmail(email, password){
+    return signInWithEmailAndPassword(auth, email, password)
+}
+
+export function createUserWithEmail(email,password){
+    return createUserWithEmailAndPassword(auth, email, password);
 }
