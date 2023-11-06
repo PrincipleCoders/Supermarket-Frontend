@@ -1,11 +1,10 @@
-import {useEffect, useState} from 'react';
-import {startFirebaseAuthUI} from '../services/firebase-service';
-import {Button, TextField} from '@mui/material';
-import SnackbarAlert from "../components/SnackbarAlert.jsx";
-import {register} from "../services/LoginReg-service.jsx";
+import {useEffect} from 'react';
+import {signInWithEmail, startFirebaseAuthUI, createUserWithEmail, toggleLoader} from '../services/firebase-service';
+import {Button, LinearProgress, TextField} from '@mui/material';
+import {useNavigate} from "react-router-dom";
 
-export default function LoginReg() {
-    const [alertStatus, setAlertStatus] = useState({type:'success',message:'',open:false});
+export default function LoginReg({showAlert}) {
+    const navigate = useNavigate();
 
     useEffect(() => {
         startFirebaseAuthUI('#firebaseui-auth-container', 'loader')
@@ -26,10 +25,31 @@ export default function LoginReg() {
     const handleLogin = (event) => {
         event.preventDefault();
         if (!validateInput(event.target.password.value, 'pwd')) {
-            showAlert('Password must contain atleast\n 1 capital letter, simple letter and number\n with minimum 8 characters', 'error');
+            showAlert('Password must contain at least\n 1 capital letter, simple letter and number\n with minimum 8 characters', 'error');
             return;
         }
-        console.log(event.target.email.value);
+
+        toggleLoader('loader');
+        signInWithEmail(event.target.email.value, event.target.password.value)
+            //TODO:validate login
+            .then((userCredential) => {
+                toggleLoader('loader');
+                // Signed in
+                const user = userCredential.user;
+                console.log(user);
+                navigate('/');
+                showAlert('Login Successful', 'success');
+            })
+            .catch((error) => {
+                toggleLoader('loader')
+                console.log(error.code, error.message);
+                if (error.code === 'auth/network-request-failed'){
+                    showAlert('No network connection', 'warning')
+                }
+                else{
+                    showAlert('Login Failed, Email or Password incorrect', 'error');
+                }
+            })
     };
 
     const handleRegister = (event) => {
@@ -55,26 +75,46 @@ export default function LoginReg() {
             return;
         }
 
-        const userData = {
-            firstName: event.target.firstName.value,
-            lastName: event.target.lastName.value,
-            email: event.target.email.value,
-            password: event.target.password.value,
-            profilePicture: event.target.profilePicture.files[0]
-        };
+        toggleLoader('loader')
+        createUserWithEmail(event.target.email.value, event.target.password.value)
+            .then(cred=>{
+                toggleLoader('loader')
+                console.log(cred.user);
+                navigate('/login')
+                showAlert('Registration Successful, Please Sign In')
+            })
+            .catch(error=>{
+                toggleLoader('loader')
+                console.log(error);
+                if (error.code === 'auth/network-request-failed'){
+                    showAlert('Network connection error', 'warning')
+                }
+                else if(error.code === 'auth/email-already-in-use'){
+                    showAlert('Entered email already in use', 'error');
+                }
+                else {
+                    showAlert('Something went wrong, Please try again', 'error')
+                }
+            })
 
-        register(userData).then((response) => {
-            console.log(response);
-            handleFormSwap();
-            showAlert('Registration Successful, Please proceed to Login', 'success');
-        }).catch((error) => {
-            console.log(error);
-            showAlert('Registration Failed', 'error');
-        });
-    }
+        // const userData = {
+        //     firstName: event.target.firstName.value,
+        //     lastName: event.target.lastName.value,
+        //     email: event.target.email.value,
+        //     password: event.target.password.value,
+        //     profilePicture: event.target.profilePicture.files[0]
+        // };
+        //
+        // register(userData).then((response) => {
+        //     console.log(response);
+        //     handleFormSwap();
+        //     showAlert('Registration Successful, Please proceed to Login', 'success');
+        // }).catch((error) => {
+        //     console.log(error);
+        //     showAlert('Registration Failed', 'error');
+        // });
 
-    const showAlert = (message, type) => {
-        setAlertStatus({type,message,open:true});
+
     }
 
     const validateInput = (input, type) => {
@@ -89,7 +129,7 @@ export default function LoginReg() {
     }
 
     return (<div>
-            <SnackbarAlert alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
+        <LinearProgress id={'loader'} hidden/>
             <div className="form">
                 <h3>Sign In with Email</h3>
                 <form onSubmit={handleLogin}>
@@ -118,7 +158,6 @@ export default function LoginReg() {
                 <div>
                     <h4>or continue with</h4>
                     <div id="firebaseui-auth-container"></div>
-                    <div id="loader">Loading...</div>
                 </div>
                 <h5>
                     Don't have an account?{' '}
