@@ -26,7 +26,7 @@ export function startFirebaseAuthUI(containerId, loaderId) {
                     return false;
                 },
                 uiShown: function() {
-                    toggleLoader(loaderId);
+                    document.getElementById('loader').style.display = 'none'
                 },
             },
             signInFlow: 'popup',
@@ -48,15 +48,6 @@ export function startFirebaseAuthUI(containerId, loaderId) {
             new firebaseui.auth.AuthUI(auth).start(containerId, uiConfig);
         }
     });
-}
-
-export function toggleLoader(loaderId){
-    if (document.getElementById(loaderId).style.display === 'none'){
-        document.getElementById(loaderId).style.display = 'block';
-    }
-    else {
-        document.getElementById(loaderId).style.display = 'none';
-    }
 }
 
 export function signInWithEmail(email, password){
