@@ -1,97 +1,43 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../styles/contact.css';
 import sm from '../assets/sm.jpg';
+import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import EmailIcon from '@mui/icons-material/Email';
 
 function ContactUs() {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    // Mock function for sending the message (you would replace this with a real backend)
-    try {
-      const response = await sendMessage(formData);
-      console.log('Message sent:', response);
-      alert('Message sent successfully!');
-      setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Message could not be sent. Please try again later.');
-    }
-  };
-
-  const sendMessage = async (data) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve({ success: true });
-      }, 1000); // Simulate a delay for sending
-    });
-  };
+  const image = sm;
 
   return (
     <div className="contact-us-container">
-      <h1>Contact Us</h1>
+      <h1 className="mtopic">Contact Us</h1>
+      <p>
+        If you have any questions, feedback, or inquiries, please feel free to
+        get in touch with us. We value your input and are here to assist you in
+        any way we can. Our dedicated team is eager to provide you with the best
+        possible support. Reach out to us via email, phone, or by visiting our
+        physical location. We look forward to hearing from you and serving your
+        needs.
+      </p>
+      <img src={image} className="contact-image" />
       <div className="contact-info">
-        <div className="contact-details image-column">
-          <img src={sm} className="contact-image" alt="Supermarket" />
+        <div className="contact-details">
+          <h2>
+          <AddHomeWorkIcon /> Visit Us
+          </h2>
+          <p>ShopX</p>
+          <p>123 Kumara Street</p>
+          <p>Colombo 7, Sri Lanka</p>
         </div>
-        <div className="contact-details text-column">
-          <p>If you have any questions or feedback, please don't hesitate to get in touch with us using the information below:</p>
-          <div className="contact-info">
-            <div className="message-box">
-              <h2>Contact Form</h2>
-              <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="name">Name:</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email:</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="message">Message:</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-                <button type="submit">Submit</button>
-              </form>
-            </div>
-            <div className="contact-details">
-              <h2>Visit Us</h2>
-              <p>ShopX</p>
-              <p>123 Kumara Street</p>
-              <p>Colombo 7, Sri Lanka</p>
-            </div>
-            <div className="contact-details">
-              <h2>Contact Information</h2>
-              <p><a href='mailto:yuhu7447@gmail.com'>Email: contact@ShopX.com</a></p>
-              <p>Phone: +94 812 456 789</p>
-            </div>
-          </div>
+
+        <div className="contact-details">
+          <h2>
+            Contact Information
+          </h2>
+          <p>
+            <EmailIcon/><a href="yuhu7447@gmail.com">Email: contact@ShopX.com</a>
+          </p>
+          <p><ContactPhoneIcon/>Phone: +94 812 456 789</p>
         </div>
       </div>
     </div>

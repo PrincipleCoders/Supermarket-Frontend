@@ -4,7 +4,7 @@
     padding: 0;
     box-sizing: content-box;
     font-family: "Roboto", sans-serif;
-    background-color: aquamarine;
+    background-color: rgb(35, 142, 150);
 }
 
 /* Container for the whole page */
@@ -36,6 +36,13 @@ p, .main-content, .sub-content {
     text-align: center justify;
     margin: 10px 200px; /* Adjust the margin from left and right */
 }
+
+.sub-content {
+    text-align: center justify;
+    margin: 10px 200px; /* Adjust the margin from left and right */
+    font-size: small;
+}
+
 
 /* Additional styling for the "Recognized for our efforts" section */
 h2 {

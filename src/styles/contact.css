@@ -1,36 +1,57 @@
-/* Style the Message Box and its content */
-.message-box {
-    background-color: #110f8d;
+.contact-us-container {
+    text-align: center;
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-  }
-  
-  .message-box h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  
-  /* Add hover effect to the Submit button */
-  .message-box button:hover {
-    background-color: #4285F4;
-    color: #ffffff;
-    cursor: pointer;
     
   }
   
-  /* Add a transition for smoother hover effect */
-  /* .contact-details, .form-group {
-    transition: transform 0.3s ease, opacity 0.3s ease;
+  h1 {
+    font-size: 24px;
+    text-align: center;
   }
-   */
-  /* Add hover effect for contact details and form groups */
-  /* .contact-details:hover, .form-group:hover {
-    transform: scale(1.05);
+
+  h2{
+    font-size: 15px;
+
   }
-   */
-  /* Add a subtle box shadow on hover */
-  .contact-details:hover, .form-group:hover {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  
+  .content {
+    display: flex;
+    align-items: center justify;
+  }
+  
+  .mtopic{
+    align-items: center justify;
+  }
+
+  .left-column {
+    flex: 1; /* Expand to fill available space */
+    text-align: center;
+  }
+  
+  .right-column {
+    flex: 2; /* Expand to fill available space */
+    text-align: left;
+  }
+  
+  .contact-image {
+    width: 80%; /* Ensure the image takes up the entire width of the left column */
+    max-width: 400px; /* Limit the maximum width of the image */
+    display: block; /* Remove any default spacing */
+    margin: 0 auto; /* Center the image horizontally */
+  }
+  
+  p {
+    font-size: 13px;
+  }
+  
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(8, 53, 66);
+  }
+  
+  .contact-details {
+    text-align: left;
+    margin: 20px;
   }
   
