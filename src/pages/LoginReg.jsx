@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {signInWithEmail, startFirebaseAuthUI, createUserWithEmail, toggleLoader} from '../services/firebase-service';
+import {signInWithEmail, startFirebaseAuthUI, createUserWithEmail} from '../services/firebase-service';
 import {Button, LinearProgress, TextField} from '@mui/material';
 import {useNavigate} from "react-router-dom";
 
@@ -16,6 +16,10 @@ export default function LoginReg({showAlert}) {
             });
     }, []);
 
+    const toggleLoader = (state) => {
+        document.getElementById('loader').style.display = state ? 'block':'none';
+    }
+
     const handleFormSwap = () => {
         document.querySelectorAll('.form').forEach((form) => {
             form.classList.toggle('form--hidden');
@@ -29,11 +33,11 @@ export default function LoginReg({showAlert}) {
             return;
         }
 
-        toggleLoader('loader');
+        toggleLoader(true);
         signInWithEmail(event.target.email.value, event.target.password.value)
             //TODO:validate login
             .then((userCredential) => {
-                toggleLoader('loader');
+                toggleLoader(false);
                 // Signed in
                 const user = userCredential.user;
                 console.log(user);
@@ -41,7 +45,7 @@ export default function LoginReg({showAlert}) {
                 showAlert('Login Successful', 'success');
             })
             .catch((error) => {
-                toggleLoader('loader')
+                toggleLoader(false)
                 console.log(error.code, error.message);
                 if (error.code === 'auth/network-request-failed'){
                     showAlert('No network connection', 'warning')
@@ -75,16 +79,16 @@ export default function LoginReg({showAlert}) {
             return;
         }
 
-        toggleLoader('loader')
+        toggleLoader(true)
         createUserWithEmail(event.target.email.value, event.target.password.value)
             .then(cred=>{
-                toggleLoader('loader')
+                toggleLoader(false)
                 console.log(cred.user);
                 navigate('/login')
                 showAlert('Registration Successful, Please Sign In')
             })
             .catch(error=>{
-                toggleLoader('loader')
+                toggleLoader(false)
                 console.log(error);
                 if (error.code === 'auth/network-request-failed'){
                     showAlert('Network connection error', 'warning')
