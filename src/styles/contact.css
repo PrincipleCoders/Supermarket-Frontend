@@ -1,0 +1,57 @@
+.contact-us-container {
+    text-align: center;
+    padding: 20px;
+    
+  }
+  
+  h1 {
+    font-size: 24px;
+    text-align: center;
+  }
+
+  h2{
+    font-size: 15px;
+
+  }
+  
+  .content {
+    display: flex;
+    align-items: center justify;
+  }
+  
+  .mtopic{
+    align-items: center justify;
+  }
+
+  .left-column {
+    flex: 1; /* Expand to fill available space */
+    text-align: center;
+  }
+  
+  .right-column {
+    flex: 2; /* Expand to fill available space */
+    text-align: left;
+  }
+  
+  .contact-image {
+    width: 80%; /* Ensure the image takes up the entire width of the left column */
+    max-width: 400px; /* Limit the maximum width of the image */
+    display: block; /* Remove any default spacing */
+    margin: 0 auto; /* Center the image horizontally */
+  }
+  
+  p {
+    font-size: 13px;
+  }
+  
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    background-color: rgb(8, 53, 66);
+  }
+  
+  .contact-details {
+    text-align: left;
+    margin: 20px;
+  }
+  
