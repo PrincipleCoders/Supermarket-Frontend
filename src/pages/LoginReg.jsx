@@ -76,10 +76,15 @@ export default function LoginReg({showAlert}) {
             showAlert('Confirm Password do not match', 'error');
             return;
         }
-        // if (event.target.profilePicture.files[0].size > 5000000) {
-        //     showAlert('Profile Picture size must be less than 5MB', 'error');
-        //     return;
-        // }
+        if (event.target.profilePicture.files[0].size > 5000000) {
+            showAlert('Profile Picture size must be less than 5MB', 'error');
+            return;
+        }
+        if (!event.target.profilePicture.files[0].type.includes('image')) {
+            showAlert('Profile Picture should be of image type', 'error');
+            return;
+        }
+
 
         toggleLoader(true)
         const additionalData = {
@@ -206,15 +211,16 @@ export default function LoginReg({showAlert}) {
                         required
                         name={"confirmPassword"}
                     />
-                    {/*<TextField*/}
-                    {/*    label="Profile Picture"*/}
-                    {/*    variant="outlined"*/}
-                    {/*    type="file"*/}
-                    {/*    focused={true}*/}
-                    {/*    margin="normal"*/}
-                    {/*    name={"profilePicture"}*/}
-                    {/*    required*/}
-                    {/*/>*/}
+                    <TextField
+                        label="Profile Picture"
+                        variant="outlined"
+                        type="file"
+                        focused={true}
+                        margin="normal"
+                        name={"profilePicture"}
+                        required
+                        inputProps={{ accept: 'image/*' }}
+                    />
                     <Button variant="contained" color="primary" size="medium" type={"submit"}>
                         Sign Up
                     </Button>
