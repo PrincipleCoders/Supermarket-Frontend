@@ -1,11 +1,13 @@
 import { initializeApp } from "firebase/app";
 import {GithubAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
+import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -61,3 +63,17 @@ export function createUserWithEmail(email,password){
 export function updateAdditionalData(user, additionalData){
     return updateProfile(user, additionalData);
 }
+
+export function uploadFile(path, file){
+    const storage = getStorage(firebaseApp);
+    const storageRef = ref(storage, path);
+    return uploadBytes(storageRef, file)
+        .then((snapshot) => {
+            return getDownloadURL(snapshot.ref)
+        })
+        .catch((error) => {
+            console.error(error);
+            throw error;
+        });
+}
+
