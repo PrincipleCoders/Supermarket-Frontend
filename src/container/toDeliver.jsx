@@ -28,6 +28,7 @@ export default function ToDeliver() {
             bill: 850,
             markToDeliver: true,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
           {
             id: 2005,
@@ -40,6 +41,7 @@ export default function ToDeliver() {
             bill: 420,
             markToDeliver: true,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
           {
             id: 2006,
@@ -53,6 +55,7 @@ export default function ToDeliver() {
             bill: 1120,
             markToDeliver: false,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
           {
             id: 2007,
@@ -64,6 +67,7 @@ export default function ToDeliver() {
             bill: 300,
             markToDeliver: true,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
           {
             id: 2008,
@@ -77,6 +81,7 @@ export default function ToDeliver() {
             bill: 970,
             markToDeliver: false,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
           {
             id: 2009,
@@ -89,6 +94,7 @@ export default function ToDeliver() {
             bill: 150,
             markToDeliver: true,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
           {
             id: 2010,
@@ -102,6 +108,7 @@ export default function ToDeliver() {
             bill: 750,
             markToDeliver: false,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
           {
             id: 2011,
@@ -114,18 +121,19 @@ export default function ToDeliver() {
             bill: 400,
             markToDeliver: true,
             isDelivered: false,
+            telephone: '555-123-4567'
           },
         ]);
 
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
     const [isConfirmationDialogOpenDeliver, setConfirmationDialogOpenDeliver] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
-    const [deliveredStatus, setDeliveredStatus] = useState(false);
-
+    
     const columns = [
         { id: 'id', label: 'ID', minWidth: 25, align: 'center' },
         { id: 'customer', label: 'Customer', minWidth: 50, align: 'left' },
         { id: 'address', label: 'Address', minWidth: 75, align: 'left' },
+        { id: 'telephone', label: 'Contact No.', minWidth: 75, align: 'left' },
         { id: 'items', label: 'Items', minWidth: 100, align: 'left' },
         { id: 'bill', label: 'Bill', minWidth: 50, align: 'left' },
         { id: 'markToDeliver', label: 'Mark as taken', minWidth: 20, align: 'center' },
@@ -275,11 +283,11 @@ export default function ToDeliver() {
 
             <Dialog open={isConfirmationDialogOpenDeliver} onClose={closeConfirmationDialogDeliver}>
                 <DialogTitle>
-                    {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "Mark order as not taken" : "Mark order as taken"}
+                    {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "Mark order as not delivered" : "Mark order as delivered"}
                 </DialogTitle>
                 <DialogContent>
                     <Typography>
-                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "not taken" : "taken"}?
+                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "not delivered" : "delivered"}?
                     </Typography>
                 </DialogContent>
                 <DialogActions>
