@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import {GithubAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+import {GithubAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
@@ -11,7 +11,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 
-export function startFirebaseAuthUI(containerId, loaderId) {
+export function startFirebaseAuthUI(containerId) {
     return new Promise((resolve, reject) => {
         const uiConfig = {
             callbacks: {
@@ -32,8 +32,8 @@ export function startFirebaseAuthUI(containerId, loaderId) {
             signInFlow: 'popup',
             signInSuccessUrl: 'http://localhost:5173',
             signInOptions: [
-                {provider: GoogleAuthProvider.PROVIDER_ID, fullLabel: 'Google'},
-                {provider: FacebookAuthProvider.PROVIDER_ID, fullLabel: 'Facebook'},
+                {provider: GoogleAuthProvider.PROVIDER_ID, fullLabel: 'Google', customParameters: {prompt: 'select_account'}},
+                {provider: FacebookAuthProvider.PROVIDER_ID, fullLabel: 'Facebook', customParameters: {auth_type: 'reauthenticate'}},
                 {provider: GithubAuthProvider.PROVIDER_ID, fullLabel: 'Github'},
             ],
             // Terms of service url.
@@ -56,4 +56,8 @@ export function signInWithEmail(email, password){
 
 export function createUserWithEmail(email,password){
     return createUserWithEmailAndPassword(auth, email, password);
+}
+
+export function updateAdditionalData(user, additionalData){
+    return updateProfile(user, additionalData);
 }
