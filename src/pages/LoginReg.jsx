@@ -1,5 +1,11 @@
 import {useEffect} from 'react';
-import {createUserWithEmail, signInWithEmail, startFirebaseAuthUI, updateAdditionalData} from '../services/firebase-service';
+import {
+    createUserWithEmail,
+    signInWithEmail,
+    startFirebaseAuthUI,
+    updateAdditionalData,
+    uploadFile
+} from '../services/firebase-service';
 import {Button, LinearProgress, TextField} from '@mui/material';
 import {useNavigate} from "react-router-dom";
 
@@ -20,7 +26,7 @@ export default function LoginReg({showAlert}) {
     }, []);
 
     const toggleLoader = (state) => {
-        document.getElementById('loader').style.display = state ? 'block':'none';
+        document.getElementById('loader').style.display = state ? 'block' : 'none';
     }
 
     const handleFormSwap = () => {
@@ -49,10 +55,9 @@ export default function LoginReg({showAlert}) {
             .catch((error) => {
                 toggleLoader(false)
                 console.log(error.code, error.message);
-                if (error.code === 'auth/network-request-failed'){
+                if (error.code === 'auth/network-request-failed') {
                     showAlert('No network connection', 'warning')
-                }
-                else{
+                } else {
                     showAlert('Login Failed, Email or Password incorrect', 'error');
                 }
             })
@@ -88,29 +93,67 @@ export default function LoginReg({showAlert}) {
 
         toggleLoader(true)
         const additionalData = {
-            displayName: event.target.firstName.value+' '+event.target.lastName.value
+            displayName: event.target.firstName.value + ' ' + event.target.lastName.value,
+            photoURL: null
         }
         createUserWithEmail(event.target.email.value, event.target.password.value)
-            .then(cred=>{
-                toggleLoader(false)
+            .then(async cred => {
                 console.log(cred);
-                handleFormSwap();
-                showAlert('Registration Successful, Please Sign In')
-                return updateAdditionalData(cred.user, additionalData);
+
+                await uploadProfilePicture(cred.user.uid, event.target.profilePicture.files[0])
+                    .then(async (url) => {
+                        console.log(url);
+                        additionalData.photoURL = url;
+                        toggleLoader(false)
+                        handleFormSwap();
+                        await updateAdditionalData(cred.user, additionalData)
+                            .then(() => {
+                                console.log('Additional Data Updated');
+                                showAlert('Registration Successful, Please Sign In');
+                                console.log(cred)
+                                navigate('/login');
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                                showAlert('Something went wrong, Please try again', 'error')
+                            })
+                    })
+                    .catch(async (error) => {
+                        toggleLoader(false)
+                        console.log(error);
+                        await cred.user.delete();
+                    })
             })
-            .catch(error=>{
+            .catch(error => {
                 toggleLoader(false)
                 console.log(error);
-                if (error.code === 'auth/network-request-failed'){
+                if (error.code === 'auth/network-request-failed') {
                     showAlert('Network connection error', 'warning')
-                }
-                else if(error.code === 'auth/email-already-in-use'){
+                } else if (error.code === 'auth/email-already-in-use') {
                     showAlert('Entered email already in use', 'error');
-                }
-                else {
+                } else {
                     showAlert('Something went wrong, Please try again', 'error')
                 }
             })
+
+        const uploadProfilePicture = async (userID, file) => {
+            const path = 'profilePictures/' + userID;
+            // let result = null;
+            return await uploadFile(path, file)
+                .then((url) => {
+                    showAlert('Profile Picture uploaded successfully', 'success');
+                    return url;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    if (error.code === 'storage/canceled') {
+                        showAlert('Profile Picture upload cancelled', 'warning');
+                    } else {
+                        showAlert('Profile Picture upload failed, Please try again', 'error');
+                    }
+                    throw error;
+                });
+        }
     }
 
     const validateInput = (input, type) => {
@@ -126,111 +169,111 @@ export default function LoginReg({showAlert}) {
 
     return (<div>
         <LinearProgress id={'loader'} hidden/>
-            <div className="form">
-                <h3>Sign In with Email</h3>
-                <form onSubmit={handleLogin}>
-                    <TextField
-                        label="Email"
-                        variant="outlined"
-                        size="small"
-                        type="email"
-                        margin="normal"
-                        required
-                        name={"email"}
-                    />
-                    <TextField
-                        label="Password"
-                        variant="outlined"
-                        size="small"
-                        type="password"
-                        margin="normal"
-                        required
-                        name={"password"}
-                    />
-                    <Button variant="contained" color="primary" size="medium" type={"submit"}>
-                        Sign In
-                    </Button>
-                </form>
-                <div>
-                    <h4>or continue with</h4>
-                    <div id="firebaseui-auth-container"></div>
-                </div>
-                <h5>
-                    Don't have an account?{' '}
-                    <a href="#" onClick={handleFormSwap}>
-                        Sign Up
-                    </a>
-                </h5>
+        <div className="form">
+            <h3>Sign In with Email</h3>
+            <form onSubmit={handleLogin}>
+                <TextField
+                    label="Email"
+                    variant="outlined"
+                    size="small"
+                    type="email"
+                    margin="normal"
+                    required
+                    name={"email"}
+                />
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    size="small"
+                    type="password"
+                    margin="normal"
+                    required
+                    name={"password"}
+                />
+                <Button variant="contained" color="primary" size="medium" type={"submit"}>
+                    Sign In
+                </Button>
+            </form>
+            <div>
+                <h4>or continue with</h4>
+                <div id="firebaseui-auth-container"></div>
             </div>
+            <h5>
+                Don't have an account?{' '}
+                <a href="#" onClick={handleFormSwap}>
+                    Sign Up
+                </a>
+            </h5>
+        </div>
 
-            <div className="form form--hidden">
-                <h3>Create New Account</h3>
-                <form onSubmit={handleRegister}>
-                    <TextField
-                        label="First Name"
-                        variant="outlined"
-                        size="small"
-                        type="text"
-                        margin="normal"
-                        required
-                        name={"firstName"}
-                    />
-                    <TextField
-                        label="Last Name"
-                        variant="outlined"
-                        size="small"
-                        type="text"
-                        margin="normal"
-                        required
-                        name={"lastName"}
-                    />
-                    <TextField
-                        label="Email"
-                        variant="outlined"
-                        size="small"
-                        type="email"
-                        margin="normal"
-                        required
-                        name={"email"}
-                    />
-                    <TextField
-                        label="Password"
-                        variant="outlined"
-                        size="small"
-                        type="password"
-                        margin="normal"
-                        required
-                        name={"password"}
-                    />
-                    <TextField
-                        label="Confirm Password"
-                        variant="outlined"
-                        size="small"
-                        type="password"
-                        margin="normal"
-                        required
-                        name={"confirmPassword"}
-                    />
-                    <TextField
-                        label="Profile Picture"
-                        variant="outlined"
-                        type="file"
-                        focused={true}
-                        margin="normal"
-                        name={"profilePicture"}
-                        required
-                        inputProps={{ accept: 'image/*' }}
-                    />
-                    <Button variant="contained" color="primary" size="medium" type={"submit"}>
-                        Sign Up
-                    </Button>
-                </form>
-                <h5>
-                    Already have an account?{' '}
-                    <a href="#" onClick={handleFormSwap}>
-                        Sign In
-                    </a>
-                </h5>
-            </div>
-        </div>);
+        <div className="form form--hidden">
+            <h3>Create New Account</h3>
+            <form onSubmit={handleRegister}>
+                <TextField
+                    label="First Name"
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    margin="normal"
+                    required
+                    name={"firstName"}
+                />
+                <TextField
+                    label="Last Name"
+                    variant="outlined"
+                    size="small"
+                    type="text"
+                    margin="normal"
+                    required
+                    name={"lastName"}
+                />
+                <TextField
+                    label="Email"
+                    variant="outlined"
+                    size="small"
+                    type="email"
+                    margin="normal"
+                    required
+                    name={"email"}
+                />
+                <TextField
+                    label="Password"
+                    variant="outlined"
+                    size="small"
+                    type="password"
+                    margin="normal"
+                    required
+                    name={"password"}
+                />
+                <TextField
+                    label="Confirm Password"
+                    variant="outlined"
+                    size="small"
+                    type="password"
+                    margin="normal"
+                    required
+                    name={"confirmPassword"}
+                />
+                <TextField
+                    label="Profile Picture"
+                    variant="outlined"
+                    type="file"
+                    focused={true}
+                    margin="normal"
+                    name={"profilePicture"}
+                    required
+                    inputProps={{accept: 'image/*'}}
+                />
+                <Button variant="contained" color="primary" size="medium" type={"submit"}>
+                    Sign Up
+                </Button>
+            </form>
+            <h5>
+                Already have an account?{' '}
+                <a href="#" onClick={handleFormSwap}>
+                    Sign In
+                </a>
+            </h5>
+        </div>
+    </div>);
 }
