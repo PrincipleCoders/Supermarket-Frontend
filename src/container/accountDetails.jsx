@@ -69,6 +69,7 @@ const AccountDetails = (props) => {
                         defaultValue={email}
                         onChange={(e) => setEmail(e.target.value)}
                         color='success'
+                        disabled
                     />
                     <TextField
                         id="tp"

@@ -5,6 +5,8 @@ import Header from './components/header'
 import Shop from './container/shop'
 import Footer from './components/footer'
 import Profile from './container/profile'
+import Inventory from './container/inventory'
+import RemainingOrders from './container/remainingOrders'
 
 
 function App() {
@@ -13,8 +15,10 @@ function App() {
   return (
     <>
       <Header/>
-      <Shop/>
-      <Profile/>
+      {/* <Shop/>
+      <Profile/> */}
+      {/* <Inventory/> */}
+      <RemainingOrders/>
       <Footer/>
     </>
   )
