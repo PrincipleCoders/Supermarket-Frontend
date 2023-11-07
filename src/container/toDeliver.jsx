@@ -15,7 +15,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
-export default function RemainingOrders() {
+export default function ToDeliver() {
 
     const [remainingOrders, setRemainingOrders] = useState([
         {

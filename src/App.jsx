@@ -17,7 +17,7 @@ function App() {
       <Header/>
       {/* <Shop/>
       <Profile/> */}
-      {/* <Inventory/> */}
+      <Inventory/>
       <RemainingOrders/>
       <Footer/>
     </>
