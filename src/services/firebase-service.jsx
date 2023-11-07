@@ -17,7 +17,7 @@ export function startFirebaseAuthUI(containerId) {
             callbacks: {
                 signInSuccessWithAuthResult: function(authResult) {
                     // Resolve the promise with the authResult
-                    resolve(authResult.user.getIdToken());
+                    resolve(authResult);
                     return false;
                 },
                 signInFailure(error) {
