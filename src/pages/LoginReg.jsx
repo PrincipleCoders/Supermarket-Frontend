@@ -1,5 +1,5 @@
 import {useEffect} from 'react';
-import {signInWithEmail, startFirebaseAuthUI, createUserWithEmail} from '../services/firebase-service';
+import {createUserWithEmail, signInWithEmail, startFirebaseAuthUI, updateAdditionalData} from '../services/firebase-service';
 import {Button, LinearProgress, TextField} from '@mui/material';
 import {useNavigate} from "react-router-dom";
 
@@ -7,9 +7,12 @@ export default function LoginReg({showAlert}) {
     const navigate = useNavigate();
 
     useEffect(() => {
-        startFirebaseAuthUI('#firebaseui-auth-container', 'loader')
-            .then((idToken) => {
-                console.log('IDToken', idToken);
+        startFirebaseAuthUI('#firebaseui-auth-container')
+            .then((authResult) => {
+                console.log('Signed in with', authResult);
+                navigate('/');
+                showAlert('Login Successful', 'success');
+                authResult.additionalUserInfo.isNewUser && showAlert('Welcome to the App', 'success');
             })
             .catch((error) => {
                 console.log('error', error);
@@ -39,8 +42,7 @@ export default function LoginReg({showAlert}) {
             .then((userCredential) => {
                 toggleLoader(false);
                 // Signed in
-                const user = userCredential.user;
-                console.log(user);
+                console.log(userCredential);
                 navigate('/');
                 showAlert('Login Successful', 'success');
             })
@@ -74,18 +76,22 @@ export default function LoginReg({showAlert}) {
             showAlert('Confirm Password do not match', 'error');
             return;
         }
-        if (event.target.profilePicture.files[0].size > 5000000) {
-            showAlert('Profile Picture size must be less than 5MB', 'error');
-            return;
-        }
+        // if (event.target.profilePicture.files[0].size > 5000000) {
+        //     showAlert('Profile Picture size must be less than 5MB', 'error');
+        //     return;
+        // }
 
         toggleLoader(true)
+        const additionalData = {
+            displayName: event.target.firstName.value+' '+event.target.lastName.value
+        }
         createUserWithEmail(event.target.email.value, event.target.password.value)
             .then(cred=>{
                 toggleLoader(false)
-                console.log(cred.user);
-                navigate('/login')
+                console.log(cred);
+                handleFormSwap();
                 showAlert('Registration Successful, Please Sign In')
+                return updateAdditionalData(cred.user, additionalData);
             })
             .catch(error=>{
                 toggleLoader(false)
@@ -100,25 +106,6 @@ export default function LoginReg({showAlert}) {
                     showAlert('Something went wrong, Please try again', 'error')
                 }
             })
-
-        // const userData = {
-        //     firstName: event.target.firstName.value,
-        //     lastName: event.target.lastName.value,
-        //     email: event.target.email.value,
-        //     password: event.target.password.value,
-        //     profilePicture: event.target.profilePicture.files[0]
-        // };
-        //
-        // register(userData).then((response) => {
-        //     console.log(response);
-        //     handleFormSwap();
-        //     showAlert('Registration Successful, Please proceed to Login', 'success');
-        // }).catch((error) => {
-        //     console.log(error);
-        //     showAlert('Registration Failed', 'error');
-        // });
-
-
     }
 
     const validateInput = (input, type) => {
@@ -219,15 +206,15 @@ export default function LoginReg({showAlert}) {
                         required
                         name={"confirmPassword"}
                     />
-                    <TextField
-                        label="Profile Picture"
-                        variant="outlined"
-                        type="file"
-                        focused={true}
-                        margin="normal"
-                        name={"profilePicture"}
-                        required
-                    />
+                    {/*<TextField*/}
+                    {/*    label="Profile Picture"*/}
+                    {/*    variant="outlined"*/}
+                    {/*    type="file"*/}
+                    {/*    focused={true}*/}
+                    {/*    margin="normal"*/}
+                    {/*    name={"profilePicture"}*/}
+                    {/*    required*/}
+                    {/*/>*/}
                     <Button variant="contained" color="primary" size="medium" type={"submit"}>
                         Sign Up
                     </Button>
