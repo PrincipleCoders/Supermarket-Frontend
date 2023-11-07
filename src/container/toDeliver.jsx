@@ -16,91 +16,121 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 
 export default function ToDeliver() {
-
     const [remainingOrders, setRemainingOrders] = useState([
         {
-            id: 1024,
-            date: '2023-05-01',
-            customer: 'P.K. Silva',
-            items: [
-                { item: 'Coke 1L', quantity: 2 },
-                { item: 'Apples', quantity: 5 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1025,
-            date: '2023-05-02',
+            id: 2004,
             customer: 'J. Smith',
+            address: '123 Main St, Springfield',
             items: [
-                { item: 'Chips', quantity: 3 },
-                { item: 'Ice Cream', quantity: 2 }
+              { item: 'Chips', quantity: 3 },
+              { item: 'Ice Cream', quantity: 2 },
             ],
-            isPacked: false
-        },
-        {
-            id: 1026, date: '2023-05-03', customer: 'A. Johnson', items: [
-                { item: 'Pizza', quantity: 1 },
-                { item: 'Milk', quantity: 4 }
-            ]
-        },
-        {
-            id: 1027, date: '2023-05-04', customer: 'S. Brown', items: [
-                { item: 'Burger', quantity: 2 },
-                { item: 'Coke 1L', quantity: 3 },
-                { item: 'Ice Cream', quantity: 1 }
-            ]
-        },
-        {
-            id: 1028, date: '2023-05-05', customer: 'M. Lee', items: [
-                { item: 'Chips', quantity: 4 }
-            ]
-        },
-        {
-            id: 1029, date: '2023-05-06', customer: 'L. Davis', items: [
-                { item: 'Pizza', quantity: 2 },
-                { item: 'Milk', quantity: 6 }
-            ]
-        },
-        {
-            id: 1030, date: '2023-05-07', customer: 'E. Wilson', items: [
-                { item: 'Coke 1L', quantity: 1 },
-                { item: 'Burger', quantity: 2 },
-                { item: 'Ice Cream', quantity: 3 }
-            ]
-        },
-        {
-            id: 1031, date: '2023-05-08', customer: 'K. Taylor', items: [
-                { item: 'Milk', quantity: 2 },
-                { item: 'Toothpaste', quantity: 1 }
-            ]
-        },
-        {
-            id: 1032, date: '2023-05-09', customer: 'R. Harris', items: [
-                { item: 'Chips', quantity: 3 },
-                { item: 'Pizza', quantity: 2 },
-                { item: 'Bananas', quantity: 5 }
-            ]
-        },
-        {
-            id: 1033, date: '2023-05-10', customer: 'D. Martinez', items: [
-                { item: 'Apples', quantity: 4 },
-                { item: 'Bananas', quantity: 3 }
-            ]
-        },
-    ]);
+            bill: 850,
+            markToDeliver: true,
+            isDelivered: false,
+          },
+          {
+            id: 2005,
+            customer: 'A. Johnson',
+            address: '456 Elm St, Springfield',
+            items: [
+              { item: 'Pizza', quantity: 1 },
+              { item: 'Milk', quantity: 4 },
+            ],
+            bill: 420,
+            markToDeliver: true,
+            isDelivered: false,
+          },
+          {
+            id: 2006,
+            customer: 'S. Brown',
+            address: '789 Oak St, Springfield',
+            items: [
+              { item: 'Burger', quantity: 2 },
+              { item: 'Coke 1L', quantity: 3 },
+              { item: 'Ice Cream', quantity: 1 },
+            ],
+            bill: 1120,
+            markToDeliver: false,
+            isDelivered: false,
+          },
+          {
+            id: 2007,
+            customer: 'L. Davis',
+            address: '101 Pine St, Springfield',
+            items: [
+              { item: 'Chips', quantity: 4 },
+            ],
+            bill: 300,
+            markToDeliver: true,
+            isDelivered: false,
+          },
+          {
+            id: 2008,
+            customer: 'E. Wilson',
+            address: '202 Cedar St, Springfield',
+            items: [
+              { item: 'Coke 1L', quantity: 1 },
+              { item: 'Burger', quantity: 2 },
+              { item: 'Ice Cream', quantity: 3 },
+            ],
+            bill: 970,
+            markToDeliver: false,
+            isDelivered: false,
+          },
+          {
+            id: 2009,
+            customer: 'K. Taylor',
+            address: '303 Maple St, Springfield',
+            items: [
+              { item: 'Milk', quantity: 2 },
+              { item: 'Toothpaste', quantity: 1 },
+            ],
+            bill: 150,
+            markToDeliver: true,
+            isDelivered: false,
+          },
+          {
+            id: 2010,
+            customer: 'R. Harris',
+            address: '404 Birch St, Springfield',
+            items: [
+              { item: 'Chips', quantity: 3 },
+              { item: 'Pizza', quantity: 2 },
+              { item: 'Bananas', quantity: 5 },
+            ],
+            bill: 750,
+            markToDeliver: false,
+            isDelivered: false,
+          },
+          {
+            id: 2011,
+            customer: 'D. Martinez',
+            address: '505 Walnut St, Springfield',
+            items: [
+              { item: 'Apples', quantity: 4 },
+              { item: 'Bananas', quantity: 3 },
+            ],
+            bill: 400,
+            markToDeliver: true,
+            isDelivered: false,
+          },
+        ]);
 
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
+    const [isConfirmationDialogOpenDeliver, setConfirmationDialogOpenDeliver] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
+    const [deliveredStatus, setDeliveredStatus] = useState(false);
 
     const columns = [
-        { id: 'id', label: 'ID', minWidth: 50, align: 'center' },
-        { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
-        { id: 'customer', label: 'Customer', minWidth: 100, align: 'left' },
+        { id: 'id', label: 'ID', minWidth: 25, align: 'center' },
+        { id: 'customer', label: 'Customer', minWidth: 50, align: 'left' },
+        { id: 'address', label: 'Address', minWidth: 75, align: 'left' },
         { id: 'items', label: 'Items', minWidth: 100, align: 'left' },
-        { id: 'isPacked', label: 'Mark as Packed', minWidth: 100, align: 'center' },
+        { id: 'bill', label: 'Bill', minWidth: 50, align: 'left' },
+        { id: 'markToDeliver', label: 'Mark as taken', minWidth: 20, align: 'center' },
+        { id: 'isDelivered', label: 'Delivered', minWidth: 20, align: 'center' },
     ];
-
 
     const openConfirmationDialog = (orderId) => {
         setConfirmationDialogOpen(true);
@@ -112,13 +142,23 @@ export default function ToDeliver() {
         setSelectedOrderId(null);
     };
 
-    const markAsPacked = () => {
-        // Find the order by selectedOrderId and update its isPacked status
+    const openConfirmationDialogDeliver = (orderId) => {
+        setConfirmationDialogOpenDeliver(true);
+        setSelectedOrderId(orderId);
+    };
+
+    const closeConfirmationDialogDeliver= () => {
+        setConfirmationDialogOpenDeliver(false);
+        setSelectedOrderId(null);
+    };
+
+    const markAsTaken = () => {
+        // Find the order by selectedOrderId and update its markToDeliver status
         const updatedOrders = remainingOrders.map((order) => {
-            if (order.id === selectedOrderId && order.isPacked == true) {
-                return { ...order, isPacked: false };
-            } else if (order.id === selectedOrderId && order.isPacked == false) {
-                return { ...order, isPacked: true };
+            if (order.id === selectedOrderId && order.markToDeliver == true) {
+                return { ...order, markToDeliver: false };
+            } else if (order.id === selectedOrderId && order.markToDeliver == false) {
+                return { ...order, markToDeliver: true };
             } else {
                 return (order);
             }
@@ -128,13 +168,33 @@ export default function ToDeliver() {
         closeConfirmationDialog();
         setSelectedOrderId(null);
 
-        console.log(selectedOrderId);
+        console.log(remainingOrders);
+
+    };
+    
+    const markAsDelivered = () => {
+        // Find the order by selectedOrderId and update its markToDeliver status
+        const updatedOrders = remainingOrders.map((order) => {
+            if (order.id === selectedOrderId && order.isDelivered == true) {
+                return { ...order, isDelivered: false };
+            } else if (order.id === selectedOrderId && order.isDelivered == false) {
+                return { ...order, isDelivered: true };
+            } else {
+                return (order);
+            }
+        });
+
+        setRemainingOrders(updatedOrders);
+        closeConfirmationDialogDeliver();
+        setSelectedOrderId(null);
+
+        console.log(remainingOrders);
 
     };
 
     return (
         <div className="inventory-container">
-            <h2>Remaining Orders</h2>
+            <h2>Orders to deliver</h2>
 
             <Paper elevation={2} sx={{ overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 500 }}>
@@ -167,13 +227,21 @@ export default function ToDeliver() {
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                ) : column.id === 'isPacked' ? (
+                                                ) : column.id === 'markToDeliver' ? (
                                                     <Checkbox
-                                                        checked={row.isPacked}
+                                                        checked={row.markToDeliver}
                                                         onChange={() => openConfirmationDialog(row.id)}
                                                         color='success'
+                                                        disabled={row.isDelivered}
                                                     />
-                                                ) : (
+                                                ) :  column.id === 'isDelivered' ? (
+                                                    <Checkbox
+                                                        checked={row.isDelivered}
+                                                        onChange={() => openConfirmationDialogDeliver(row.id)}
+                                                        color='success'
+                                                        disabled={!row.markToDeliver}
+                                                    />
+                                                ): (
                                                     value
                                                 )}
                                             </TableCell>
@@ -188,18 +256,37 @@ export default function ToDeliver() {
 
             <Dialog open={isConfirmationDialogOpen} onClose={closeConfirmationDialog}>
                 <DialogTitle>
-                    {remainingOrders.find((order) => order.id === selectedOrderId && order.isPacked) ? "Mark order as Unpacked" : "Mark order as Packed"}
+                    {remainingOrders.find((order) => order.id === selectedOrderId && order.markToDeliver) ? "Mark order as not taken" : "Mark order as taken"}
                 </DialogTitle>
                 <DialogContent>
                     <Typography>
-                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isPacked) ? "unpacked" : "packed"}?
+                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.markToDeliver) ? "not taken" : "taken"}?
                     </Typography>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={closeConfirmationDialog} sx={{ color: '#7e7e7e' }}>
                         Cancel
                     </Button>
-                    <Button onClick={markAsPacked} color="success">
+                    <Button onClick={markAsTaken} color="success">
+                        Confirm
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog open={isConfirmationDialogOpenDeliver} onClose={closeConfirmationDialogDeliver}>
+                <DialogTitle>
+                    {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "Mark order as not taken" : "Mark order as taken"}
+                </DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "not taken" : "taken"}?
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={closeConfirmationDialogDeliver} sx={{ color: '#7e7e7e' }}>
+                        Cancel
+                    </Button>
+                    <Button onClick={markAsDelivered} color="success">
                         Confirm
                     </Button>
                 </DialogActions>

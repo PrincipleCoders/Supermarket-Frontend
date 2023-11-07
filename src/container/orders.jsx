@@ -70,14 +70,7 @@ export default function Orders() {
         }
       };
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+    
 
     return (
         <div>
@@ -101,7 +94,6 @@ export default function Orders() {
                         </TableHead>
                         <TableBody>
                             {orders
-                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row) => {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
@@ -120,15 +112,7 @@ export default function Orders() {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[10, 25, 100]}
-                    component="div"
-                    count={orders.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                
             </Paper>
         </div>
     );

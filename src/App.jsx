@@ -7,6 +7,7 @@ import Footer from './components/footer'
 import Profile from './container/profile'
 import Inventory from './container/inventory'
 import RemainingOrders from './container/remainingOrders'
+import ToDeliver from './container/toDeliver'
 
 
 function App() {
@@ -16,9 +17,10 @@ function App() {
     <>
       <Header/>
       {/* <Shop/>
-      <Profile/> */}
-      <Inventory/>
+      <Profile/>
+      <Inventory/> */}
       <RemainingOrders/>
+      <ToDeliver/>
       <Footer/>
     </>
   )

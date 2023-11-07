@@ -42,51 +42,59 @@ export default function RemainingOrders() {
             id: 1026, date: '2023-05-03', customer: 'A. Johnson', items: [
                 { item: 'Pizza', quantity: 1 },
                 { item: 'Milk', quantity: 4 }
-            ]
+            ],
+            isPacked: false
         },
         {
             id: 1027, date: '2023-05-04', customer: 'S. Brown', items: [
                 { item: 'Burger', quantity: 2 },
                 { item: 'Coke 1L', quantity: 3 },
                 { item: 'Ice Cream', quantity: 1 }
-            ]
+            ],
+            isPacked: false
         },
         {
             id: 1028, date: '2023-05-05', customer: 'M. Lee', items: [
                 { item: 'Chips', quantity: 4 }
-            ]
+            ],
+            isPacked: false
         },
         {
             id: 1029, date: '2023-05-06', customer: 'L. Davis', items: [
                 { item: 'Pizza', quantity: 2 },
                 { item: 'Milk', quantity: 6 }
-            ]
+            ],
+            isPacked: false
         },
         {
             id: 1030, date: '2023-05-07', customer: 'E. Wilson', items: [
                 { item: 'Coke 1L', quantity: 1 },
                 { item: 'Burger', quantity: 2 },
                 { item: 'Ice Cream', quantity: 3 }
-            ]
+            ],
+            isPacked: false
         },
         {
             id: 1031, date: '2023-05-08', customer: 'K. Taylor', items: [
                 { item: 'Milk', quantity: 2 },
                 { item: 'Toothpaste', quantity: 1 }
-            ]
+            ],
+            isPacked: false
         },
         {
             id: 1032, date: '2023-05-09', customer: 'R. Harris', items: [
                 { item: 'Chips', quantity: 3 },
                 { item: 'Pizza', quantity: 2 },
                 { item: 'Bananas', quantity: 5 }
-            ]
+            ],
+            isPacked: false
         },
         {
             id: 1033, date: '2023-05-10', customer: 'D. Martinez', items: [
                 { item: 'Apples', quantity: 4 },
                 { item: 'Bananas', quantity: 3 }
-            ]
+            ],
+            isPacked: false
         },
     ]);
 
@@ -124,11 +132,13 @@ export default function RemainingOrders() {
             }
         });
 
+        console.log(remainingOrders);
+
         setRemainingOrders(updatedOrders);
         closeConfirmationDialog();
         setSelectedOrderId(null);
 
-        console.log(selectedOrderId);
+        console.log(remainingOrders);
 
     };
 
@@ -188,11 +198,11 @@ export default function RemainingOrders() {
 
             <Dialog open={isConfirmationDialogOpen} onClose={closeConfirmationDialog}>
                 <DialogTitle>
-                    {remainingOrders.find((order) => order.id === selectedOrderId && order.isPacked) ? "Mark order as Unpacked" : "Mark order as Packed"}
+                    {remainingOrders.find((order) => order.id === selectedOrderId && order.isPacked) ? "Mark order as ot packed" : "Mark order as packed"}
                 </DialogTitle>
                 <DialogContent>
                     <Typography>
-                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isPacked) ? "unpacked" : "packed"}?
+                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isPacked) ? "not packed ?" : "packed ?"}?
                     </Typography>
                 </DialogContent>
                 <DialogActions>
