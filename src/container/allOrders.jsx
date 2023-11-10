@@ -6,6 +6,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import GetAllOrders from '../services/getAllOrders';
 
 
 
@@ -13,50 +14,63 @@ import TableRow from '@mui/material/TableRow';
 
 export default function AllOrders() {
     
-    const allOrders = [
-        {
-            id: '4567',
-            date: '04-05-2023',
-            status: 'processing',
-            total: 2550,
-            items: 4,
-            telephone: '123-456-7890',
-            customer: 'John Doe',
-            address: '123 Main St, Springfield'
-        },
-        {
-            id: '7890',
-            date: '04-06-2023',
-            status: 'delivered',
-            total: 720,
-            items: 2,
-            telephone: '987-654-3210',
-            customer: 'Jane Smith',
-            address: '456 Elm St, Springfield'
-        },
-        {
-            id: '1234',
-            date: '04-07-2023',
-            status: 'ready to delivery',
-            total: 1420,
-            items: 3,
-            telephone: '555-123-4567',
-            customer: 'Alice Johnson',
-            address: '789 Oak St, Springfield'
-        },
-        { id: '5678', date: '04-08-2023', status: 'on the way', total: 980, items: 1 },
-        { id: '2345', date: '04-09-2023', status: 'processing', total: 3350, items: 6 },
-        { id: '6789', date: '04-10-2023', status: 'delivered', total: 1140, items: 3 },
-        { id: '3456', date: '04-11-2023', status: 'ready to delivery', total: 2180, items: 4 },
-        { id: '7891', date: '04-12-2023', status: 'on the way', total: 1425, items: 2 },
-        { id: '4569', date: '04-13-2023', status: 'processing', total: 1590, items: 3 },
-        { id: '1236', date: '04-14-2023', status: 'delivered', total: 660, items: 1 },
-        { id: '3459', date: '04-15-2023', status: 'ready to delivery', total: 1980, items: 4 },
-        { id: '2348', date: '04-16-2023', status: 'on the way', total: 1170, items: 2 },
-        { id: '5670', date: '04-17-2023', status: 'processing', total: 4300, items: 8 },
-        { id: '7893', date: '04-18-2023', status: 'delivered', total: 1230, items: 3 },
-        { id: '4562', date: '04-19-2023', status: 'ready to delivery', total: 2780, items: 5 },
-    ];
+    // const allOrders = [
+    //     {
+    //         id: '4567',
+    //         date: '04-05-2023',
+    //         status: 'processing',
+    //         total: 2550,
+    //         items: 4,
+    //         telephone: '123-456-7890',
+    //         customer: 'John Doe',
+    //         address: '123 Main St, Springfield'
+    //     },
+    //     {
+    //         id: '7890',
+    //         date: '04-06-2023',
+    //         status: 'delivered',
+    //         total: 720,
+    //         items: 2,
+    //         telephone: '987-654-3210',
+    //         customer: 'Jane Smith',
+    //         address: '456 Elm St, Springfield'
+    //     },
+    //     {
+    //         id: '1234',
+    //         date: '04-07-2023',
+    //         status: 'ready to delivery',
+    //         total: 1420,
+    //         items: 3,
+    //         telephone: '555-123-4567',
+    //         customer: 'Alice Johnson',
+    //         address: '789 Oak St, Springfield'
+    //     },
+    //     { id: '5678', date: '04-08-2023', status: 'on the way', total: 980, items: 1 },
+    //     { id: '2345', date: '04-09-2023', status: 'processing', total: 3350, items: 6 },
+    //     { id: '6789', date: '04-10-2023', status: 'delivered', total: 1140, items: 3 },
+    //     { id: '3456', date: '04-11-2023', status: 'ready to delivery', total: 2180, items: 4 },
+    //     { id: '7891', date: '04-12-2023', status: 'on the way', total: 1425, items: 2 },
+    //     { id: '4569', date: '04-13-2023', status: 'processing', total: 1590, items: 3 },
+    //     { id: '1236', date: '04-14-2023', status: 'delivered', total: 660, items: 1 },
+    //     { id: '3459', date: '04-15-2023', status: 'ready to delivery', total: 1980, items: 4 },
+    //     { id: '2348', date: '04-16-2023', status: 'on the way', total: 1170, items: 2 },
+    //     { id: '5670', date: '04-17-2023', status: 'processing', total: 4300, items: 8 },
+    //     { id: '7893', date: '04-18-2023', status: 'delivered', total: 1230, items: 3 },
+    //     { id: '4562', date: '04-19-2023', status: 'ready to delivery', total: 2780, items: 5 },
+    // ];
+
+    const [allOrders, setAllOrders] = useState([]);
+
+  useEffect(() => {
+    const fetchAllOrders = async () => {
+      const orders = await GetAllOrders();
+      if (orders) {
+        setAllOrders(orders);
+      }
+    };
+
+    fetchAllOrders();
+  }, []);
     
     const columns = [
         { id: 'id', label: 'Order', minWidth: 100, align: 'center', },

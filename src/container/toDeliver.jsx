@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,121 +14,136 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import GetOrdersToDeliver from '../services/getOrdersToDeliver';
+import UpdateMarkToDeliver from '../services/updateMarkToDeliver';
+import UpdateDelivered from '../services/updateDelivered';
 
 export default function ToDeliver() {
-    const [remainingOrders, setRemainingOrders] = useState([
-        {
-            id: 2004,
-            customer: 'J. Smith',
-            address: '123 Main St, Springfield',
-            items: [
-              { item: 'Chips', quantity: 3 },
-              { item: 'Ice Cream', quantity: 2 },
-            ],
-            bill: 850,
-            markToDeliver: true,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-          {
-            id: 2005,
-            customer: 'A. Johnson',
-            address: '456 Elm St, Springfield',
-            items: [
-              { item: 'Pizza', quantity: 1 },
-              { item: 'Milk', quantity: 4 },
-            ],
-            bill: 420,
-            markToDeliver: true,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-          {
-            id: 2006,
-            customer: 'S. Brown',
-            address: '789 Oak St, Springfield',
-            items: [
-              { item: 'Burger', quantity: 2 },
-              { item: 'Coke 1L', quantity: 3 },
-              { item: 'Ice Cream', quantity: 1 },
-            ],
-            bill: 1120,
-            markToDeliver: false,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-          {
-            id: 2007,
-            customer: 'L. Davis',
-            address: '101 Pine St, Springfield',
-            items: [
-              { item: 'Chips', quantity: 4 },
-            ],
-            bill: 300,
-            markToDeliver: true,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-          {
-            id: 2008,
-            customer: 'E. Wilson',
-            address: '202 Cedar St, Springfield',
-            items: [
-              { item: 'Coke 1L', quantity: 1 },
-              { item: 'Burger', quantity: 2 },
-              { item: 'Ice Cream', quantity: 3 },
-            ],
-            bill: 970,
-            markToDeliver: false,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-          {
-            id: 2009,
-            customer: 'K. Taylor',
-            address: '303 Maple St, Springfield',
-            items: [
-              { item: 'Milk', quantity: 2 },
-              { item: 'Toothpaste', quantity: 1 },
-            ],
-            bill: 150,
-            markToDeliver: true,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-          {
-            id: 2010,
-            customer: 'R. Harris',
-            address: '404 Birch St, Springfield',
-            items: [
-              { item: 'Chips', quantity: 3 },
-              { item: 'Pizza', quantity: 2 },
-              { item: 'Bananas', quantity: 5 },
-            ],
-            bill: 750,
-            markToDeliver: false,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-          {
-            id: 2011,
-            customer: 'D. Martinez',
-            address: '505 Walnut St, Springfield',
-            items: [
-              { item: 'Apples', quantity: 4 },
-              { item: 'Bananas', quantity: 3 },
-            ],
-            bill: 400,
-            markToDeliver: true,
-            isDelivered: false,
-            telephone: '555-123-4567'
-          },
-        ]);
+    // const [remainingOrders, setRemainingOrders] = useState([
+    //     {
+    //         id: 2004,
+    //         customer: 'J. Smith',
+    //         address: '123 Main St, Springfield',
+    //         items: [
+    //           { item: 'Chips', quantity: 3 },
+    //           { item: 'Ice Cream', quantity: 2 },
+    //         ],
+    //         bill: 850,
+    //         markToDeliver: true,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //       {
+    //         id: 2005,
+    //         customer: 'A. Johnson',
+    //         address: '456 Elm St, Springfield',
+    //         items: [
+    //           { item: 'Pizza', quantity: 1 },
+    //           { item: 'Milk', quantity: 4 },
+    //         ],
+    //         bill: 420,
+    //         markToDeliver: true,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //       {
+    //         id: 2006,
+    //         customer: 'S. Brown',
+    //         address: '789 Oak St, Springfield',
+    //         items: [
+    //           { item: 'Burger', quantity: 2 },
+    //           { item: 'Coke 1L', quantity: 3 },
+    //           { item: 'Ice Cream', quantity: 1 },
+    //         ],
+    //         bill: 1120,
+    //         markToDeliver: false,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //       {
+    //         id: 2007,
+    //         customer: 'L. Davis',
+    //         address: '101 Pine St, Springfield',
+    //         items: [
+    //           { item: 'Chips', quantity: 4 },
+    //         ],
+    //         bill: 300,
+    //         markToDeliver: true,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //       {
+    //         id: 2008,
+    //         customer: 'E. Wilson',
+    //         address: '202 Cedar St, Springfield',
+    //         items: [
+    //           { item: 'Coke 1L', quantity: 1 },
+    //           { item: 'Burger', quantity: 2 },
+    //           { item: 'Ice Cream', quantity: 3 },
+    //         ],
+    //         bill: 970,
+    //         markToDeliver: false,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //       {
+    //         id: 2009,
+    //         customer: 'K. Taylor',
+    //         address: '303 Maple St, Springfield',
+    //         items: [
+    //           { item: 'Milk', quantity: 2 },
+    //           { item: 'Toothpaste', quantity: 1 },
+    //         ],
+    //         bill: 150,
+    //         markToDeliver: true,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //       {
+    //         id: 2010,
+    //         customer: 'R. Harris',
+    //         address: '404 Birch St, Springfield',
+    //         items: [
+    //           { item: 'Chips', quantity: 3 },
+    //           { item: 'Pizza', quantity: 2 },
+    //           { item: 'Bananas', quantity: 5 },
+    //         ],
+    //         bill: 750,
+    //         markToDeliver: false,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //       {
+    //         id: 2011,
+    //         customer: 'D. Martinez',
+    //         address: '505 Walnut St, Springfield',
+    //         items: [
+    //           { item: 'Apples', quantity: 4 },
+    //           { item: 'Bananas', quantity: 3 },
+    //         ],
+    //         bill: 400,
+    //         markToDeliver: true,
+    //         isDelivered: false,
+    //         telephone: '555-123-4567'
+    //       },
+    //     ]);
+
+    const [remainingOrders, setRemainingOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchOrdersToDeliver = async () => {
+            const orders = await GetOrdersToDeliver();
+            if (orders) {
+                setRemainingOrders(orders);
+            }
+        };
+        fetchOrdersToDeliver();
+    }, []);
 
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
     const [isConfirmationDialogOpenDeliver, setConfirmationDialogOpenDeliver] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
-    
+
     const columns = [
         { id: 'id', label: 'ID', minWidth: 25, align: 'center' },
         { id: 'customer', label: 'Customer', minWidth: 50, align: 'left' },
@@ -155,17 +170,21 @@ export default function ToDeliver() {
         setSelectedOrderId(orderId);
     };
 
-    const closeConfirmationDialogDeliver= () => {
+    const closeConfirmationDialogDeliver = () => {
         setConfirmationDialogOpenDeliver(false);
         setSelectedOrderId(null);
     };
 
     const markAsTaken = () => {
         // Find the order by selectedOrderId and update its markToDeliver status
-        const updatedOrders = remainingOrders.map((order) => {
+        const updatedOrders = remainingOrders.map(async(order) => {
             if (order.id === selectedOrderId && order.markToDeliver == true) {
+                const result = await UpdateMarkToDeliver(selectedOrderId, false);
+                console.log(result);
                 return { ...order, markToDeliver: false };
             } else if (order.id === selectedOrderId && order.markToDeliver == false) {
+                const result = await UpdateMarkToDeliver(selectedOrderId, true);
+                console.log(result);
                 return { ...order, markToDeliver: true };
             } else {
                 return (order);
@@ -179,15 +198,20 @@ export default function ToDeliver() {
         console.log(remainingOrders);
 
     };
-    
+
     const markAsDelivered = () => {
         // Find the order by selectedOrderId and update its markToDeliver status
-        const updatedOrders = remainingOrders.map((order) => {
+        const updatedOrders = remainingOrders.map(async(order) => {
             if (order.id === selectedOrderId && order.isDelivered == true) {
+                const result = await UpdateDelivered(selectedOrderId, false);
+                console.log(result);
                 return { ...order, isDelivered: false };
             } else if (order.id === selectedOrderId && order.isDelivered == false) {
+                const result = await UpdateDelivered(selectedOrderId, true);
+                console.log(result);
                 return { ...order, isDelivered: true };
             } else {
+                console.log(result);
                 return (order);
             }
         });
@@ -196,7 +220,6 @@ export default function ToDeliver() {
         closeConfirmationDialogDeliver();
         setSelectedOrderId(null);
 
-        console.log(remainingOrders);
 
     };
 
@@ -242,14 +265,14 @@ export default function ToDeliver() {
                                                         color='success'
                                                         disabled={row.isDelivered}
                                                     />
-                                                ) :  column.id === 'isDelivered' ? (
+                                                ) : column.id === 'isDelivered' ? (
                                                     <Checkbox
                                                         checked={row.isDelivered}
                                                         onChange={() => openConfirmationDialogDeliver(row.id)}
                                                         color='success'
                                                         disabled={!row.markToDeliver}
                                                     />
-                                                ): (
+                                                ) : (
                                                     value
                                                 )}
                                             </TableCell>

@@ -14,8 +14,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
 import '../styles/inventory.css';
-import GetAllInventoryItems from '../services/getAllInventory';
+
 import AllProducts from '../services/allProducts';
+import AddNewProduct from '../services/addNewProduct';
 
 export default function Inventory() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -95,9 +96,15 @@ export default function Inventory() {
         setIsAddProductOpen(false);
     };
 
-    const handleAddProduct = (event) => {
+    const handleAddProduct = async(event) => {
         event.preventDefault();
         // Add the new product to the inventory
+        const result = await AddNewProduct(newProduct);
+        // If addition is successful, you might want to update the UI or take additional actions
+        if (result) {
+          console.log('Item added:', result);
+          // Update local state or perform other actions
+        }
         setInventory([...inventory, newProduct]);
         // Close the dialog
         closeAddProductDialog();
@@ -222,6 +229,7 @@ export default function Inventory() {
                             label="Rating"
                             name="rating"
                             fullWidth
+                            type='number'
                             value={newProduct.rating}
                             onChange={(e) => setNewProduct({ ...newProduct, rating: parseFloat(e.target.value) })}
                             

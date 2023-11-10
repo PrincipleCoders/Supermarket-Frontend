@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,7 +6,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
@@ -14,89 +13,104 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
+import GetRemainingOrders from '../services/getRemainingOrders';
+import UpdateRemainingOrders from '../services/updateRemainingOrders';
 
 export default function RemainingOrders() {
 
-    const [remainingOrders, setRemainingOrders] = useState([
-        {
-            id: 1024,
-            date: '2023-05-01',
-            customer: 'P.K. Silva',
-            items: [
-                { item: 'Coke 1L', quantity: 2 },
-                { item: 'Apples', quantity: 5 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1025,
-            date: '2023-05-02',
-            customer: 'J. Smith',
-            items: [
-                { item: 'Chips', quantity: 3 },
-                { item: 'Ice Cream', quantity: 2 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1026, date: '2023-05-03', customer: 'A. Johnson', items: [
-                { item: 'Pizza', quantity: 1 },
-                { item: 'Milk', quantity: 4 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1027, date: '2023-05-04', customer: 'S. Brown', items: [
-                { item: 'Burger', quantity: 2 },
-                { item: 'Coke 1L', quantity: 3 },
-                { item: 'Ice Cream', quantity: 1 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1028, date: '2023-05-05', customer: 'M. Lee', items: [
-                { item: 'Chips', quantity: 4 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1029, date: '2023-05-06', customer: 'L. Davis', items: [
-                { item: 'Pizza', quantity: 2 },
-                { item: 'Milk', quantity: 6 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1030, date: '2023-05-07', customer: 'E. Wilson', items: [
-                { item: 'Coke 1L', quantity: 1 },
-                { item: 'Burger', quantity: 2 },
-                { item: 'Ice Cream', quantity: 3 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1031, date: '2023-05-08', customer: 'K. Taylor', items: [
-                { item: 'Milk', quantity: 2 },
-                { item: 'Toothpaste', quantity: 1 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1032, date: '2023-05-09', customer: 'R. Harris', items: [
-                { item: 'Chips', quantity: 3 },
-                { item: 'Pizza', quantity: 2 },
-                { item: 'Bananas', quantity: 5 }
-            ],
-            isPacked: false
-        },
-        {
-            id: 1033, date: '2023-05-10', customer: 'D. Martinez', items: [
-                { item: 'Apples', quantity: 4 },
-                { item: 'Bananas', quantity: 3 }
-            ],
-            isPacked: false
-        },
-    ]);
+    // const [remainingOrders, setRemainingOrders] = useState([
+    //     {
+    //         id: 1024,
+    //         date: '2023-05-01',
+    //         customer: 'P.K. Silva',
+    //         items: [
+    //             { item: 'Coke 1L', quantity: 2 },
+    //             { item: 'Apples', quantity: 5 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1025,
+    //         date: '2023-05-02',
+    //         customer: 'J. Smith',
+    //         items: [
+    //             { item: 'Chips', quantity: 3 },
+    //             { item: 'Ice Cream', quantity: 2 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1026, date: '2023-05-03', customer: 'A. Johnson', items: [
+    //             { item: 'Pizza', quantity: 1 },
+    //             { item: 'Milk', quantity: 4 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1027, date: '2023-05-04', customer: 'S. Brown', items: [
+    //             { item: 'Burger', quantity: 2 },
+    //             { item: 'Coke 1L', quantity: 3 },
+    //             { item: 'Ice Cream', quantity: 1 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1028, date: '2023-05-05', customer: 'M. Lee', items: [
+    //             { item: 'Chips', quantity: 4 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1029, date: '2023-05-06', customer: 'L. Davis', items: [
+    //             { item: 'Pizza', quantity: 2 },
+    //             { item: 'Milk', quantity: 6 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1030, date: '2023-05-07', customer: 'E. Wilson', items: [
+    //             { item: 'Coke 1L', quantity: 1 },
+    //             { item: 'Burger', quantity: 2 },
+    //             { item: 'Ice Cream', quantity: 3 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1031, date: '2023-05-08', customer: 'K. Taylor', items: [
+    //             { item: 'Milk', quantity: 2 },
+    //             { item: 'Toothpaste', quantity: 1 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1032, date: '2023-05-09', customer: 'R. Harris', items: [
+    //             { item: 'Chips', quantity: 3 },
+    //             { item: 'Pizza', quantity: 2 },
+    //             { item: 'Bananas', quantity: 5 }
+    //         ],
+    //         isPacked: false
+    //     },
+    //     {
+    //         id: 1033, date: '2023-05-10', customer: 'D. Martinez', items: [
+    //             { item: 'Apples', quantity: 4 },
+    //             { item: 'Bananas', quantity: 3 }
+    //         ],
+    //         isPacked: false
+    //     },
+    // ]);
+
+    const [remainingOrders, setRemainingOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchRemainingOrders = async () => {
+            const orders = await GetRemainingOrders();
+            if (orders) {
+                setRemainingOrders(orders);
+            }
+        };
+
+        fetchRemainingOrders();
+    }, []);
 
     const [isConfirmationDialogOpen, setConfirmationDialogOpen] = useState(false);
     const [selectedOrderId, setSelectedOrderId] = useState(null);
@@ -122,17 +136,22 @@ export default function RemainingOrders() {
 
     const markAsPacked = () => {
         // Find the order by selectedOrderId and update its isPacked status
-        const updatedOrders = remainingOrders.map((order) => {
+        const updatedOrders = remainingOrders.map(async(order) => {
             if (order.id === selectedOrderId && order.isPacked == true) {
+                const result = await UpdateRemainingOrders(selectedOrderId, false);
+                console.log(result);
                 return { ...order, isPacked: false };
+
             } else if (order.id === selectedOrderId && order.isPacked == false) {
+                const result = await UpdateRemainingOrders(selectedOrderId, true);
+                console.log(result);
                 return { ...order, isPacked: true };
             } else {
+                console.log(result);
                 return (order);
             }
         });
 
-        console.log(remainingOrders);
 
         setRemainingOrders(updatedOrders);
         closeConfirmationDialog();
