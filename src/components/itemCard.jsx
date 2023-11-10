@@ -5,6 +5,7 @@ import { Paper, Button } from "@mui/material";
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import UpdateCart from "../services/updateCart";
 
 export default function ItemCard(props) {
 
@@ -13,9 +14,11 @@ export default function ItemCard(props) {
     const suplier = props.suplier;
     const rating = props.rating;
     const price = props.price;
+    const ItemId = props.ItemId;
 
-    const addedCart = () =>{
-        alert('Item added')
+    const addedCart = async() => {
+        await UpdateCart(ItemId,1);
+        alert('Item added');
     }
 
     

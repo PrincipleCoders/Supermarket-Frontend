@@ -81,13 +81,7 @@ export default function Profile() {
 
             </Tabs>
             <TabPanel value={value} index={0}>
-                <AccountDetails
-                    fname="Harshana"
-                    lname='Batagalla'
-                    email='harshanabatagalla@gmail.com'
-                    address='Palapathwela,Matale.'
-                    telephone='0715698778'
-                    />
+                <AccountDetails/>
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <Orders/>

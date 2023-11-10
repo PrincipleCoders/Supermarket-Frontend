@@ -8,13 +8,41 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
 import '../styles/AccountDetails.css';
+import GetUserInfo from '../services/getUserInfo';
+import UpdateUserInfo from '../services/updateUserInfo';
+import { useEffect } from 'react';
 
-const AccountDetails = (props) => {
-    const [fname, setfName] = useState(props.fname);
-    const [lname, setlName] = useState(props.lname);
-    const [address, setAddress] = useState(props.address);
-    const [email, setEmail] = useState(props.email);
-    const [telephone, setTelephone] = useState(props.telephone);
+const AccountDetails = () => {
+
+    // const userInfo = {
+    //     Id:'1001',
+    //     fname:'Harshana',
+    //     lname:'Batagalla',
+    //     address:'25, Kandy RD, Matale.', 
+    //     telephone:'0710770569',
+    //     email:'hbatagalla@gmail.com'
+    // }
+
+    // const userInfo = GetUserInfo();
+
+    const [userInfo, setUserInfo] = useState([]);
+
+    useEffect(() => {
+        const fetchUserInfo = async () => {
+            const Info = await GetUserInfo();
+            if (Info) {
+                setUserInfo(Info);
+            }
+        };
+
+        fetchUserInfo();
+    }, []);
+
+    const [fname, setfName] = useState(userInfo.fname);
+    const [lname, setlName] = useState(userInfo.lname);
+    const [address, setAddress] = useState(userInfo.address);
+    const [email, setEmail] = useState(userInfo.email);
+    const [telephone, setTelephone] = useState(userInfo.telephone);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -23,16 +51,10 @@ const AccountDetails = (props) => {
         setIsDialogOpen(true);
     };
 
-    const handleConfirm = () => {
-        // Handle changes here and close the dialog
-        console.log('Confirmed changes');
+    const handleConfirm = async () => {
         setIsDialogOpen(false);
-        console.log('First Name:', fname);
-        console.log('Last Name:', lname);
-        console.log('Email Address:', email);
-        console.log('Shipping Address:', address);
-        console.log('Telephone', telephone);
-
+        await UpdateUserInfo(fname, lname, address, telephone);
+        // Additional actions after the update if needed
     };
 
     const handleCancel = () => {
@@ -53,6 +75,7 @@ const AccountDetails = (props) => {
                             defaultValue={fname}
                             onChange={(e) => setfName(e.target.value)}
                             color='success'
+                            required
                         />
                         <TextField
                             id="lname"
@@ -60,6 +83,7 @@ const AccountDetails = (props) => {
                             defaultValue={lname}
                             onChange={(e) => setlName(e.target.value)}
                             color='success'
+                            required
                         />
                     </div>
                     <TextField
@@ -78,6 +102,7 @@ const AccountDetails = (props) => {
                         defaultValue={telephone}
                         onChange={(e) => setTelephone(e.target.value)}
                         color='success'
+                        required
                     />
                     <TextField
                         id="address"
@@ -85,6 +110,7 @@ const AccountDetails = (props) => {
                         defaultValue={address}
                         onChange={(e) => setAddress(e.target.value)}
                         color='success'
+                        required
                     />
                     <Button type="submit" variant='contained' color='success' sx={{ backgroundColor: "#3bb77e", width: '150px' }}>Save Changes</Button>
                 </div>

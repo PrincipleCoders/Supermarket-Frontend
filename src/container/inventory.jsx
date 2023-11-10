@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,6 +14,8 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
 import '../styles/inventory.css';
+import GetAllInventoryItems from '../services/getAllInventory';
+import AllProducts from '../services/allProducts';
 
 export default function Inventory() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -24,24 +26,40 @@ export default function Inventory() {
         price: 0,
         image: '',
         supplier: '',
+        category: '',
+        rating: 0.0,
     });
-    const [inventory, setInventory] = useState([
-        { id: 1001, name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png', supplier: 'Beverages Inc.' },
-        { id: 1002, name: 'Chips', quantity: 3, price: 150, image: 'chips.png', supplier: 'Snacks and Chips Ltd.' },
-        { id: 1003, name: 'Pizza', quantity: 2, price: 400, image: 'pizza.png', supplier: 'Pizza Palace' },
-        { id: 1004, name: 'Apples', quantity: 8, price: 120, image: 'apples.png', supplier: 'Fruit Emporium' },
-        { id: 1005, name: 'Bananas', quantity: 10, price: 80, image: 'bananas.png', supplier: 'Healthy Harvest' },
-        { id: 1006, name: 'Burger', quantity: 2, price: 300, image: 'burger.png', supplier: 'Burger Haven' },
-        { id: 1007, name: 'Ice Cream', quantity: 4, price: 200, image: 'icecream.png', supplier: 'Ice Cream Delights' },
-        { id: 1008, name: 'Cookies', quantity: 5, price: 100, image: 'cookies.png', supplier: 'Cookie Creations' },
-        { id: 1009, name: 'Milk', quantity: 6, price: 60, image: 'milk.png', supplier: 'Dairy Farms Ltd.' },
-        { id: 1010, name: 'Toothpaste', quantity: 2, price: 50, image: 'toothpaste.png', supplier: 'Oral Care Supplies' },
-    ]);
+    // const [inventory, setInventory] = useState([
+    //     { id: 1001, name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png', supplier: 'Beverages Inc.' },
+    //     { id: 1002, name: 'Chips', quantity: 3, price: 150, image: 'chips.png', supplier: 'Snacks and Chips Ltd.' },
+    //     { id: 1003, name: 'Pizza', quantity: 2, price: 400, image: 'pizza.png', supplier: 'Pizza Palace' },
+    //     { id: 1004, name: 'Apples', quantity: 8, price: 120, image: 'apples.png', supplier: 'Fruit Emporium' },
+    //     { id: 1005, name: 'Bananas', quantity: 10, price: 80, image: 'bananas.png', supplier: 'Healthy Harvest' },
+    //     { id: 1006, name: 'Burger', quantity: 2, price: 300, image: 'burger.png', supplier: 'Burger Haven' },
+    //     { id: 1007, name: 'Ice Cream', quantity: 4, price: 200, image: 'icecream.png', supplier: 'Ice Cream Delights' },
+    //     { id: 1008, name: 'Cookies', quantity: 5, price: 100, image: 'cookies.png', supplier: 'Cookie Creations' },
+    //     { id: 1009, name: 'Milk', quantity: 6, price: 60, image: 'milk.png', supplier: 'Dairy Farms Ltd.' },
+    //     { id: 1010, name: 'Toothpaste', quantity: 2, price: 50, image: 'toothpaste.png', supplier: 'Oral Care Supplies' },
+    // ]);
+
+    const [inventory, setInventory] = useState([]);
+
+    useEffect(() => {
+        const fetchInventoryItems = async () => {
+            const allItems = await AllProducts();
+            if (allItems) {
+                setInventory(allItems);
+            }
+        };
+
+        fetchInventoryItems();
+    }, []);
 
     const columns = [
         { id: 'id', label: 'Id', minWidth: 50, align: 'center' },
         { id: 'image', label: 'Image', minWidth: 100, align: 'center' },
         { id: 'name', label: 'Name', minWidth: 80, align: 'left' },
+        { id: 'category', label: 'Category', minWidth: 80, align: 'left' },
         {
             id: 'quantity',
             label: 'Quantity',
@@ -52,6 +70,11 @@ export default function Inventory() {
             id: 'price',
             label: 'Unit Price',
             minWidth: 100,
+        },
+        {
+            id: 'rating',
+            label: 'Rating',
+            minWidth: 50,
         },
         {
             id: 'supplier',
@@ -85,6 +108,8 @@ export default function Inventory() {
             price: 0,
             image: '',
             supplier: '',
+            category: '',
+            rating: 0.0,
         });
 
         console.log(inventory);
@@ -174,12 +199,32 @@ export default function Inventory() {
                             required
                         />
                         <TextField
+                            label="category"
+                            name="category"
+                            
+                            value={newProduct.category}
+                            onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                            fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
                             label="Price"
                             name="price"
                             type="number"
                             value={newProduct.price}
                             onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
+                           fullWidth
+                            margin="normal"
+                            required
+                        />
+                        <TextField
+                            label="Rating"
+                            name="rating"
                             fullWidth
+                            value={newProduct.rating}
+                            onChange={(e) => setNewProduct({ ...newProduct, rating: parseFloat(e.target.value) })}
+                            
                             margin="normal"
                             required
                         />
@@ -193,39 +238,40 @@ export default function Inventory() {
                             margin="normal"
                             required
                         />
-                        <br/>
-                        <br/>
-                    
+                        <br />
+                        <br />
+
                         <div className="image-upload">
 
-                        <img
-                            src={newProduct.image ? URL.createObjectURL(newProduct.image) : ''}
-                            alt="Selected Image"
-                            id="product-image"
-                            style={{
-                                maxHeight: '200px',
-                                maxWidth: '200px',
-                                margin: '10px 0px',
-                                display:newProduct.image?'block':'none'                            }}
-                        />
-                        <br/>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
-                            id="image-upload"
-                            style={{ display: 'none' }}
-                        />
-                        <label htmlFor="image-upload" style={{
-                            backgroundColor: '#3bb77e',
-                            color: 'white',
-                            padding: '10px 5px',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            margin:'20px 0px'
-                        }}>
-                            Upload Image
-                        </label>
+                            <img
+                                src={newProduct.image ? URL.createObjectURL(newProduct.image) : ''}
+                                alt="Selected Image"
+                                id="product-image"
+                                style={{
+                                    maxHeight: '200px',
+                                    maxWidth: '200px',
+                                    margin: '10px 0px',
+                                    display: newProduct.image ? 'block' : 'none'
+                                }}
+                            />
+                            <br />
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
+                                id="image-upload"
+                                style={{ display: 'none' }}
+                            />
+                            <label htmlFor="image-upload" style={{
+                                backgroundColor: '#3bb77e',
+                                color: 'white',
+                                padding: '10px 5px',
+                                borderRadius: '5px',
+                                cursor: 'pointer',
+                                margin: '20px 0px'
+                            }}>
+                                Upload Image
+                            </label>
                         </div>
 
                     </DialogContent>

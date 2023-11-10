@@ -6,53 +6,64 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import GetUserOrders from '../services/allUserOrders';
-import { useState, useEffect } from 'react';
 
 
 
-// const orders = [
-//     { id: '4567', date: '04-05-2023', status: 'processing', total: 2550, items: 4 },
-//     { id: '7890', date: '04-06-2023', status: 'delivered', total: 720, items: 2 },
-//     { id: '1234', date: '04-07-2023', status: 'ready to delivery', total: 1420, items: 3 },
-//     { id: '5678', date: '04-08-2023', status: 'on the way', total: 980, items: 1 },
-//     { id: '2345', date: '04-09-2023', status: 'processing', total: 3350, items: 6 },
-//     { id: '6789', date: '04-10-2023', status: 'delivered', total: 1140, items: 3 },
-//     { id: '3456', date: '04-11-2023', status: 'ready to delivery', total: 2180, items: 4 },
-//     { id: '7891', date: '04-12-2023', status: 'on the way', total: 1425, items: 2 },
-//     { id: '4569', date: '04-13-2023', status: 'processing', total: 1590, items: 3 },
-//     { id: '1236', date: '04-14-2023', status: 'delivered', total: 660, items: 1 },
-//     { id: '3459', date: '04-15-2023', status: 'ready to delivery', total: 1980, items: 4 },
-//     { id: '2348', date: '04-16-2023', status: 'on the way', total: 1170, items: 2 },
-//     { id: '5670', date: '04-17-2023', status: 'processing', total: 4300, items: 8 },
-//     { id: '7893', date: '04-18-2023', status: 'delivered', total: 1230, items: 3 },
-//     { id: '4562', date: '04-19-2023', status: 'ready to delivery', total: 2780, items: 5 },
-// ];
 
 
-export default function Orders() {
-
-    // const orders = GetUserOrders();
-    const [orders, setOrders] = useState([]);
-
-    useEffect(() => {
-        const fetchUserOrders = async () => {
-            const orderList = await GetUserOrders();
-            if (orderList) {
-                setOrders(orderList);
-            }
-        };
-        fetchUserOrders();
-    }, []);
+export default function AllOrders() {
+    
+    const allOrders = [
+        {
+            id: '4567',
+            date: '04-05-2023',
+            status: 'processing',
+            total: 2550,
+            items: 4,
+            telephone: '123-456-7890',
+            customer: 'John Doe',
+            address: '123 Main St, Springfield'
+        },
+        {
+            id: '7890',
+            date: '04-06-2023',
+            status: 'delivered',
+            total: 720,
+            items: 2,
+            telephone: '987-654-3210',
+            customer: 'Jane Smith',
+            address: '456 Elm St, Springfield'
+        },
+        {
+            id: '1234',
+            date: '04-07-2023',
+            status: 'ready to delivery',
+            total: 1420,
+            items: 3,
+            telephone: '555-123-4567',
+            customer: 'Alice Johnson',
+            address: '789 Oak St, Springfield'
+        },
+        { id: '5678', date: '04-08-2023', status: 'on the way', total: 980, items: 1 },
+        { id: '2345', date: '04-09-2023', status: 'processing', total: 3350, items: 6 },
+        { id: '6789', date: '04-10-2023', status: 'delivered', total: 1140, items: 3 },
+        { id: '3456', date: '04-11-2023', status: 'ready to delivery', total: 2180, items: 4 },
+        { id: '7891', date: '04-12-2023', status: 'on the way', total: 1425, items: 2 },
+        { id: '4569', date: '04-13-2023', status: 'processing', total: 1590, items: 3 },
+        { id: '1236', date: '04-14-2023', status: 'delivered', total: 660, items: 1 },
+        { id: '3459', date: '04-15-2023', status: 'ready to delivery', total: 1980, items: 4 },
+        { id: '2348', date: '04-16-2023', status: 'on the way', total: 1170, items: 2 },
+        { id: '5670', date: '04-17-2023', status: 'processing', total: 4300, items: 8 },
+        { id: '7893', date: '04-18-2023', status: 'delivered', total: 1230, items: 3 },
+        { id: '4562', date: '04-19-2023', status: 'ready to delivery', total: 2780, items: 5 },
+    ];
     
     const columns = [
         { id: 'id', label: 'Order', minWidth: 100, align: 'center', },
         { id: 'date', label: 'Date', minWidth: 170, align: 'center', },
-        {
-            id: 'status',
-            label: 'Status',
-            minWidth: 100,
-        },
+        { id: 'customer', label: 'Customer', minWidth: 170, align: 'left', },
+        { id: 'address', label: 'Address', minWidth: 170, align: 'left', },
+        { id: 'telephone', label: 'Contact No.', minWidth: 170, align: 'center', },
         {
             id: 'items',
             label: 'Items',
@@ -63,6 +74,11 @@ export default function Orders() {
             id: 'total',
             label: 'Total',
             minWidth: 170,
+        },
+        {
+            id: 'status',
+            label: 'Status',
+            minWidth: 100,
         },
     
     ];
@@ -87,7 +103,7 @@ export default function Orders() {
     return (
         <div>
 
-            <h2>Your Orders</h2>
+            <h2>All Orders</h2>
             <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: 440 }}>
                     <Table stickyHeader aria-label="order table">
@@ -105,7 +121,7 @@ export default function Orders() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {orders
+                            {allOrders
                                 .map((row) => {
                                     return (
                                         <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>

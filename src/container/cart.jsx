@@ -10,6 +10,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import GetCartItems from "../services/showCart";
+import RemoveItemFromCart from "../services/deleteFromCart";
 
 
 export default function Cart() {
@@ -26,16 +28,33 @@ export default function Cart() {
         { name: 'Toothpaste', quantity: 2, price: 50, image: 'toothpaste.png' },
     ]);
 
+    // const [cartItems, setCartItems] = useState([]);
+
+    // useEffect(() => {
+    //     const fetchUserCart = async () => {
+    //         const cart = await GetCartItems();
+    //         if (cart) {
+    //             setCartItems(cart);
+    //         }
+    //     };
+    //     fetchUserCart();
+    // }, []);
+
     const updateQuantity = (index, newQuantity) => {
         const updatedItems = [...cartItems];
         updatedItems[index].quantity = newQuantity;
         setCartItems(updatedItems);
+        
     };
 
-    const removeItem = (index) => {
+    const removeItem = async(index,itemId) => {
         const updatedItems = [...cartItems];
         updatedItems.splice(index, 1);
         setCartItems(updatedItems);
+        const result = await RemoveItemFromCart(itemId);
+        if (result) {
+            console.log('Item removed:', result);
+          }
     };
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -123,7 +142,7 @@ export default function Cart() {
                                     <h4 className="product-subtotal">Rs.{item.quantity * item.price}</h4>
                                 </td>
                                 <td>
-                                    <IconButton aria-label="delete" onClick={() => removeItem(index)}>
+                                    <IconButton aria-label="delete" onClick={() => removeItem(index,item.id)}>
                                         <RemoveCircleOutlineIcon fontSize="inherit" />
                                     </IconButton>
                                 </td>

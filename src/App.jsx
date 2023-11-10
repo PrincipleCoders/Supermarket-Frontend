@@ -8,6 +8,7 @@ import Profile from './container/profile'
 import Inventory from './container/inventory'
 import RemainingOrders from './container/remainingOrders'
 import ToDeliver from './container/toDeliver'
+import AllOrders from './container/allOrders'
 
 
 function App() {
@@ -16,12 +17,14 @@ function App() {
   return (
     <>
       <Header/>
-      {/* <Shop/>
+      <Shop/>
       <Profile/>
-      <Inventory/> */}
+      <Inventory/>
       <RemainingOrders/>
       <ToDeliver/>
+      <AllOrders/>
       <Footer/>
+      
     </>
   )
 }
