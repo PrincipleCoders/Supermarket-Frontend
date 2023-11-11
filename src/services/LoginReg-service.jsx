@@ -16,3 +16,11 @@ export function register(userData) {
         }
     });
 }
+
+export function validateLoginByToken(access_token) {
+    return axios.get(API_URL + 'validateLogin', {
+        headers: {
+            Authorization: `Access ${access_token}`
+        }
+    });
+}

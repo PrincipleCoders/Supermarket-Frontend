@@ -1,14 +1,11 @@
-import {useEffect} from 'react';
 import {
-    createUserWithEmail,
-    signInWithEmail,
-    startFirebaseAuthUI,
-    updateAdditionalData,
-    uploadFile
+    createUserWithEmail, signInWithEmail, signOut, startFirebaseAuthUI, updateAdditionalData, uploadFile
 } from '../services/firebase-service.jsx';
 import {Button, LinearProgress, TextField} from '@mui/material';
 import {useNavigate} from "react-router-dom";
 import {useAlert} from "../components/AlertContext.jsx";
+import {validateLoginByToken} from "../services/LoginReg-service.jsx";
+import {useEffect} from "react";
 
 export default function LoginReg() {
     const navigate = useNavigate();
@@ -16,11 +13,9 @@ export default function LoginReg() {
 
     useEffect(() => {
         startFirebaseAuthUI('#firebaseui-auth-container')
-            .then((authResult) => {
+            .then(async (authResult) => {
                 console.log('Signed in with', authResult);
-                navigate('/');
-                showAlert('Login Successful', 'success');
-                authResult.additionalUserInfo.isNewUser && showAlert('Welcome to the App', 'success');
+                await validateLoginAndGetUser(authResult.credential.accessToken);
             })
             .catch((error) => {
                 console.log('error', error);
@@ -37,6 +32,24 @@ export default function LoginReg() {
         });
     };
 
+    const validateLoginAndGetUser = (accessToken) => {
+        validateLoginByToken(accessToken)
+            .then((res) => {
+                toggleLoader(false);
+                console.log(res);
+                localStorage.setItem('token', res.headers.authorization.slice(7));
+                localStorage.setItem('user', JSON.stringify(res.data));
+                navigate('/');
+                showAlert('Login Successful', 'success');
+            })
+            .catch((error) => {
+                toggleLoader(false);
+                console.log(error);
+                signOut();
+                showAlert('Login Invalid', 'error');
+            })
+    }
+
     const handleLogin = (event) => {
         event.preventDefault();
         if (!validateInput(event.target.password.value, 'pwd')) {
@@ -46,13 +59,8 @@ export default function LoginReg() {
 
         toggleLoader(true);
         signInWithEmail(event.target.email.value, event.target.password.value)
-            //TODO:validate login
-            .then((userCredential) => {
-                toggleLoader(false);
-                // Signed in
-                console.log(userCredential);
-                navigate('/');
-                showAlert('Login Successful', 'success');
+            .then(async (userCredential) => {
+                await validateLoginAndGetUser(userCredential.user.getIdToken());
             })
             .catch((error) => {
                 toggleLoader(false)
@@ -95,8 +103,7 @@ export default function LoginReg() {
 
         toggleLoader(true)
         const additionalData = {
-            displayName: event.target.firstName.value + ' ' + event.target.lastName.value,
-            photoURL: null
+            displayName: event.target.firstName.value + ' ' + event.target.lastName.value, photoURL: null
         }
         createUserWithEmail(event.target.email.value, event.target.password.value)
             .then(async cred => {
