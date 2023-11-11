@@ -1,8 +1,13 @@
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import LoginReg from "./pages/LoginReg.jsx";
-import Home from "./pages/Home.jsx";
+import LoginReg from "./container/LoginReg.jsx";
 import {useState} from "react";
 import SnackbarAlert from "./components/SnackbarAlert.jsx";
+import Shop from "./container/shop.jsx";
+import Profile from "./container/profile.jsx";
+import Inventory from "./container/inventory.jsx";
+import RemainingOrders from "./container/remainingOrders.jsx";
+import ToDeliver from "./container/toDeliver.jsx";
+import AllOrders from "./container/allOrders.jsx";
 
 export default function App() {
     const [alertStatus, setAlertStatus] = useState({type:'success',message:'',open:false});
@@ -16,9 +21,8 @@ export default function App() {
             <SnackbarAlert alertStatus={alertStatus} setAlertStatus={setAlertStatus}/>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<Home showAlert={showAlert}/>}/>
                     <Route path="/login" element={<LoginReg showAlert={showAlert}/>}/>
-                    <Route path="/shop" element={<Shop/>}/>
+                    <Route path="/" element={<Shop/>}/>
                     <Route path="/profile" element={<Profile/>}/>
                     <Route path="/inventory" element={<Inventory/>}/>
                     <Route path="/remainingOrders" element={<RemainingOrders/>}/>
