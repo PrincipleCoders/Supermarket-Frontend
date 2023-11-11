@@ -11,8 +11,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import categoryh1 from '../assets/categoryh1.png'
 import ItemCard from '../components/itemCard';
 import AllProducts from '../services/allProducts';
+import Header from "../components/header.jsx";
+import Footer from "../components/footer.jsx";
 
-export default function Shop() {
+export default function Shop({showAlert}) {
     // const allProducts = [
     //     { name: 'Maggie', category: 'Food', supplier: 'Nestle', rating: 2.5, price: 450, image: 'image1' },
     //     { name: 'Milo', category: 'Drinks', supplier: 'Nestle', rating: 2.5, price: 260, image: 'image2' },
@@ -73,57 +75,110 @@ export default function Shop() {
 
 
     return (
-        <Box sx={{ m: '0px 60px' }} >
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    m: "50px 0px",
-                    backgroundColor: '#def9ec',
-                    p: '40px 0px',
-                    borderRadius: '10px'
-                }}>
-                <Box border={3}
+        <>
+            <Header/>
+            <Box sx={{ m: '0px 60px' }} >
+                <Box
                     sx={{
-                        borderColor: '#bce3c9',
-                        borderRadius: '10px',
-                        p: "10px", width: "50%",
                         display: 'flex',
-                        alignItems: 'center',
-                        backgroundColor: '#ffffff'
+                        justifyContent: 'center',
+                        m: "50px 0px",
+                        backgroundColor: '#def9ec',
+                        p: '40px 0px',
+                        borderRadius: '10px'
                     }}>
+                    <Box border={3}
+                         sx={{
+                             borderColor: '#bce3c9',
+                             borderRadius: '10px',
+                             p: "10px", width: "50%",
+                             display: 'flex',
+                             alignItems: 'center',
+                             backgroundColor: '#ffffff'
+                         }}>
 
-                    <Autocomplete
-                        id="productSearch"
-                        freeSolo
-                        options={allProducts.map((option) => option.name)}
-                        renderInput={(params) =>
-                            <TextField variant='standard' color='success' fullWidth
-                                {...params} label="Search products..." />}
-                        sx={{ width: "100%" }}
-                        onChange={(event, value) => {
+                        <Autocomplete
+                            id="productSearch"
+                            freeSolo
+                            options={allProducts.map((option) => option.name)}
+                            renderInput={(params) =>
+                                <TextField variant='standard' color='success' fullWidth
+                                           {...params} label="Search products..." />}
+                            sx={{ width: "100%" }}
+                            onChange={(event, value) => {
 
-                            if (value) {
-                                searchProducts(value);
-                            }
-                            else {
-                                resetSearch();
-                            }
-                        }}
-                        onClear={resetSearch}
-                    />
-                    <SearchIcon fontSize='large' color='success' />
+                                if (value) {
+                                    searchProducts(value);
+                                }
+                                else {
+                                    resetSearch();
+                                }
+                            }}
+                            onClear={resetSearch}
+                        />
+                        <SearchIcon fontSize='large' color='success' />
 
 
+                    </Box>
                 </Box>
-            </Box>
-            {searchDone &&
-                <div className='search-result'>
-                    <div className="search-text">
-                        {searchtext}
+                {searchDone &&
+                    <div className='search-result'>
+                        <div className="search-text">
+                            {searchtext}
+                        </div>
+                        <div className="popular-card-container">
+                            {foundItems.map((card) => (
+                                <ItemCard
+                                    key={card.name}
+                                    name={card.name}
+                                    image={card.image}
+                                    suplier={card.supplier}
+                                    rating={card.rating}
+                                    price={card.price}
+                                    ItemId={card.ItemId}
+                                />
+                            ))}
+
+                        </div>
+                    </div>
+                }
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: "20px" }}>
+
+                    <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#f1ead9', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
+                        <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Box>
+                                <h2 sx={{ width: "50%" }}>Shop the Best Electronics </h2>
+                                <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
+                            </Box>
+                            <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
+                        </Box>
+                    </Paper>
+                    <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#f4eaea', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
+                        <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Box>
+                                <h2 sx={{ width: "50%" }}>Your Favourite Groceries </h2>
+                                <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
+                            </Box>
+                            <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
+                        </Box>
+                    </Paper>
+                    <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#e9ecf4', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
+                        <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Box>
+                                <h2 sx={{ width: "50%" }}>Eat Fresh Fruits & Vegetables</h2>
+                                <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
+                            </Box>
+                            <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
+                        </Box>
+                    </Paper>
+                </Box>
+
+                <div className="popular-products">
+                    <div className="popular-title">
+                        <h1> Popular Products </h1>
                     </div>
                     <div className="popular-card-container">
-                        {foundItems.map((card) => (
+                        {allProducts.map((card) => (
                             <ItemCard
                                 key={card.name}
                                 name={card.name}
@@ -131,66 +186,17 @@ export default function Shop() {
                                 suplier={card.supplier}
                                 rating={card.rating}
                                 price={card.price}
-                                ItemId={card.ItemId}
                             />
                         ))}
-
                     </div>
-                </div>
-            }
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: "20px" }}>
 
-                <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#f1ead9', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
-                    <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Box>
-                            <h2 sx={{ width: "50%" }}>Shop the Best Electronics </h2>
-                            <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
-                        </Box>
-                        <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
-                    </Box>
-                </Paper>
-                <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#f4eaea', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
-                    <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Box>
-                            <h2 sx={{ width: "50%" }}>Your Favourite Groceries </h2>
-                            <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
-                        </Box>
-                        <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
-                    </Box>
-                </Paper>
-                <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#e9ecf4', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
-                    <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Box>
-                            <h2 sx={{ width: "50%" }}>Eat Fresh Fruits & Vegetables</h2>
-                            <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
-                        </Box>
-                        <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
-                    </Box>
-                </Paper>
+                </div>
+
+
+
             </Box>
-
-            <div className="popular-products">
-                <div className="popular-title">
-                    <h1> Popular Products </h1>
-                </div>
-                <div className="popular-card-container">
-                    {allProducts.map((card) => (
-                        <ItemCard
-                            key={card.name}
-                            name={card.name}
-                            image={card.image}
-                            suplier={card.supplier}
-                            rating={card.rating}
-                            price={card.price}
-                        />
-                    ))}
-                </div>
-
-            </div>
-
-
-
-        </Box>
+            <Footer/>
+        </>
 
     );
 }

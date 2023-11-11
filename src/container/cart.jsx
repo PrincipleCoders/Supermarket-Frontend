@@ -14,7 +14,7 @@ import GetCartItems from "../services/showCart";
 import RemoveItemFromCart from "../services/deleteFromCart";
 
 
-export default function Cart() {
+export default function Cart({showAlert}) {
     const [cartItems, setCartItems] = useState([
         { name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png' },
         { name: 'Chips', quantity: 3, price: 150, image: 'chips.png' },

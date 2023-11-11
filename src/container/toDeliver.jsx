@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import { useState,useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -6,7 +6,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
@@ -17,8 +16,10 @@ import DialogActions from '@mui/material/DialogActions';
 import GetOrdersToDeliver from '../services/getOrdersToDeliver';
 import UpdateMarkToDeliver from '../services/updateMarkToDeliver';
 import UpdateDelivered from '../services/updateDelivered';
+import Header from "../components/header.jsx";
+import Footer from "../components/footer.jsx";
 
-export default function ToDeliver() {
+export default function ToDeliver({showAlert}) {
     // const [remainingOrders, setRemainingOrders] = useState([
     //     {
     //         id: 2004,
@@ -224,104 +225,108 @@ export default function ToDeliver() {
     };
 
     return (
-        <div className="inventory-container">
-            <h2>Orders to deliver</h2>
+        <>
+            <Header/>
+            <div className="inventory-container">
+                <h2>Orders to deliver</h2>
 
-            <Paper elevation={2} sx={{ overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: 500 }}>
-                    <Table stickyHeader aria-label="orders table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {remainingOrders.map((row) => (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                    {columns.map((column) => {
-                                        const value = row[column.id];
-                                        return (
-                                            <TableCell key={column.id} align={column.align}>
-                                                {column.id === 'items' ? (
-                                                    <ul style={{ padding: 0, margin: 0 }}>
-                                                        {row.items.map((item, index) => (
-                                                            <li key={index}>
-                                                                {item.item} - {item.quantity}
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                ) : column.id === 'markToDeliver' ? (
-                                                    <Checkbox
-                                                        checked={row.markToDeliver}
-                                                        onChange={() => openConfirmationDialog(row.id)}
-                                                        color='success'
-                                                        disabled={row.isDelivered}
-                                                    />
-                                                ) : column.id === 'isDelivered' ? (
-                                                    <Checkbox
-                                                        checked={row.isDelivered}
-                                                        onChange={() => openConfirmationDialogDeliver(row.id)}
-                                                        color='success'
-                                                        disabled={!row.markToDeliver}
-                                                    />
-                                                ) : (
-                                                    value
-                                                )}
-                                            </TableCell>
-                                        );
-                                    })}
+                <Paper elevation={2} sx={{ overflow: 'hidden' }}>
+                    <TableContainer sx={{ maxHeight: 500 }}>
+                        <Table stickyHeader aria-label="orders table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Paper>
+                            </TableHead>
+                            <TableBody>
+                                {remainingOrders.map((row) => (
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                        {columns.map((column) => {
+                                            const value = row[column.id];
+                                            return (
+                                                <TableCell key={column.id} align={column.align}>
+                                                    {column.id === 'items' ? (
+                                                        <ul style={{ padding: 0, margin: 0 }}>
+                                                            {row.items.map((item, index) => (
+                                                                <li key={index}>
+                                                                    {item.item} - {item.quantity}
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    ) : column.id === 'markToDeliver' ? (
+                                                        <Checkbox
+                                                            checked={row.markToDeliver}
+                                                            onChange={() => openConfirmationDialog(row.id)}
+                                                            color='success'
+                                                            disabled={row.isDelivered}
+                                                        />
+                                                    ) : column.id === 'isDelivered' ? (
+                                                        <Checkbox
+                                                            checked={row.isDelivered}
+                                                            onChange={() => openConfirmationDialogDeliver(row.id)}
+                                                            color='success'
+                                                            disabled={!row.markToDeliver}
+                                                        />
+                                                    ) : (
+                                                        value
+                                                    )}
+                                                </TableCell>
+                                            );
+                                        })}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>
 
-            <Dialog open={isConfirmationDialogOpen} onClose={closeConfirmationDialog}>
-                <DialogTitle>
-                    {remainingOrders.find((order) => order.id === selectedOrderId && order.markToDeliver) ? "Mark order as not taken" : "Mark order as taken"}
-                </DialogTitle>
-                <DialogContent>
-                    <Typography>
-                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.markToDeliver) ? "not taken" : "taken"}?
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={closeConfirmationDialog} sx={{ color: '#7e7e7e' }}>
-                        Cancel
-                    </Button>
-                    <Button onClick={markAsTaken} color="success">
-                        Confirm
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                <Dialog open={isConfirmationDialogOpen} onClose={closeConfirmationDialog}>
+                    <DialogTitle>
+                        {remainingOrders.find((order) => order.id === selectedOrderId && order.markToDeliver) ? "Mark order as not taken" : "Mark order as taken"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <Typography>
+                            Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.markToDeliver) ? "not taken" : "taken"}?
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={closeConfirmationDialog} sx={{ color: '#7e7e7e' }}>
+                            Cancel
+                        </Button>
+                        <Button onClick={markAsTaken} color="success">
+                            Confirm
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
-            <Dialog open={isConfirmationDialogOpenDeliver} onClose={closeConfirmationDialogDeliver}>
-                <DialogTitle>
-                    {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "Mark order as not delivered" : "Mark order as delivered"}
-                </DialogTitle>
-                <DialogContent>
-                    <Typography>
-                        Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "not delivered" : "delivered"}?
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={closeConfirmationDialogDeliver} sx={{ color: '#7e7e7e' }}>
-                        Cancel
-                    </Button>
-                    <Button onClick={markAsDelivered} color="success">
-                        Confirm
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </div>
+                <Dialog open={isConfirmationDialogOpenDeliver} onClose={closeConfirmationDialogDeliver}>
+                    <DialogTitle>
+                        {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "Mark order as not delivered" : "Mark order as delivered"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <Typography>
+                            Are you sure you want to mark this order as {remainingOrders.find((order) => order.id === selectedOrderId && order.isDelivered) ? "not delivered" : "delivered"}?
+                        </Typography>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={closeConfirmationDialogDeliver} sx={{ color: '#7e7e7e' }}>
+                            Cancel
+                        </Button>
+                        <Button onClick={markAsDelivered} color="success">
+                            Confirm
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </div>
+            <Footer/>
+        </>
     );
 }

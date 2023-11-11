@@ -30,7 +30,7 @@ import { useState, useEffect } from 'react';
 // ];
 
 
-export default function Orders() {
+export default function Orders({showAlert}) {
 
     // const orders = GetUserOrders();
     const [orders, setOrders] = useState([]);

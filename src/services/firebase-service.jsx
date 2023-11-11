@@ -77,3 +77,6 @@ export function uploadFile(path, file){
         });
 }
 
+export function signOut(){
+    return auth.signOut();
+}

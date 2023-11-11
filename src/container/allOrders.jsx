@@ -7,12 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import GetAllOrders from '../services/getAllOrders';
+import Header from "../components/header.jsx";
+import Footer from "../components/footer.jsx";
+import { useEffect, useState } from 'react';
 
 
 
 
 
-export default function AllOrders() {
+export default function AllOrders({showAlert}) {
     
     // const allOrders = [
     //     {
@@ -115,47 +118,51 @@ export default function AllOrders() {
     
 
     return (
-        <div>
+        <>
+            <Header/>
+            <div>
 
-            <h2>All Orders</h2>
-            <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="order table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {allOrders
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                const cellColor = column.id === 'status' ? getStatusColor(value) : 'inherit';
-                                                return (
-                                                    <TableCell key={column.id} align={column.align} style={{ color: cellColor }}>
-                                                        {column.id === 'id' ? `#${value}` : column.id === 'total' ? `Rs.${value}` : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                
-            </Paper>
-        </div>
+                <h2>All Orders</h2>
+                <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                        <Table stickyHeader aria-label="order table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {allOrders
+                                    .map((row) => {
+                                        return (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                                {columns.map((column) => {
+                                                    const value = row[column.id];
+                                                    const cellColor = column.id === 'status' ? getStatusColor(value) : 'inherit';
+                                                    return (
+                                                        <TableCell key={column.id} align={column.align} style={{ color: cellColor }}>
+                                                            {column.id === 'id' ? `#${value}` : column.id === 'total' ? `Rs.${value}` : value}
+                                                        </TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+
+                </Paper>
+            </div>
+            <Footer/>
+        </>
     );
 }

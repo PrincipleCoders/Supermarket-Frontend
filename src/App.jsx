@@ -22,12 +22,12 @@ export default function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/login" element={<LoginReg showAlert={showAlert}/>}/>
-                    <Route path="/" element={<Shop/>}/>
-                    <Route path="/profile" element={<Profile/>}/>
-                    <Route path="/inventory" element={<Inventory/>}/>
-                    <Route path="/remainingOrders" element={<RemainingOrders/>}/>
-                    <Route path="/toDeliver" element={<ToDeliver/>}/>
-                    <Route path="/allOrders" element={<AllOrders/>}/>
+                    <Route path="/" element={<Shop showAlert={showAlert}/>}/>
+                    <Route path="/profile" element={<Profile showAlert={showAlert}/>}/>
+                    <Route path="/inventory" element={<Inventory showAlert={showAlert}/>}/>
+                    <Route path="/remainingOrders" element={<RemainingOrders showAlert={showAlert}/>}/>
+                    <Route path="/toDeliver" element={<ToDeliver showAlert={showAlert}/>}/>
+                    <Route path="/allOrders" element={<AllOrders showAlert={showAlert}/>}/>
                 </Routes>
             </BrowserRouter>
         </>

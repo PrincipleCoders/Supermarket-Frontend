@@ -12,7 +12,7 @@ import GetUserInfo from '../services/getUserInfo';
 import UpdateUserInfo from '../services/updateUserInfo';
 import { useEffect } from 'react';
 
-const AccountDetails = () => {
+const AccountDetails = ({showAlert}) => {
 
     // const userInfo = {
     //     Id:'1001',
