@@ -1,13 +1,11 @@
 import axios from "axios";
 
-const UpdateUserInfo = async (fname, lname, address, telephone) => {
+const UpdateUserInfo = async (address, telephone) => {
     try {
         const token = localStorage.getItem('userToken');
         const response = await axios.put(
             'https://localhost:8081/updateUserInfo',
             {
-                fname: fname,
-                lname: lname,
                 address: address,
                 telephone: telephone
             },
@@ -21,7 +19,7 @@ const UpdateUserInfo = async (fname, lname, address, telephone) => {
 
         console.log('Details Updated Successfully',response.data);
     } catch (error){
-        console.error('Error updating cart:',error);
+        console.error('Error updating user details:',error);
     }
 };
 

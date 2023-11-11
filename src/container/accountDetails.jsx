@@ -11,6 +11,7 @@ import '../styles/AccountDetails.css';
 import GetUserInfo from '../services/getUserInfo';
 import UpdateUserInfo from '../services/updateUserInfo';
 import { useEffect } from 'react';
+import {updateAdditionalData} from "../services/firebase-service.jsx";
 
 const AccountDetails = ({showAlert}) => {
 
@@ -53,9 +54,25 @@ const AccountDetails = ({showAlert}) => {
 
     const handleConfirm = async () => {
         setIsDialogOpen(false);
-        await UpdateUserInfo(fname, lname, address, telephone);
-        // Additional actions after the update if needed
-    };
+        const additionalData = {
+            displayName: fname + ' ' + lname,
+        }
+        await updateAdditionalData(additionalData)
+            .then(async () => {
+                await UpdateUserInfo(address, telephone)
+                    .then(() => {
+                        showAlert('Account details updated successfully', 'success');
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                        showAlert('Error while updating account details. Please try again', 'error');
+                    })
+            })
+            .catch((error) => {
+                console.error(error);
+                showAlert('Error while updating account details. Please try again', 'error');
+            })
+    }
 
     const handleCancel = () => {
         // Cancel changes and close the dialog
