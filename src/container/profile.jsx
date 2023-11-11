@@ -47,7 +47,7 @@ function a11yProps(index) {
     };
 }
 
-export default function Profile({showAlert}) {
+export default function Profile() {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
@@ -89,13 +89,13 @@ export default function Profile({showAlert}) {
 
                 </Tabs>
                 <TabPanel value={value} index={0}>
-                    <AccountDetails showAlert={showAlert}/>
+                    <AccountDetails/>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <Orders showAlert={showAlert}/>
+                    <Orders/>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    <Cart showAlert={showAlert}/>
+                    <Cart/>
                 </TabPanel>
                 <TabPanel value={value} index={3}>
                     Item Four
