@@ -5,7 +5,7 @@ import {
     startFirebaseAuthUI,
     updateAdditionalData,
     uploadFile
-} from '../services/firebase-service';
+} from '../services/firebase-service.jsx';
 import {Button, LinearProgress, TextField} from '@mui/material';
 import {useNavigate} from "react-router-dom";
 
