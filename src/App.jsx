@@ -11,6 +11,7 @@ import AllOrders from "./container/allOrders.jsx";
 import Orders from './container/orders.jsx';
 import Cart from './container/cart.jsx';
 import AccountDetails from './container/accountDetails.jsx';
+import Users from './container/users.jsx';
 
 export default function App() {
     const [alertStatus, setAlertStatus] = useState({type:'success',message:'',open:false});
@@ -35,6 +36,7 @@ export default function App() {
                         <Route path="/orders" element={<Orders/>}/>
                         <Route path="/cart" element={<Cart/>}/>
                         <Route path="/toDeliver" element={<ToDeliver/>}/>
+                        <Route path="/allUsers" element={<Users/>}/>
                     </Routes>
                 </BrowserRouter>
             </AlertProvider>
