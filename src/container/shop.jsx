@@ -14,7 +14,7 @@ import AllProducts from '../services/allProducts';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 
-export default function Shop({showAlert}) {
+export default function Shop() {
     // const allProducts = [
     //     { name: 'Maggie', category: 'Food', supplier: 'Nestle', rating: 2.5, price: 450, image: 'image1' },
     //     { name: 'Milo', category: 'Drinks', supplier: 'Nestle', rating: 2.5, price: 260, image: 'image2' },

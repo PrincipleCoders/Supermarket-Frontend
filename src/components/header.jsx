@@ -13,12 +13,32 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-
-const pages = ['Home', 'Shop', 'Contact', 'About'];
-const settings = ['My Account', 'Orders', 'Sign out'];
-const isSigned = true;
+import {signOut} from "../services/firebase-service.jsx";
+import {useNavigate} from "react-router-dom";
+import {useAlert} from "./AlertContext.jsx";
 
 function Header() {
+    const showAlert = useAlert();
+    const navigate = useNavigate();
+
+    const pages = ['Home', 'Shop', 'Contact', 'About'];
+    const handleSignOut = () => {
+        signOut()
+            .then(() => {
+                showAlert('Signed out successfully' , 'success');
+                navigate('/login');
+            })
+            .catch((error) => {
+                console.error(error);
+                showAlert('Error signing out' , 'error');
+            });
+    }
+
+    const settings = [{label:'My Account',onClick:null},{label:'Orders',onClick:null},{label:'Sign Out',onClick:handleSignOut}];
+    const isSigned = true;
+
+
+
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -165,8 +185,8 @@ function Header() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
+                                <MenuItem key={setting.label} onClick={setting.onClick}>
+                                    <Typography textAlign="center">{setting.label}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>

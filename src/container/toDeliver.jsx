@@ -19,7 +19,7 @@ import UpdateDelivered from '../services/updateDelivered';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 
-export default function ToDeliver({showAlert}) {
+export default function ToDeliver() {
     // const [remainingOrders, setRemainingOrders] = useState([
     //     {
     //         id: 2004,

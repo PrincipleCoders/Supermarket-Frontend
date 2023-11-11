@@ -18,7 +18,7 @@ import UpdateRemainingOrders from '../services/updateRemainingOrders';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 
-export default function RemainingOrders({showAlert}) {
+export default function RemainingOrders() {
 
     // const [remainingOrders, setRemainingOrders] = useState([
     //     {

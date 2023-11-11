@@ -8,9 +8,11 @@ import {
 } from '../services/firebase-service.jsx';
 import {Button, LinearProgress, TextField} from '@mui/material';
 import {useNavigate} from "react-router-dom";
+import {useAlert} from "../components/AlertContext.jsx";
 
-export default function LoginReg({showAlert}) {
+export default function LoginReg() {
     const navigate = useNavigate();
+    const showAlert = useAlert();
 
     useEffect(() => {
         startFirebaseAuthUI('#firebaseui-auth-container')
