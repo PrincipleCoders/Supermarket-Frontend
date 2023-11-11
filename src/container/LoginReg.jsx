@@ -108,7 +108,7 @@ export default function LoginReg() {
                         additionalData.photoURL = url;
                         toggleLoader(false)
                         handleFormSwap();
-                        await updateAdditionalData(cred.user, additionalData)
+                        await updateAdditionalData(additionalData)
                             .then(() => {
                                 console.log('Additional Data Updated');
                                 showAlert('Registration Successful, Please Sign In');

@@ -1,5 +1,13 @@
-import { initializeApp } from "firebase/app";
-import {GithubAuthProvider, FacebookAuthProvider, getAuth, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile} from "firebase/auth";
+import {initializeApp} from "firebase/app";
+import {
+    GithubAuthProvider,
+    FacebookAuthProvider,
+    getAuth,
+    GoogleAuthProvider,
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    updateProfile
+} from "firebase/auth";
 import {getStorage, ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
@@ -17,7 +25,7 @@ export function startFirebaseAuthUI(containerId) {
     return new Promise((resolve, reject) => {
         const uiConfig = {
             callbacks: {
-                signInSuccessWithAuthResult: function(authResult) {
+                signInSuccessWithAuthResult: function (authResult) {
                     // Resolve the promise with the authResult
                     resolve(authResult);
                     return false;
@@ -27,15 +35,23 @@ export function startFirebaseAuthUI(containerId) {
                     reject(error);
                     return false;
                 },
-                uiShown: function() {
+                uiShown: function () {
                     document.getElementById('loader').style.display = 'none'
                 },
             },
             signInFlow: 'popup',
             signInSuccessUrl: 'http://localhost:5173',
             signInOptions: [
-                {provider: GoogleAuthProvider.PROVIDER_ID, fullLabel: 'Google', customParameters: {prompt: 'select_account'}},
-                {provider: FacebookAuthProvider.PROVIDER_ID, fullLabel: 'Facebook', customParameters: {auth_type: 'reauthenticate'}},
+                {
+                    provider: GoogleAuthProvider.PROVIDER_ID,
+                    fullLabel: 'Google',
+                    customParameters: {prompt: 'select_account'}
+                },
+                {
+                    provider: FacebookAuthProvider.PROVIDER_ID,
+                    fullLabel: 'Facebook',
+                    customParameters: {auth_type: 'reauthenticate'}
+                },
                 {provider: GithubAuthProvider.PROVIDER_ID, fullLabel: 'Github'},
             ],
             // Terms of service url.
@@ -52,19 +68,20 @@ export function startFirebaseAuthUI(containerId) {
     });
 }
 
-export function signInWithEmail(email, password){
+export function signInWithEmail(email, password) {
     return signInWithEmailAndPassword(auth, email, password)
 }
 
-export function createUserWithEmail(email,password){
+export function createUserWithEmail(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
 }
 
-export function updateAdditionalData(user, additionalData){
+export function updateAdditionalData(additionalData) {
+    const user = auth.currentUser;
     return updateProfile(user, additionalData);
 }
 
-export function uploadFile(path, file){
+export function uploadFile(path, file) {
     const storage = getStorage(firebaseApp);
     const storageRef = ref(storage, path);
     return uploadBytes(storageRef, file)
@@ -77,6 +94,6 @@ export function uploadFile(path, file){
         });
 }
 
-export function signOut(){
+export function signOut() {
     return auth.signOut();
 }
