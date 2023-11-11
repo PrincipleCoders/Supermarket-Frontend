@@ -30,6 +30,7 @@ function Header() {
         { Name: 'All Orders', Path: '/allOrders' },
         { Name: 'Inventory', Path: '/inventory' },
         { Name: 'To Deliver', Path: '/toDeliver' },
+        { Name: 'All Users', Path: '/allUsers' },
     ];
     const handleSignOut = () => {
         signOut()
