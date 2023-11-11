@@ -4,7 +4,6 @@ import {useState} from "react";
 import SnackbarAlert from "./components/SnackbarAlert.jsx";
 import {AlertProvider} from "./components/AlertContext.jsx";
 import Shop from "./container/shop.jsx";
-import Profile from "./container/profile.jsx";
 import Inventory from "./container/inventory.jsx";
 import RemainingOrders from "./container/remainingOrders.jsx";
 import ToDeliver from "./container/toDeliver.jsx";

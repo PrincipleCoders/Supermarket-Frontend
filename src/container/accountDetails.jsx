@@ -80,6 +80,7 @@ const AccountDetails = ({showAlert}) => {
                             onChange={(e) => setfName(e.target.value)}
                             color='success'
                             required
+                            sx={{width:'48%'}}
                         />
                         <TextField
                             id="lname"
@@ -88,6 +89,7 @@ const AccountDetails = ({showAlert}) => {
                             onChange={(e) => setlName(e.target.value)}
                             color='success'
                             required
+                            sx={{width:'48%'}}
                         />
                     </div>
                     <TextField

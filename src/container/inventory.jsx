@@ -29,6 +29,13 @@ export default function Inventory({ showAlert }) {
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [quantityToUpdate, setQuantityToUpdate] = useState(0);
 
+    useEffect(() => {
+      if(quantityToUpdate < 0){
+        setQuantityToUpdate(0);
+      }
+    }, [quantityToUpdate])
+    
+
 
     const [newProduct, setNewProduct] = useState({
         name: '',
@@ -39,31 +46,31 @@ export default function Inventory({ showAlert }) {
         category: '',
         rating: 0.0,
     });
-    const [inventory, setInventory] = useState([
-        { id: 1001, name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png', supplier: 'Beverages Inc.' },
-        { id: 1002, name: 'Chips', quantity: 3, price: 150, image: 'chips.png', supplier: 'Snacks and Chips Ltd.' },
-        { id: 1003, name: 'Pizza', quantity: 2, price: 400, image: 'pizza.png', supplier: 'Pizza Palace' },
-        { id: 1004, name: 'Apples', quantity: 8, price: 120, image: 'apples.png', supplier: 'Fruit Emporium' },
-        { id: 1005, name: 'Bananas', quantity: 10, price: 80, image: 'bananas.png', supplier: 'Healthy Harvest' },
-        { id: 1006, name: 'Burger', quantity: 2, price: 300, image: 'burger.png', supplier: 'Burger Haven' },
-        { id: 1007, name: 'Ice Cream', quantity: 4, price: 200, image: 'icecream.png', supplier: 'Ice Cream Delights' },
-        { id: 1008, name: 'Cookies', quantity: 5, price: 100, image: 'cookies.png', supplier: 'Cookie Creations' },
-        { id: 1009, name: 'Milk', quantity: 6, price: 60, image: 'milk.png', supplier: 'Dairy Farms Ltd.' },
-        { id: 1010, name: 'Toothpaste', quantity: 2, price: 50, image: 'toothpaste.png', supplier: 'Oral Care Supplies' },
-    ]);
+    // const [inventory, setInventory] = useState([
+    //     { id: 1001, name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png', supplier: 'Beverages Inc.' },
+    //     { id: 1002, name: 'Chips', quantity: 3, price: 150, image: 'chips.png', supplier: 'Snacks and Chips Ltd.' },
+    //     { id: 1003, name: 'Pizza', quantity: 2, price: 400, image: 'pizza.png', supplier: 'Pizza Palace' },
+    //     { id: 1004, name: 'Apples', quantity: 8, price: 120, image: 'apples.png', supplier: 'Fruit Emporium' },
+    //     { id: 1005, name: 'Bananas', quantity: 10, price: 80, image: 'bananas.png', supplier: 'Healthy Harvest' },
+    //     { id: 1006, name: 'Burger', quantity: 2, price: 300, image: 'burger.png', supplier: 'Burger Haven' },
+    //     { id: 1007, name: 'Ice Cream', quantity: 4, price: 200, image: 'icecream.png', supplier: 'Ice Cream Delights' },
+    //     { id: 1008, name: 'Cookies', quantity: 5, price: 100, image: 'cookies.png', supplier: 'Cookie Creations' },
+    //     { id: 1009, name: 'Milk', quantity: 6, price: 60, image: 'milk.png', supplier: 'Dairy Farms Ltd.' },
+    //     { id: 1010, name: 'Toothpaste', quantity: 2, price: 50, image: 'toothpaste.png', supplier: 'Oral Care Supplies' },
+    // ]);
 
-    // const [inventory, setInventory] = useState([]);
+    const [inventory, setInventory] = useState([]);
 
-    // useEffect(() => {
-    //     const fetchInventoryItems = async () => {
-    //         const allItems = await AllProducts();
-    //         if (allItems) {
-    //             setInventory(allItems);
-    //         }
-    //     };
+    useEffect(() => {
+        const fetchInventoryItems = async () => {
+            const allItems = await AllProducts();
+            if (allItems) {
+                setInventory(allItems);
+            }
+        };
 
-    //     fetchInventoryItems();
-    // }, []);
+        fetchInventoryItems();
+    }, []);
 
     const openEditProductDialog = (product) => {
         setIsEditProductOpen(true);
