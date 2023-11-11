@@ -1,0 +1,314 @@
+body {
+    margin: 0;
+}
+
+
+
+footer {
+    background-color: #191919;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: row;
+    justify-items: center;
+    align-items: center;
+    column-gap: 5px;
+    margin-top: 30px;
+    padding: 50px 0px;
+}
+
+.footer-logo {
+    grid-row: 1/4;
+    grid-column: 1/2;
+    column-gap: 5px;
+    margin: 30px;
+    text-align: center;
+}
+
+.footer-logo-text {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #3bb77e;
+    font-size: 50px;
+    margin-bottom: 20px;
+}
+
+.x{
+    color:#cd853f
+}
+.footer-logo-tagline {
+    color: #fff;
+    font-size: 15px;
+    font-family: "poppins";
+}
+
+.more-info-head {
+    grid-row: 1/2;
+    grid-column: 2/3;
+    text-align: left;
+    color: #fff;
+    font-size: 25px;
+    font-family: "Garamond";
+
+    margin: 10px 0px;
+}
+
+.more-info-links {
+    grid-row: 2/4;
+    grid-column: 2/3;
+    color: #fff;
+    font-size: 13px;
+    font-family: "Poppins";
+    font-weight: 200;
+}
+
+.more-info-links a {
+    color: #3bb77e;
+    font-size: 12px;
+    font-family: "Poppins";
+    font-weight: 300;
+}
+
+.find-us-head {
+    grid-row: 1/2;
+    grid-column: 3/4;
+    text-align: left;
+    color: #fff;
+    font-size: 25px;
+    font-family: "Garamond";
+
+    margin: 10px 0px;
+}
+
+.find-us-links {
+    align-items: center;
+    grid-row: 2/4;
+    grid-column: 3/4;
+    padding: auto;
+}
+
+.social-icon {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+}
+.social-icon:hover {
+    width: 55px;
+    height: 55px;
+    cursor: pointer;
+}
+
+.footer-about-head {
+    grid-row: 1/2;
+    grid-column: 4/5;
+    text-align: left;
+    color: #fff;
+    font-size: 25px;
+    font-family: "Garamond";
+
+    margin: 10px 0px;
+}
+
+.footer-about-txt {
+    grid-row: 2/4;
+    grid-column: 4/5;
+    color: #fff;
+    font-size: 13px;
+    font-family: "Poppins";
+    font-weight: 200;
+    align-self: flex-start;
+    padding: 0px 30px 0px 0px;
+    text-align: justify;
+}
+
+.copyright{
+    border-top: 2px solid #444444;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 12px;
+    font-family: "Poppins";
+    padding: 5px 0px;
+    background-color: #191919;
+
+
+}
+
+
+@keyframes floatAnimation {
+    0% {
+        transform: translateY(-50px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+
+
+@media screen and (max-width: 460px) {
+    .navbar {
+        display: block;
+        list-style-type: none;
+        margin: 0;
+        padding: 5px;
+        background-color: #2f2c28;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .navbar-list-item-logo {
+        padding: 5px 0;
+        font-family: Lucida Handwriting;
+        color: #cd853f;
+        font-size: 25px;
+        float: none;
+        display: block;
+    }
+
+    .navbar-list-item a {
+        text-decoration: none;
+        font-family: "poppins";
+        color: white;
+        display: block;
+        float: none;
+        background-color: #191919;
+        margin: 1px;
+
+    }
+    .navbar-list-item-selected a {
+        text-decoration: none;
+        font-family: "poppins";
+        color: white;
+        display: block;
+        float: none;
+        background-color: #444444;
+        margin: 1px;
+
+    }
+
+    .navbar-list-item input {
+        float: none;
+        margin: 5px;
+    }
+
+    .sign-in {
+        color: #cd853f;
+        font-weight: 600;
+        font-family: "poppins";
+        padding: 5px;
+        border-radius: 20px;
+        border: 2px;
+        width: 100%;
+        cursor: pointer;
+    }
+
+    .content-para {
+        margin: 20px;
+        font-size: 12px;
+    }
+
+    .tagline {
+        font-size: 25px;
+    }
+
+    .heading {
+        font-size: 45px;
+        margin: 0px;
+    }
+
+    .home {
+        height: 500px;
+    }
+}
+
+.btn-menu {
+    width: 130px;
+    margin: 0px;
+    height: 40px;
+    font-size: 22px;
+}
+
+@media screen and (max-width: 900px) {
+    .content-para {
+        margin: 20px;
+        text-align: justify;
+    }
+
+    .about-us-img {
+        grid-row: 2 / 3;
+        grid-column: 1/ 4;
+        justify-self: center;
+        align-self: center;
+        max-width: 350px;
+
+    }
+
+    .content-para {
+        grid-row: 3/5;
+        grid-column: 1/ 4;
+    }
+
+    .content-para-txt {
+        margin: 0px 10px 0px 10px;
+        color: #444444;
+        font-size: 1rem;
+        font-family: "montserrat";
+        text-align: justify;
+        font-weight: 300;
+    }
+
+    .branches-locations {
+        margin: 30px 20px;
+        text-align: justify;
+    }
+
+    .branches-bottom {
+        margin: 60px 20px 20px 20px;
+    }
+
+    .footer-logo {
+        grid-row: 1/3;
+        grid-column: 1/3;
+        margin: 50px;
+    }
+    
+    .more-info-head {
+        grid-row: 1/2;
+        grid-column: 3/5;
+    }
+    
+    .more-info-links {
+        grid-row: 2/3;
+        grid-column: 3/5;
+    }
+
+    .find-us-head {
+        grid-row: 3/4;
+        grid-column: 1/3;
+        margin: 10px 0px;
+    }
+    
+    .find-us-links {
+        grid-row: 4/5;
+        grid-column: 1/3;
+    }
+
+    .footer-about-head {
+        grid-row: 3/4;
+        grid-column: 3/5;
+    }
+    
+    .footer-about-txt {
+        grid-row: 4/5;
+        grid-column: 3/5;
+    }
+
+    footer {
+        padding: 10px;
+    }
+
+    
+
+
+}

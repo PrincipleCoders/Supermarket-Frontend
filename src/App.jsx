@@ -18,6 +18,12 @@ export default function App() {
                 <Routes>
                     <Route path="/" element={<Home showAlert={showAlert}/>}/>
                     <Route path="/login" element={<LoginReg showAlert={showAlert}/>}/>
+                    <Route path="/shop" element={<Shop/>}/>
+                    <Route path="/profile" element={<Profile/>}/>
+                    <Route path="/inventory" element={<Inventory/>}/>
+                    <Route path="/remainingOrders" element={<RemainingOrders/>}/>
+                    <Route path="/toDeliver" element={<ToDeliver/>}/>
+                    <Route path="/allOrders" element={<AllOrders/>}/>
                 </Routes>
             </BrowserRouter>
         </>

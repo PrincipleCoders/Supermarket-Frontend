@@ -1,0 +1,49 @@
+.item-image-cart{
+    width:auto;
+    height:60px;
+}
+
+.cart-container{
+    display: flex;
+    flex-direction: nowrap;
+    width: '100%';
+    
+}
+
+.cart-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px ;
+}
+
+.grand-total{
+    color:#f50057
+}
+.product-name{
+    color:#3bb77e
+}
+
+.product-price{
+    color:#3bb77e;
+    font-size: larger;
+}
+
+.product-subtotal{
+    color:#7e7e7e
+}
+
+.cart-tabel {
+    border-collapse: separate; /* Separate table cells */
+    border-spacing: 20px; /* Adjust the spacing as needed */
+    width: 100%; /* Set the table width as needed */
+  }
+  
+  .cart-tabel td {
+    padding: 0px 35px; /* Add padding to table cells for inner spacing */
+  }
+
+  .headding {
+    background-color: #d8f1e5; 
+  }
+

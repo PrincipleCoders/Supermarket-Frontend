@@ -1,0 +1,22 @@
+.inventory-container{
+    margin: 50px;
+}
+.search-field{
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    width: 100%;
+   
+}
+
+.btn-txt{
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.mage-upload{
+    margin: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

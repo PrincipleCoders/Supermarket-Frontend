@@ -1,0 +1,15 @@
+.ac-details-headding{
+    padding: 0;
+}
+.account-details{
+display: flex;
+flex-direction: column;
+gap: 30px;
+width:"100%";
+}
+.profile-name{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}

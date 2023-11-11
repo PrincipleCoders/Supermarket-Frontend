@@ -1,0 +1,32 @@
+
+.search-result{
+    margin-bottom: 80px;
+    /* background-color:#d3d3d3;
+    padding: 10px;
+    border-radius: 10px */
+}
+
+.popular-products{
+    
+}
+
+.popular-title{
+    font-family: "roboto";
+    text-align: left;
+    margin: 50px 0px;
+}
+
+.popular-card-container{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    gap:30px;
+}
+
+.search-text{
+    font-weight: 700;
+    font-size: large;
+    color: #f50057;
+    margin-bottom: 20px;
+}
+
