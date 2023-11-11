@@ -9,6 +9,9 @@ import Inventory from "./container/inventory.jsx";
 import RemainingOrders from "./container/remainingOrders.jsx";
 import ToDeliver from "./container/toDeliver.jsx";
 import AllOrders from "./container/allOrders.jsx";
+import Orders from './container/orders.jsx';
+import Cart from './container/cart.jsx';
+import AccountDetails from './container/accountDetails.jsx';
 
 export default function App() {
     const [alertStatus, setAlertStatus] = useState({type:'success',message:'',open:false});
@@ -25,11 +28,14 @@ export default function App() {
                     <Routes>
                         <Route path="/login" element={<LoginReg/>}/>
                         <Route path="/" element={<Shop/>}/>
-                        <Route path="/profile" element={<Profile/>}/>
+                        <Route path="/account" element={<AccountDetails/>}/>
                         <Route path="/inventory" element={<Inventory/>}/>
                         <Route path="/remainingOrders" element={<RemainingOrders/>}/>
                         <Route path="/toDeliver" element={<ToDeliver/>}/>
                         <Route path="/allOrders" element={<AllOrders/>}/>
+                        <Route path="/orders" element={<Orders/>}/>
+                        <Route path="/cart" element={<Cart/>}/>
+                        <Route path="/toDeliver" element={<ToDeliver/>}/>
                     </Routes>
                 </BrowserRouter>
             </AlertProvider>

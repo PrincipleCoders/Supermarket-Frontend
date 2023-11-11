@@ -12,6 +12,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import GetCartItems from "../services/showCart";
 import RemoveItemFromCart from "../services/deleteFromCart";
+import Header from "../components/header";
+import Footer from "../components/footer";
 
 
 export default function Cart({showAlert}) {
@@ -83,7 +85,9 @@ export default function Cart({showAlert}) {
 
 
     return (
-        <div>
+        <>
+            <Header/>
+        <div style={{margin:'0 50px'}}>
             <h2>Your Cart</h2>
             <div className="cart-header">
                 {cartItems.length != 0 && <h3 className="grand-total"> Total: Rs.{grandTotal}</h3>}
@@ -173,5 +177,7 @@ export default function Cart({showAlert}) {
             </Dialog>
 
         </div>
+        <Footer/>
+        </>
     );
 }

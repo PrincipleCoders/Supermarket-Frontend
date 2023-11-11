@@ -9,6 +9,8 @@ import { Box, Button, Card, Paper, Divider } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import categoryh1 from '../assets/categoryh1.png'
+import grocery from '../assets/grocery.png'
+import Vegetables from '../assets/vegetable.png'
 import ItemCard from '../components/itemCard';
 import AllProducts from '../services/allProducts';
 import Header from "../components/header.jsx";
@@ -144,28 +146,28 @@ export default function Shop() {
                 }
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: "20px" }}>
 
-                    <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#f1ead9', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
-                        <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
-                            <Box>
-                                <h2 sx={{ width: "50%" }}>Shop the Best Electronics </h2>
-                                <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
-                            </Box>
-                            <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
-                        </Box>
-                    </Paper>
                     <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#f4eaea', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
                         <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box>
                                 <h2 sx={{ width: "50%" }}>Your Favourite Groceries </h2>
                                 <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
                             </Box>
-                            <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
+                            <img src={grocery} alt="grocery" style={{ height: "150px" }} />
                         </Box>
                     </Paper>
                     <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#e9ecf4', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
                         <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
                             <Box>
                                 <h2 sx={{ width: "50%" }}>Eat Fresh Fruits & Vegetables</h2>
+                                <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }} >Shop Now</Button>
+                            </Box>
+                            <img src={Vegetables} alt="vegetables" style={{ height: "150px" }} />
+                        </Box>
+                    </Paper>
+                    <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#f1ead9', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
+                        <Box sx={{ display: 'flex', gap: "10px", justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Box>
+                                <h2 sx={{ width: "50%" }}>Shop the Best Electronics </h2>
                                 <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
                             </Box>
                             <img src={categoryh1} alt="Category" style={{ height: "150px" }} />

@@ -11,6 +11,8 @@ import '../styles/AccountDetails.css';
 import GetUserInfo from '../services/getUserInfo';
 import UpdateUserInfo from '../services/updateUserInfo';
 import { useEffect } from 'react';
+import Footer from '../components/footer';
+import Header from '../components/header';
 
 const AccountDetails = ({showAlert}) => {
 
@@ -64,7 +66,9 @@ const AccountDetails = ({showAlert}) => {
     };
 
     return (
-        <div>
+        <>
+        <Header/>
+        <div style={{margin:'0px 50px'}}>
             <form onSubmit={handleSubmit}>
                 <h2 className='ac-details-headding'>Account Details</h2>
                 <div className="account-details">
@@ -131,6 +135,8 @@ const AccountDetails = ({showAlert}) => {
                 </DialogActions>
             </Dialog>
         </div>
+            <Footer/>
+        </>
     );
 };
 

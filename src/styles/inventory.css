@@ -20,3 +20,8 @@
     flex-direction: column;
     gap: 10px;
 }
+.product-sub-titile{
+    display: flex;
+    justify-content: space-between;
+   
+}

@@ -8,6 +8,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import GetUserOrders from '../services/allUserOrders';
 import { useState, useEffect } from 'react';
+import Header from '../components/header';
+import Footer from '../components/footer';
 
 
 
@@ -44,7 +46,7 @@ export default function Orders() {
         };
         fetchUserOrders();
     }, []);
-    
+
     const columns = [
         { id: 'id', label: 'Order', minWidth: 100, align: 'center', },
         { id: 'date', label: 'Date', minWidth: 170, align: 'center', },
@@ -64,68 +66,72 @@ export default function Orders() {
             label: 'Total',
             minWidth: 170,
         },
-    
+
     ];
 
     const getStatusColor = (status) => {
         switch (status.toLowerCase()) {
-          case 'processing':
-            return 'red'; 
-          case 'delivered':
-            return 'green'; 
-          case 'ready to delivery':
-            return 'orange'; 
-          case 'on the way':
-            return 'blue'; 
-          default:
-            return 'black'; 
+            case 'processing':
+                return 'red';
+            case 'delivered':
+                return 'green';
+            case 'ready to delivery':
+                return 'orange';
+            case 'on the way':
+                return 'blue';
+            default:
+                return 'black';
         }
-      };
+    };
 
-    
+
 
     return (
-        <div>
+        <>
+            <div style={{ margin: "0px 50px" }}>
+                <Header />
 
-            <h2>Your Orders</h2>
-            <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: 440 }}>
-                    <Table stickyHeader aria-label="order table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.id}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {orders
-                                .map((row) => {
-                                    return (
-                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                            {columns.map((column) => {
-                                                const value = row[column.id];
-                                                const cellColor = column.id === 'status' ? getStatusColor(value) : 'inherit';
-                                                return (
-                                                    <TableCell key={column.id} align={column.align} style={{ color: cellColor }}>
-                                                        {column.id === 'id' ? `#${value}` : column.id === 'total' ? `Rs.${value}` : value}
-                                                    </TableCell>
-                                                );
-                                            })}
-                                        </TableRow>
-                                    );
-                                })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                
-            </Paper>
-        </div>
+                <h2>Your Orders</h2>
+                <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>
+                    <TableContainer sx={{ maxHeight: 440 }}>
+                        <Table stickyHeader aria-label="order table">
+                            <TableHead>
+                                <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.id}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                            {column.label}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {orders
+                                    .map((row) => {
+                                        return (
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                                {columns.map((column) => {
+                                                    const value = row[column.id];
+                                                    const cellColor = column.id === 'status' ? getStatusColor(value) : 'inherit';
+                                                    return (
+                                                        <TableCell key={column.id} align={column.align} style={{ color: cellColor }}>
+                                                            {column.id === 'id' ? `#${value}` : column.id === 'total' ? `Rs.${value}` : value}
+                                                        </TableCell>
+                                                    );
+                                                })}
+                                            </TableRow>
+                                        );
+                                    })}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+
+                </Paper>
+            </div>
+            <Footer />
+        </>
     );
 }
