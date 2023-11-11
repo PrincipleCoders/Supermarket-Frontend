@@ -4,7 +4,7 @@ const UpdateMarkToDeliver = async (orderId, markStatus) => {
   try {
     const token = localStorage.getItem('userToken');
     const response = await axios.put(
-      `https://localhost:8081/updateMarktoDeliver/${orderId}`,
+      `http://localhost:8086/deliveries/updateMarkToDeliver/${orderId}`,
       {
         markToDeliver: markStatus,
       },

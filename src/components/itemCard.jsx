@@ -10,7 +10,7 @@ import UpdateCart from "../services/updateCart";
 export default function ItemCard(props) {
 
     const name = props.name ;
-    const image = categoryh1;
+    const image = props.image;
     const suplier = props.suplier;
     const rating = props.rating;
     const price = props.price;

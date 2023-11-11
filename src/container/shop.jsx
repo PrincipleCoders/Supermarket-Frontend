@@ -9,40 +9,42 @@ import { Box, Button, Card, Paper, Divider } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import categoryh1 from '../assets/categoryh1.png'
+import grocery from '../assets/grocery.png'
+import vege from '../assets/vegetable.png'
 import ItemCard from '../components/itemCard';
 import AllProducts from '../services/allProducts';
 
 export default function Shop() {
-    // const allProducts = [
-    //     { name: 'Maggie', category: 'Food', supplier: 'Nestle', rating: 2.5, price: 450, image: 'image1' },
-    //     { name: 'Milo', category: 'Drinks', supplier: 'Nestle', rating: 2.5, price: 260, image: 'image2' },
-    //     { name: 'Cream Cracker', category: 'Biscuit', supplier: 'Nestle', rating: 5, price: 125, image: 'image3' },
-    //     { name: 'Coca-Cola', category: 'Drinks', supplier: 'Coca-Cola Company', rating: 4.5, price: 150, image: 'image4' },
-    //     { name: 'Oreo Cookies', category: 'Biscuit', supplier: 'Mondelez International', rating: 4.8, price: 200, image: 'image5' },
-    //     { name: 'Chicken Noodle Soup', category: 'Food', supplier: 'Campbell Soup Company', rating: 4.0, price: 350, image: 'image6' },
-    //     { name: 'Pepsi', category: 'Drinks', supplier: 'PepsiCo', rating: 3.5, price: 180, image: 'image7' },
-    //     { name: 'Chips Ahoy! Cookies', category: 'Biscuit', supplier: 'Mondelez International', rating: 4.6, price: 220, image: 'image8' },
-    //     { name: 'Lays Potato Chips', category: 'Snacks', supplier: 'Frito-Lay', rating: 4.4, price: 170, image: 'image9' },
-    //     { name: 'Kit Kat', category: 'Chocolate', supplier: 'Nestle', rating: 4.3, price: 160, image: 'image10' },
-    //     { name: 'Spaghetti', category: 'Food', supplier: 'Barilla', rating: 4.7, price: 300, image: 'image11' },
-    //     { name: 'Fanta', category: 'Drinks', supplier: 'The Coca-Cola Company', rating: 4.2, price: 160, image: 'image12' },
-    //     { name: 'Protello', category: 'Drinks', supplier: 'The Coca-Cola Company', rating: 4.2, price: 160, image: 'image12' },
-    //     { name: 'chips', category: 'Drinks', supplier: 'The Coca-Cola Company', rating: 4.2, price: 160, image: 'image12' },
-    // ];
+    const allProducts = [
+        { name: 'Maggie', category: 'Food', supplier: 'Nestle', rating: 2.5, price: 450, image: 'src/assets/maggie.png' },
+        { name: 'Milo', category: 'Drinks', supplier: 'Nestle', rating: 2.5, price: 260, image: 'src/assets/milo.png' },
+        { name: 'Cream Cracker', category: 'Biscuit', supplier: 'Nestle', rating: 5, price: 125, image: 'src/assets/cream.png' },
+        { name: 'Coca-Cola', category: 'Drinks', supplier: 'Coca-Cola Company', rating: 4.5, price: 150, image: 'src/assets/coke.jpg' },
+        { name: 'Oreo Cookies', category: 'Biscuit', supplier: 'Mondelez International', rating: 4.8, price: 200, image: 'src/assets/oreo.jpg' },
+        { name: 'Chicken Noodle Soup', category: 'Food', supplier: 'Campbell Soup Company', rating: 4.0, price: 350, image: 'image6' },
+        { name: 'Pepsi', category: 'Drinks', supplier: 'PepsiCo', rating: 3.5, price: 180, image: 'image7' },
+        { name: 'Chips Ahoy! Cookies', category: 'Biscuit', supplier: 'Mondelez International', rating: 4.6, price: 220, image: 'image8' },
+        { name: 'Lays Potato Chips', category: 'Snacks', supplier: 'Frito-Lay', rating: 4.4, price: 170, image: 'image9' },
+        { name: 'Kit Kat', category: 'Chocolate', supplier: 'Nestle', rating: 4.3, price: 160, image: 'image10' },
+        { name: 'Spaghetti', category: 'Food', supplier: 'Barilla', rating: 4.7, price: 300, image: 'image11' },
+        { name: 'Fanta', category: 'Drinks', supplier: 'The Coca-Cola Company', rating: 4.2, price: 160, image: 'image12' },
+        { name: 'Protello', category: 'Drinks', supplier: 'The Coca-Cola Company', rating: 4.2, price: 160, image: 'image12' },
+        { name: 'chips', category: 'Drinks', supplier: 'The Coca-Cola Company', rating: 4.2, price: 160, image: 'image12' },
+    ];
 
 
-    const [allProducts, setAllProducts] = useState([]);
+    // const [allProducts, setAllProducts] = useState([]);
 
-    useEffect(() => {
-        const fetchAllProducts = async () => {
-            const productList = await AllProducts();
-            if (productList) {
-                setUserInfo(productList);
-            }
-        };
+    // useEffect(() => {
+    //     const fetchAllProducts = async () => {
+    //         const productList = await AllProducts();
+    //         if (productList) {
+    //             setUserInfo(productList);
+    //         }
+    //     };
 
-        fetchAllProducts();
-    }, []);
+    //     fetchAllProducts();
+    // }, []);
 
     const [searchtext, setsearchtext] = useState(null);
     const [searchDone, setsearchDone] = useState(false)
@@ -155,7 +157,7 @@ export default function Shop() {
                             <h2 sx={{ width: "50%" }}>Your Favourite Groceries </h2>
                             <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
                         </Box>
-                        <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
+                        <img src={grocery} alt="Category" style={{ height: "150px" }} />
                     </Box>
                 </Paper>
                 <Paper elevation={0} sx={{ minWidth: "200px", width: '30%', backgroundColor: '#e9ecf4', textAlign: 'left', p: "10px 30px", borderRadius: "10px" }}>
@@ -164,7 +166,7 @@ export default function Shop() {
                             <h2 sx={{ width: "50%" }}>Eat Fresh Fruits & Vegetables</h2>
                             <Button variant='contained' color='success' sx={{ backgroundColor: "#3bb77e" }}>Shop Now</Button>
                         </Box>
-                        <img src={categoryh1} alt="Category" style={{ height: "150px" }} />
+                        <img src={vege} alt="Category" style={{ height: "150px" }} />
                     </Box>
                 </Paper>
             </Box>

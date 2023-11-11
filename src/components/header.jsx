@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
-const pages = ['Home', 'Shop', 'Contact', 'About'];
+const pages = ['Shop','Orders', 'Contact', 'About'];
 const settings = ['My Account', 'Orders', 'Sign out'];
 const isSigned = true;
 

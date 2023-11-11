@@ -76,8 +76,8 @@ export default function Profile() {
                 <Tab label="Account Details" {...a11yProps(0)} />
                 <Tab label="Orders" {...a11yProps(1)} />
                 <Tab label="Cart" {...a11yProps(2)} />
-                <Tab label="Delivery" {...a11yProps(3)} />
-                <Tab label="Item Five" {...a11yProps(4)} />
+                {/* <Tab label="Delivery" {...a11yProps(3)} />
+                <Tab label="Item Five" {...a11yProps(4)} /> */}
 
             </Tabs>
             <TabPanel value={value} index={0}>

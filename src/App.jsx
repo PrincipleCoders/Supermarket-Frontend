@@ -17,8 +17,8 @@ function App() {
   return (
     <>
       <Header/>
-      <Shop/>
-      <Profile/>
+      {/* <Shop/> */}
+      {/* <Profile/> */}
       <Inventory/>
       <RemainingOrders/>
       <ToDeliver/>
