@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import Footer from '../components/footer';
 import Header from '../components/header';
 
-const AccountDetails = ({showAlert}) => {
+const AccountDetails = () => {
 
     // const userInfo = {
     //     Id:'1001',
