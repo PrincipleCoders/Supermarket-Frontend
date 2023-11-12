@@ -5,7 +5,7 @@ const AllProducts = async() => {
     try {
 
         const token = localStorage.getItem('userToken');
-        const response = await axios.get('https://localhost:8081/allProducts', {
+        const response = await axios.get('http://localhost:8088/inventory/product/all', {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

@@ -41,7 +41,7 @@ export default function Shop() {
         const fetchAllProducts = async () => {
             const productList = await AllProducts();
             if (productList) {
-                setUserInfo(productList);
+                setAllProducts(productList);
             }
         };
 
