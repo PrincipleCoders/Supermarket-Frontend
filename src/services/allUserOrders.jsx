@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const GetUserOrders = async () => {
+const GetUserOrders = async (userId) => {
     try {
         const token = localStorage.getItem('userToken');
-        const response = await axios.get('https://localhost:8081/allUserOrders', {
+        const response = await axios.get(`http://localhost:8087/order/user/${userId}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

@@ -42,6 +42,7 @@ export default function Cart({showAlert}) {
         const fetchUserCart = async () => {
             const cart = await GetCartItems(userId);
             if (cart) {
+                // console.log(cart)
                 setCartItems(cart);
             }
         };
@@ -66,11 +67,12 @@ export default function Cart({showAlert}) {
         
     };
 
-    const removeItem = async(index,itemId) => {
+    const removeItem = async(index,productId) => {
         const updatedItems = [...cartItems];
         updatedItems.splice(index, 1);
         setCartItems(updatedItems);
-        const result = await RemoveItemFromCart(itemId);
+        // console.log(productId,userId);
+        const result = await RemoveItemFromCart(productId,userId);
         if (result) {
             console.log('Item removed:', result);
           }
@@ -164,7 +166,7 @@ export default function Cart({showAlert}) {
                                     <h4 className="product-subtotal">Rs.{item.quantity * item.price}</h4>
                                 </td>
                                 <td>
-                                    <IconButton aria-label="delete" onClick={() => removeItem(index,item.id)}>
+                                    <IconButton aria-label="delete" onClick={() => removeItem(index,item.productId)}>
                                         <RemoveCircleOutlineIcon fontSize="inherit" />
                                     </IconButton>
                                 </td>

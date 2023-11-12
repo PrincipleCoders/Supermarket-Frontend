@@ -34,12 +34,14 @@ import Footer from '../components/footer';
 
 export default function Orders() {
 
+    const userId ='user1234'
+
     // const orders = GetUserOrders();
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         const fetchUserOrders = async () => {
-            const orderList = await GetUserOrders();
+            const orderList = await GetUserOrders(userId);
             if (orderList) {
                 setOrders(orderList);
             }
