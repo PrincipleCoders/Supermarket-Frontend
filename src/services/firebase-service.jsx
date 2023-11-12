@@ -97,5 +97,7 @@ export function uploadFile(path, file) {
 }
 
 export function signOut() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     return auth.signOut();
 }

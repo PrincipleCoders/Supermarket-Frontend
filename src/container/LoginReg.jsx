@@ -38,7 +38,6 @@ export default function LoginReg() {
                 toggleLoader(false);
                 localStorage.setItem('token', res.headers.authorization.split(' ')[1]);
                 localStorage.setItem('user', JSON.stringify(res.data));
-                console.log(localStorage.getItem('user'));
                 navigate('/');
                 showAlert('Login Successful', 'success');
             })
