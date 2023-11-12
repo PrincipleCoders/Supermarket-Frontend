@@ -226,7 +226,7 @@ export default function Inventory({ showAlert }) {
                                                 <TableCell key={column.id} align={column.align}>
                                                     {column.id === 'price' ? `Rs.${value}` :
                                                         column.id === 'image' ? (
-                                                            <img src={`/src/assets/categoryh1.png`} alt={value} style={{ height: '35px', width: 'auto' }} />
+                                                            <img src={value} alt={value} style={{ height: '35px', width: 'auto' }} />
                                                         ) : column.id === 'edit' ? (
                                                             <Button onClick={() => openEditProductDialog(row)} color="primary">
                                                                 Update

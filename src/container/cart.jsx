@@ -20,7 +20,7 @@ import PostNewOrder from "../services/postNewOrder";
 
 export default function Cart({showAlert}) {
 
-    const userId = '' ;
+    const userId = 'user1234' ;
 
     // const [cartItems, setCartItems] = useState([
     //     { name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png' },
@@ -40,7 +40,7 @@ export default function Cart({showAlert}) {
 
     useEffect(() => {
         const fetchUserCart = async () => {
-            const cart = await GetCartItems();
+            const cart = await GetCartItems(userId);
             if (cart) {
                 setCartItems(cart);
             }
