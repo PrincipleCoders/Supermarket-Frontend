@@ -45,6 +45,7 @@ export default function Inventory({ showAlert }) {
         supplier: '',
         category: '',
         rating: 0.0,
+        description: ''
     });
     // const [inventory, setInventory] = useState([
     //     { id: 1001, name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png', supplier: 'Beverages Inc.' },
@@ -162,6 +163,7 @@ export default function Inventory({ showAlert }) {
             supplier: '',
             category: '',
             rating: 0.0,
+            description: ''
         });
 
         console.log(inventory);
@@ -272,6 +274,16 @@ export default function Inventory({ showAlert }) {
 
                                 value={newProduct.category}
                                 onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                                fullWidth
+                                margin="normal"
+                                required
+                            />
+                            <TextField
+                                label="Description"
+                                name="description"
+
+                                value={newProduct.description}
+                                onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
                                 fullWidth
                                 margin="normal"
                                 required

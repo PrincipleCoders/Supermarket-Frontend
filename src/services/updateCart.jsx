@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const UpdateCart = async (cartItemId, quantity) => {
+const UpdateCart = async (userId, productId,quantity) => {
   try {
     const token = localStorage.getItem('userToken');
-    const response = await axios.put(
-      'https://localhost:8081/updateCart',
+    const response = await axios.post(
+      'http://localhost:8087/cart',
       {
-        cartItemId: cartItemId,
-        quantity: quantity,
+        productId: productId,
+        userId: userId,
+        quantity: quantity
       },
       {
         headers: {
@@ -16,7 +17,7 @@ const UpdateCart = async (cartItemId, quantity) => {
       }
     );
 
-    
+
     console.log('Cart updated successfully:', response.data);
   } catch (error) {
     console.error('Error updating cart:', error);

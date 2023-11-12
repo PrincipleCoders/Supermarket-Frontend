@@ -137,7 +137,7 @@ export default function Cart({showAlert}) {
                         {cartItems.map((item, index) => (
                             <tr key={item.name}>
                                 <td>
-                                    <img className='item-image-cart' src={`/src/assets/categoryh1.png`} alt={item.name} />
+                                    <img className='item-image-cart' src={item.image} alt={item.name} />
                                 </td>
                                 <td>
                                     <h4 className="product-name">{item.name}</h4>
