@@ -5,8 +5,8 @@
 
 .cart-container{
     display: flex;
-    flex-direction: nowrap;
-    width: '100%';
+    flex-wrap: nowrap;
+    width: 100%;
     
 }
 
@@ -41,7 +41,7 @@
   }
   
   .cart-tabel td {
-    padding: 0px 35px; /* Add padding to table cells for inner spacing */
+    padding: 0 35px; /* Add padding to table cells for inner spacing */
   }
 
   .headding {
