@@ -120,7 +120,9 @@ export default function AllOrders({showAlert}) {
     return (
         <>
             <Header/>
-            <div>
+            
+            <div style={{ margin: "0px 10px" }}>
+                
 
                 <h2>All Orders</h2>
                 <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>

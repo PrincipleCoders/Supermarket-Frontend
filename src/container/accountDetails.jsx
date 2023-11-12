@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -12,8 +12,10 @@ import GetUserInfo from '../services/getUserInfo';
 import UpdateUserInfo from '../services/updateUserInfo';
 import { useEffect } from 'react';
 import {updateAdditionalData} from "../services/firebase-service.jsx";
+import Footer from '../components/footer';
+import Header from '../components/header';
 
-const AccountDetails = ({showAlert}) => {
+const AccountDetails = () => {
 
     // const userInfo = {
     //     Id:'1001',
@@ -81,7 +83,9 @@ const AccountDetails = ({showAlert}) => {
     };
 
     return (
-        <div>
+        <>
+        <Header/>
+        <div style={{margin:'0px 50px'}}>
             <form onSubmit={handleSubmit}>
                 <h2 className='ac-details-headding'>Account Details</h2>
                 <div className="account-details">
@@ -93,6 +97,7 @@ const AccountDetails = ({showAlert}) => {
                             onChange={(e) => setfName(e.target.value)}
                             color='success'
                             required
+                            sx={{width:'48%'}}
                         />
                         <TextField
                             id="lname"
@@ -101,6 +106,7 @@ const AccountDetails = ({showAlert}) => {
                             onChange={(e) => setlName(e.target.value)}
                             color='success'
                             required
+                            sx={{width:'48%'}}
                         />
                     </div>
                     <TextField
@@ -148,6 +154,8 @@ const AccountDetails = ({showAlert}) => {
                 </DialogActions>
             </Dialog>
         </div>
+            <Footer/>
+        </>
     );
 };
 

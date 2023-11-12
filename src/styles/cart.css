@@ -5,8 +5,8 @@
 
 .cart-container{
     display: flex;
-    flex-direction: nowrap;
-    width: '100%';
+    flex-wrap: nowrap;
+    width: 100%;
     
 }
 
@@ -37,10 +37,11 @@
     border-collapse: separate; /* Separate table cells */
     border-spacing: 20px; /* Adjust the spacing as needed */
     width: 100%; /* Set the table width as needed */
+    background-color: #d8f1e5;
   }
   
   .cart-tabel td {
-    padding: 0px 35px; /* Add padding to table cells for inner spacing */
+    padding: 0 35px; /* Add padding to table cells for inner spacing */
   }
 
   .headding {

@@ -167,7 +167,7 @@ export default function RemainingOrders() {
         <>
             <Header/>
             <div className="inventory-container">
-                <h2>Remaining Orders</h2>
+                <h2>Remaining Orders To Pack</h2>
 
                 <Paper elevation={2} sx={{ overflow: 'hidden' }}>
                     <TableContainer sx={{ maxHeight: 500 }}>

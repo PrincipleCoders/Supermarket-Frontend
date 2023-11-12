@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,16 +13,30 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 import '../styles/inventory.css';
 
 import AllProducts from '../services/allProducts';
 import AddNewProduct from '../services/addNewProduct';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
+import UpdateProductQuantity from '../services/updateIQuantity.jsx';
 
-export default function Inventory({showAlert}) {
+export default function Inventory({ showAlert }) {
     const [searchTerm, setSearchTerm] = useState('');
     const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+    const [isEditProductOpen, setIsEditProductOpen] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+    const [quantityToUpdate, setQuantityToUpdate] = useState(0);
+
+    useEffect(() => {
+      if(quantityToUpdate < 0){
+        setQuantityToUpdate(0);
+      }
+    }, [quantityToUpdate])
+    
+
+
     const [newProduct, setNewProduct] = useState({
         name: '',
         quantity: 0,
@@ -58,6 +72,34 @@ export default function Inventory({showAlert}) {
         fetchInventoryItems();
     }, []);
 
+    const openEditProductDialog = (product) => {
+        setIsEditProductOpen(true);
+        setSelectedProduct(product);
+        setQuantityToUpdate(product.quantity);
+    };
+
+    const closeEditProductDialog = () => {
+        setIsEditProductOpen(false);
+        setSelectedProduct(null);
+        setQuantityToUpdate(0);
+    };
+
+    const handleQuantityChange = (event) => {
+        setQuantityToUpdate(parseInt(event.target.value) || 0);
+    };
+
+    const updateProductQuantity = () => {
+        const updatedInventory = inventory.map((product) => {
+            if (product.id === selectedProduct.id) {
+                UpdateProductQuantity(selectedProduct.id,quantityToUpdate)
+                return { ...product, quantity: quantityToUpdate };
+            }
+            return product;
+        });
+        setInventory(updatedInventory);
+        closeEditProductDialog();
+    };
+
     const columns = [
         { id: 'id', label: 'Id', minWidth: 50, align: 'center' },
         { id: 'image', label: 'Image', minWidth: 100, align: 'center' },
@@ -82,8 +124,9 @@ export default function Inventory({showAlert}) {
         {
             id: 'supplier',
             label: 'Supplier',
-            minWidth: 170,
+            minWidth: 100,
         },
+        { id: 'edit', label: 'Update Quantity', minWidth: 50, align: 'center' },
     ];
 
     const filteredInventory = inventory.filter((item) =>
@@ -98,14 +141,14 @@ export default function Inventory({showAlert}) {
         setIsAddProductOpen(false);
     };
 
-    const handleAddProduct = async(event) => {
+    const handleAddProduct = async (event) => {
         event.preventDefault();
         // Add the new product to the inventory
         const result = await AddNewProduct(newProduct);
         // If addition is successful, you might want to update the UI or take additional actions
         if (result) {
-          console.log('Item added:', result);
-          // Update local state or perform other actions
+            console.log('Item added:', result);
+            // Update local state or perform other actions
         }
         setInventory([...inventory, newProduct]);
         // Close the dialog
@@ -125,9 +168,16 @@ export default function Inventory({showAlert}) {
         console.log(newProduct);
     };
 
+    const handleUpdate = async (productId, newQuantity) => {
+        const result = await UpdateProductQuantity(productId, newQuantity); 
+        if (result) {
+          console.log('Product quantity updated:', result);
+        }
+      };
+
     return (
         <>
-            <Header/>
+            <Header />
             <div className="inventory-container">
                 <h2>Inventory</h2>
                 <div className="search-field">
@@ -166,6 +216,7 @@ export default function Inventory({showAlert}) {
                                     ))}
                                 </TableRow>
                             </TableHead>
+
                             <TableBody>
                                 {filteredInventory.map((row) => (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
@@ -176,7 +227,13 @@ export default function Inventory({showAlert}) {
                                                     {column.id === 'price' ? `Rs.${value}` :
                                                         column.id === 'image' ? (
                                                             <img src={`/src/assets/categoryh1.png`} alt={value} style={{ height: '35px', width: 'auto' }} />
-                                                        ) : value}
+                                                        ) : column.id === 'edit' ? (
+                                                            <Button onClick={() => openEditProductDialog(row)} color="primary">
+                                                                Update
+                                                            </Button>
+                                                        ) : (
+                                                            value
+                                                        )}
                                                 </TableCell>
                                             );
                                         })}
@@ -288,7 +345,7 @@ export default function Inventory({showAlert}) {
 
                         </DialogContent>
                         <DialogActions>
-                            <Button onClick={closeAddProductDialog} color="success">
+                            <Button onClick={closeAddProductDialog} color="error">
                                 Cancel
                             </Button>
                             <Button type="submit" color="success"  >
@@ -297,8 +354,40 @@ export default function Inventory({showAlert}) {
                         </DialogActions>
                     </form>
                 </Dialog>
+                <Dialog open={isEditProductOpen} onClose={closeEditProductDialog} >
+                    <DialogTitle sx={{ backgroundColor: '#fffff', textAlign:'center',width:'350px'}} >Update Product Quantity</DialogTitle>
+                    <Divider/>
+                    <DialogContent>
+                        <Typography variant="subtitle1" sx={{ marginBottom: '10px' ,mt:'25px'}}>
+                            <div className='product-sub-titile'> <b>Product:</b> {selectedProduct?.name}</div>
+                        </Typography>
+                        
+                        <Typography variant="subtitle1" sx={{ marginBottom: '25px' }}>
+                            <div className='product-sub-titile'>  <span><b>Current Quantity:</b></span>   {selectedProduct?.quantity}</div>
+                        </Typography>
+                        <TextField
+                            label="New Quantity"
+                            type="number"
+                            value={quantityToUpdate}
+                            onChange={handleQuantityChange}
+                            fullWidth
+                            margin="normal"
+                            sx={{ marginBottom: '20px' }}
+                            color='success'
+                        />
+                    </DialogContent>
+                    <DialogActions sx={{p:'0px 24px 15px 24px',justifyContent:'space-between'}}>
+                        <Button onClick={closeEditProductDialog} color="error">
+                            Cancel
+                        </Button>
+                        <Button onClick={updateProductQuantity}  sx={{ backgroundColor: '#3bb77e', color: 'white' }} color="success" variant="contained">
+                            Update Quantity
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 }
