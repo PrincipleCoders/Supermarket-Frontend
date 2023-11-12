@@ -15,7 +15,8 @@ import "firebaseui/dist/firebaseui.css";
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
     authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -27,7 +28,8 @@ export function startFirebaseAuthUI(containerId) {
             callbacks: {
                 signInSuccessWithAuthResult: function (authResult) {
                     // Resolve the promise with the authResult
-                    resolve(authResult);
+                    console.log(authResult);
+                    resolve(auth.currentUser.getIdToken());
                     return false;
                 },
                 signInFailure(error) {

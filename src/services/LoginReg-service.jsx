@@ -1,26 +1,11 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8080/auth/';
-
-export function register(userData) {
-    return axios.post(API_URL + 'register', {
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        email: userData.email,
-        password: userData.password,
-        profilePicture: userData.profilePicture
-    },
-    {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    });
-}
+const API_URL = 'http://localhost:8081/auth/';
 
 export function validateLoginByToken(access_token) {
-    return axios.get(API_URL + 'validateLogin', {
+    return axios.get(API_URL + 'login', {
         headers: {
-            Authorization: `Access ${access_token}`
+            Authorization: `AccessToken ${access_token}`
         }
     });
 }

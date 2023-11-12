@@ -14,8 +14,7 @@ export default function LoginReg() {
     useEffect(() => {
         startFirebaseAuthUI('#firebaseui-auth-container')
             .then(async (authResult) => {
-                console.log('Signed in with', authResult);
-                await validateLoginAndGetUser(authResult.credential.accessToken);
+                await validateLoginAndGetUser(authResult);
             })
             .catch((error) => {
                 console.log('error', error);
@@ -33,12 +32,13 @@ export default function LoginReg() {
     };
 
     const validateLoginAndGetUser = (accessToken) => {
+        console.log(accessToken);
         validateLoginByToken(accessToken)
             .then((res) => {
                 toggleLoader(false);
-                console.log(res);
-                localStorage.setItem('token', res.headers.authorization.slice(7));
+                localStorage.setItem('token', res.headers.authorization.split(' ')[1]);
                 localStorage.setItem('user', JSON.stringify(res.data));
+                console.log(localStorage.getItem('user'));
                 navigate('/');
                 showAlert('Login Successful', 'success');
             })
@@ -60,7 +60,15 @@ export default function LoginReg() {
         toggleLoader(true);
         signInWithEmail(event.target.email.value, event.target.password.value)
             .then(async (userCredential) => {
-                await validateLoginAndGetUser(userCredential.user.getIdToken());
+                userCredential.user.getIdToken()
+                .then(async (token) => {
+                    await validateLoginAndGetUser(token)
+                })
+                .catch((error) => {
+                    console.log(error);
+                    toggleLoader(false);
+                    showAlert('Something went wrong, Please try again', 'error');
+                })
             })
             .catch((error) => {
                 toggleLoader(false)
