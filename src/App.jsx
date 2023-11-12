@@ -38,7 +38,7 @@ export default function App() {
                         <Route path='/cart' element={<ProtectedRoute element={<Cart/>} roles={'USER'}/>}/>
                         <Route path='/toDeliver' element={<ProtectedRoute element={<ToDeliver/>} roles={'USER'}/>}/>
                         <Route path='/allUsers' element={<ProtectedRoute element={<Users/>} roles={'ADMIN'}/>}/>
-                        <Route path='*' element={<h1>404 Not Found</h1>}/>
+                        <Route path='*' element={<h1 style={{textAlign:'center'}}>404 Page Not Found</h1>}/>
                     </Routes>
                 </BrowserRouter>
             </AlertProvider>
