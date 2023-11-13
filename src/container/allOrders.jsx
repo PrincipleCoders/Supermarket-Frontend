@@ -10,12 +10,16 @@ import GetAllOrders from '../services/getAllOrders';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 import { useEffect, useState } from 'react';
+import { useAlert } from '../components/AlertContext.jsx';
+import { CircularProgress } from '@mui/material';
 
 
 
 
 
-export default function AllOrders({showAlert}) {
+export default function AllOrders() {
+
+    const showAlert = useAlert();
     
     // const allOrders = [
     //     {
@@ -66,6 +70,7 @@ export default function AllOrders({showAlert}) {
     const isEmpty = (allOrders == []) ? true : false ;
 
   useEffect(() => {
+    toggleLoading(true);
     const fetchAllOrders = async () => {
       const orders = await GetAllOrders();
       if (orders) {
@@ -74,7 +79,7 @@ export default function AllOrders({showAlert}) {
       }
     };
 
-    fetchAllOrders();
+    fetchAllOrders().finally(() => toggleLoading(false));
   }, []);
     
     const columns = [
@@ -117,6 +122,14 @@ export default function AllOrders({showAlert}) {
         }
       };
 
+    const toggleLoading = (isLoading) => {
+        if (isLoading) {
+            document.getElementById('loading').style.display = 'block';
+        } else {
+            document.getElementById('loading').style.display = 'none';
+        }
+    }
+
     
 
     return (
@@ -127,6 +140,7 @@ export default function AllOrders({showAlert}) {
                 
 
                 <h2>All Orders</h2>
+                <CircularProgress style={{ display: 'none', margin:'15px auto' }} id='loading'/>
                 <Paper elevation={2} sx={{ width: '100%', overflow: 'hidden' }}>
                     <TableContainer sx={{ maxHeight: 440 }}>
                         <Table stickyHeader aria-label="order table">
