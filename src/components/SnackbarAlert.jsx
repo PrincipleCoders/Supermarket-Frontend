@@ -1,14 +1,21 @@
 import {Alert, Snackbar} from "@mui/material";
 
 export default function SnackbarAlert({alertStatus, setAlertStatus}) {
-    const handleClose = () => {
+    const handleCloseAlert = (event) => {
+        setAlertStatus({...alertStatus, open: false});
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
         setAlertStatus({...alertStatus, open: false});
     };
 
     return (
-        <Snackbar open={alertStatus.open} autoHideDuration={6000} onClose={handleClose}
+        <Snackbar open={alertStatus.open} autoHideDuration={3000} onClose={handleClose}
                   anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
-            <Alert onClose={handleClose} severity={alertStatus.type} id={'snackbarAlert'} variant={'filled'}>
+            <Alert onClose={handleCloseAlert} severity={alertStatus.type} id={'snackbarAlert'} variant={'filled'}>
                 {alertStatus.message}
             </Alert>
         </Snackbar>
