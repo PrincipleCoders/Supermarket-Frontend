@@ -1,13 +1,12 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'order/checkout/user/';
+
 const PostNewOrder = async (userId) => {
   try {
-    const token = localStorage.getItem('userToken');
+    const token = localStorage.getItem('token');
     const response = await axios.post(
-      'https://localhost:8081/createNewOrder',
-      {
-        userId: userId,
-      },
+      API_URL + `${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -15,6 +14,7 @@ const PostNewOrder = async (userId) => {
       }
     );
 
+    console.log('Response:', response);
     const newOrder = response.data;
     console.log('New order created:', newOrder);
     return newOrder;

@@ -57,15 +57,17 @@ export default function Cart() {
         fetchUserCart();
     }, []);
 
-    const handleCreateNewOrder = async (cartId) => {
-        const newOrder = await PostNewOrder(cartId);
+    const handleCreateNewOrder = async (userId) => {
+        const newOrder = await PostNewOrder(userId)
+        .then((response) => {
+            console.log('New order created:', response);
+            showAlert("Order created", "success");
+            fetchUserCart();
+        })
+        .catch((error) => {
+            showAlert("Error creating order", "error");
+        });
     
-        // If the new order is successfully created, you might want to take additional actions
-        if (newOrder) {
-          console.log('New order created:', newOrder);
-          // Update local state or navigate to the order details page
-          setCartItems([]);
-        }
       };
 
     const updateQuantity = (index, newQuantity) => {
