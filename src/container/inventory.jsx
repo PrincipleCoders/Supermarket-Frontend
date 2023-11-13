@@ -21,8 +21,13 @@ import AddNewProduct from '../services/addNewProduct';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
 import UpdateProductQuantity from '../services/updateIQuantity.jsx';
+import { uploadFile } from '../services/firebase-service';
+import { useAlert } from '../components/AlertContext.jsx';
+import { CircularProgress } from '@mui/material';
 
-export default function Inventory({ showAlert }) {
+export default function Inventory() {
+    const showAlert = useAlert();
+
     const [searchTerm, setSearchTerm] = useState('');
     const [isAddProductOpen, setIsAddProductOpen] = useState(false);
     const [isEditProductOpen, setIsEditProductOpen] = useState(false);
@@ -35,7 +40,6 @@ export default function Inventory({ showAlert }) {
       }
     }, [quantityToUpdate])
     
-
 
     const [newProduct, setNewProduct] = useState({
         name: '',
@@ -62,14 +66,14 @@ export default function Inventory({ showAlert }) {
 
     const [inventory, setInventory] = useState([]);
 
-    useEffect(() => {
-        const fetchInventoryItems = async () => {
-            const allItems = await AllProducts();
-            if (allItems) {
-                setInventory(allItems);
-            }
-        };
+    const fetchInventoryItems = async () => {
+        const allItems = await AllProducts();
+        if (allItems) {
+            setInventory(allItems);
+        }
+    };
 
+    useEffect(() => {
         fetchInventoryItems();
     }, []);
 
@@ -142,15 +146,41 @@ export default function Inventory({ showAlert }) {
         setIsAddProductOpen(false);
     };
 
+    const uploadImage = async (image) => {
+        const path = `product/${image.name+Date.now()}`; // path on firebase storage
+        const url = await uploadFile(path, image);
+        return url;
+    }
+
     const handleAddProduct = async (event) => {
         event.preventDefault();
+        toggleLoading(true);
+
+        // Upload the image to firebase storage
+        if (newProduct.image) {
+            await uploadImage(newProduct.image)
+            .then((url) => {
+                // Add the image url to the new product object
+                console.log(url);
+                newProduct.image = url;
+            })
+            .catch((error) => {
+                console.error(error);
+                showAlert('Image upload failed', 'error');
+            });
+        }
+        
+        console.log(newProduct);
         // Add the new product to the inventory
         const result = await AddNewProduct(newProduct);
         // If addition is successful, you might want to update the UI or take additional actions
         if (result) {
+            fetchInventoryItems();
             console.log('Item added:', result);
+            showAlert('Product added successfully', 'success');
             // Update local state or perform other actions
         }
+        toggleLoading(false);
         setInventory([...inventory, newProduct]);
         // Close the dialog
         closeAddProductDialog();
@@ -174,6 +204,14 @@ export default function Inventory({ showAlert }) {
         const result = await UpdateProductQuantity(productId, newQuantity); 
         if (result) {
           console.log('Product quantity updated:', result);
+        }
+      };
+
+    const toggleLoading = (isLoading) => {
+        if (isLoading) {
+            document.getElementById('addingProduct').style.display = 'block';
+        } else {
+            document.getElementById('addingProduct').style.display = 'none';
         }
       };
 
@@ -325,7 +363,7 @@ export default function Inventory({ showAlert }) {
                             <div className="image-upload">
 
                                 <img
-                                    src={newProduct.image ? URL.createObjectURL(newProduct.image) : ''}
+                                    src={newProduct.image ? window.URL.createObjectURL(newProduct.image) : ''}
                                     alt="Selected Image"
                                     id="product-image"
                                     style={{
@@ -357,12 +395,14 @@ export default function Inventory({ showAlert }) {
 
                         </DialogContent>
                         <DialogActions>
+                        <CircularProgress size={30} id='addingProduct' sx={{display:'none'}}/>
                             <Button onClick={closeAddProductDialog} color="error">
                                 Cancel
                             </Button>
                             <Button type="submit" color="success"  >
                                 Add
                             </Button>
+                            
                         </DialogActions>
                     </form>
                 </Dialog>
