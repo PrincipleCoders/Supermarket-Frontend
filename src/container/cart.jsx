@@ -4,7 +4,7 @@ import '../styles/cart.css'
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -41,12 +41,16 @@ export default function Cart() {
     const [cartItems, setCartItems] = useState([]);
 
     useEffect(() => {
+        toggleLoading(true);
         const fetchUserCart = async () => {
-            const cart = await GetCartItems(userId);
-            if (cart) {
-                // console.log(cart)
-                setCartItems(cart);
-            }
+            await GetCartItems(userId)
+            .then((response) => {
+                setCartItems(response);
+            })
+            .catch((error) => {
+                showAlert("Error fetching cart items", "error");
+            });
+            toggleLoading(false);
         };
         fetchUserCart();
     }, []);
@@ -106,11 +110,22 @@ export default function Cart() {
     }, [cartItems]);
 
 
+    const toggleLoading = (isLoading) => {
+        if (isLoading) {
+            document.getElementById('cartLoading').style.display = 'block';
+        } 
+        else {
+            document.getElementById('cartLoading').style.display = 'none';
+        }
+    }
+
+
     return (
         <>
             <Header/>
         <div style={{margin:'0 50px'}}>
             <h2>Your Cart</h2>
+            <CircularProgress size={30} thickness={4} style={{ display: 'none' }} id="cartLoading"/>
             <div className="cart-header">
                 {cartItems.length != 0 && <h3 className="grand-total"> Total: Rs.{grandTotal}</h3>}
                 {cartItems.length != 0 && <Button
