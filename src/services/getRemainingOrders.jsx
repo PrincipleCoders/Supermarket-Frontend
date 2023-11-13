@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'order/remaining/all';
+
 const GetRemainingOrders = async () => {
   try {
-    const token = localStorage.getItem('userToken');
-    const response = await axios.get('https://localhost:8081/remainingOrders', {
+    const token = localStorage.getItem('token');
+    const response = await axios.get(API_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
