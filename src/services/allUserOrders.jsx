@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'order/user/';
+
 const GetUserOrders = async (userId) => {
     try {
         const token = localStorage.getItem('userToken');
-        const response = await axios.get(`http://localhost:8087/order/user/${userId}`, {
+        const response = await axios.get(API_URL + userId, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },

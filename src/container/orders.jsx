@@ -34,7 +34,7 @@ import Footer from '../components/footer';
 
 export default function Orders() {
 
-    const userId ='user1234'
+    const userId = JSON.parse(localStorage.getItem('user')).id;
 
     // const orders = GetUserOrders();
     const [orders, setOrders] = useState([]);

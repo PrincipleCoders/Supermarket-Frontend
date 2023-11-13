@@ -70,6 +70,7 @@ export default function AllOrders({showAlert}) {
       const orders = await GetAllOrders();
       if (orders) {
         setAllOrders(orders);
+        console.log('All Orders:', orders);
       }
     };
 
