@@ -1,10 +1,12 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'inventory/product/';
+
 const DeleteProduct = async (productId) => {
   try {
     const token = localStorage.getItem('userToken');
     const response = await axios.delete(
-      `https://localhost:8081/inventory/deleteProduct/${productId}`, 
+      API_URL + productId, 
       {
         headers: {
           Authorization: `Bearer ${token}`,
