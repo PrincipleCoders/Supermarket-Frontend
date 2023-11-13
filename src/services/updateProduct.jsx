@@ -1,13 +1,10 @@
 import axios from 'axios';
 
-const UpdateProductQuantity = async (productId, newQuantity) => {
+const UpdateProduct = async (productId, product) => {
   try {
     const token = localStorage.getItem('userToken');
     const response = await axios.put(
-      `https://localhost:8081/updateProductQuantity/${productId}`,
-      {
-        quantity: newQuantity,
-      },
+      `https://localhost:8081/updateProduct/${productId}`, product , 
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -25,4 +22,4 @@ const UpdateProductQuantity = async (productId, newQuantity) => {
   }
 };
 
-export default UpdateProductQuantity;
+export default UpdateProduct;
