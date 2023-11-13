@@ -42,9 +42,9 @@ export default function Shop() {
             const productList = await AllProducts();
             if (productList) {
                 setAllProducts(productList);
+                console.log(productList);
             }
         };
-
         fetchAllProducts();
     }, []);
 
@@ -137,7 +137,7 @@ export default function Shop() {
                                     suplier={card.supplier}
                                     rating={card.rating}
                                     price={card.price}
-                                    ItemId={card.ItemId}
+                                    id={card.id}
                                 />
                             ))}
 
@@ -188,6 +188,7 @@ export default function Shop() {
                                 suplier={card.supplier}
                                 rating={card.rating}
                                 price={card.price}
+                                id={card.id}
                             />
                         ))}
                     </div>

@@ -10,18 +10,18 @@ import UpdateCart from "../services/updateCart";
 export default function ItemCard(props) {
 
     const name = props.name ;
-    const image = categoryh1;
+    const image = props.image;
     const suplier = props.suplier;
     const rating = props.rating;
     const price = props.price;
-    const ItemId = props.ItemId;
-
+    const id = props.id;
+    const userId = 'user1234'
+ 
     const addedCart = async() => {
-        await UpdateCart(ItemId,1);
+        console.log(userId,id,1);
+        await UpdateCart(userId,id,1);
         alert('Item added');
     }
-
-    
 
     return (
         <div className="popular-items-container">

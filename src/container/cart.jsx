@@ -20,7 +20,7 @@ import PostNewOrder from "../services/postNewOrder";
 
 export default function Cart({showAlert}) {
 
-    const userId = '' ;
+    const userId = 'user1234' ;
 
     // const [cartItems, setCartItems] = useState([
     //     { name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png' },
@@ -40,8 +40,9 @@ export default function Cart({showAlert}) {
 
     useEffect(() => {
         const fetchUserCart = async () => {
-            const cart = await GetCartItems();
+            const cart = await GetCartItems(userId);
             if (cart) {
+                // console.log(cart)
                 setCartItems(cart);
             }
         };
@@ -66,11 +67,12 @@ export default function Cart({showAlert}) {
         
     };
 
-    const removeItem = async(index,itemId) => {
+    const removeItem = async(index,productId) => {
         const updatedItems = [...cartItems];
         updatedItems.splice(index, 1);
         setCartItems(updatedItems);
-        const result = await RemoveItemFromCart(itemId);
+        // console.log(productId,userId);
+        const result = await RemoveItemFromCart(productId,userId);
         if (result) {
             console.log('Item removed:', result);
           }
@@ -137,7 +139,7 @@ export default function Cart({showAlert}) {
                         {cartItems.map((item, index) => (
                             <tr key={item.name}>
                                 <td>
-                                    <img className='item-image-cart' src={`/src/assets/categoryh1.png`} alt={item.name} />
+                                    <img className='item-image-cart' src={item.image} alt={item.name} />
                                 </td>
                                 <td>
                                     <h4 className="product-name">{item.name}</h4>
@@ -164,7 +166,7 @@ export default function Cart({showAlert}) {
                                     <h4 className="product-subtotal">Rs.{item.quantity * item.price}</h4>
                                 </td>
                                 <td>
-                                    <IconButton aria-label="delete" onClick={() => removeItem(index,item.id)}>
+                                    <IconButton aria-label="delete" onClick={() => removeItem(index,item.productId)}>
                                         <RemoveCircleOutlineIcon fontSize="inherit" />
                                     </IconButton>
                                 </td>

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const GetCartItems = async () => {
+const GetCartItems = async (userId) => {
   try {
     const token = localStorage.getItem('userToken');
-    const response = await axios.get('https://localhost:8081/cartItems', {
+    const response = await axios.get(`http://localhost:8087/cart/user/${userId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

@@ -63,6 +63,7 @@ export default function AllOrders({showAlert}) {
     // ];
 
     const [allOrders, setAllOrders] = useState([]);
+    const isEmpty = (allOrders == []) ? true : false ;
 
   useEffect(() => {
     const fetchAllOrders = async () => {
@@ -101,7 +102,7 @@ export default function AllOrders({showAlert}) {
     ];
 
     const getStatusColor = (status) => {
-        switch (status.toLowerCase()) {
+        switch ((status || '').toLowerCase()) {
           case 'processing':
             return 'red'; 
           case 'delivered':

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const RemoveItemFromCart = async (itemId) => {
+const RemoveItemFromCart = async (itemId,userId) => {
   try {
     const token = localStorage.getItem('userToken');
-    const response = await axios.delete(`https://localhost:8081/removeItem/${itemId}`, {
+    const response = await axios.delete(`http://localhost:8087/cart/user/${userId}/product/${itemId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
