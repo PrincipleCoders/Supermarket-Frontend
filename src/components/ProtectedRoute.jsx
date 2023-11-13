@@ -1,34 +1,47 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import {useAlert} from "./AlertContext.jsx";
+import { useAlert } from './AlertContext.jsx';
 
-const ProtectedRoute = ({ element , roles , isLink= false }) => {
+const ProtectedRoute = ({ element, roles, isLink = false }) => {
     const showAlert = useAlert();
-    // const location = useLocation();
+    const location = useLocation();
     const user = JSON.parse(localStorage.getItem('user'));
+    const [elementToRender, setElementToRender] = useState(null);
 
-    // useEffect(() => {
-    //     // Get the token and user data from local storage
-    //     const userData = localStorage.getItem('user');
-    //     const user = JSON.parse(userData);
-    //     console.log(user);
-    // }, [location]);  
+    const getHomeOfRole = () => {
+        switch (user.role) {
+            case 'ADMIN':
+                return '/allOrders';
+            case 'DELIVERY':
+                return '/toDeliver';
+            case 'CUSTOMER':
+                return '/';
+            default:
+                return '/login';
+        }
+    }
 
-    console.log(user);
-    if (user && roles.includes(user.role)){
-        return element;
-    }
-    else if (isLink){
-        return null;
-    }
-    else if (user){
-        showAlert('You are not authorized to access this page','error');
-        return <Navigate to="/" />;
-    }
-    else {
-        showAlert('You are not authorized to access this page','error');
-        return <Navigate to="/login" />;
-    }
+
+    useEffect(() => {
+        if (!user) {
+            showAlert('Please log in to access the page.', 'warning');
+            setElementToRender(<Navigate to="/login" />);
+        }
+        else if (!roles.includes(user.role)) {
+            if (isLink) {
+                setElementToRender(null)
+            }
+            else {
+                showAlert('You are not authorized to access the page.', 'warning');
+                setElementToRender(<Navigate to={getHomeOfRole()}/>);
+            }
+        }
+        else {
+            setElementToRender(element);
+        }
+    }, [location]);
+
+    return elementToRender;
 };
 
 export default ProtectedRoute;

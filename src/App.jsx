@@ -36,7 +36,6 @@ export default function App() {
                         <Route path='/allOrders' element={<ProtectedRoute element={<AllOrders/>} roles={['ADMIN']}/>}/>
                         <Route path='/orders' element={<ProtectedRoute element={<Orders/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/cart' element={<ProtectedRoute element={<Cart/>} roles={['CUSTOMER']}/>}/>
-                        <Route path='/toDeliver' element={<ProtectedRoute element={<ToDeliver/>} roles={['USER']}/>}/>
                         <Route path='/allUsers' element={<ProtectedRoute element={<Users/>} roles={['ADMIN']}/>}/>
                         <Route path='*' element={<h1 style={{textAlign:'center'}}>404 Page Not Found</h1>}/>
                     </Routes>
