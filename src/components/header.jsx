@@ -185,9 +185,11 @@ function Header() {
                             ))}
                         </Box>
 
-                        <IconButton href='/cart'>
-                            <ShoppingCartIcon sx={{ color: '#ffffff', margin: '0px 20px' }} />
-                        </IconButton>
+                        <ProtectedRoute roles={['CUSTOMER']} element={(
+                            <IconButton href='/cart'>
+                                <ShoppingCartIcon sx={{ color: '#ffffff', margin: '0px 20px' }} />
+                            </IconButton>
+                        )} />
                         {!isSigned && <Button variant="contained" color='success'> Sign In</Button>}
                         {isSigned && <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
