@@ -17,6 +17,7 @@ import { signOut } from "../services/firebase-service.jsx";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "./AlertContext.jsx";
 import { Link } from 'react-router-dom';
+import ProtectedRoute from "./ProtectedRoute.jsx";
 
 function Header() {
     const showAlert = useAlert();
@@ -24,13 +25,13 @@ function Header() {
 
 
     const pages = [
-        { Name: 'SHOP', Path: '/' },
-        { Name: 'ORDERS', Path: '/orders' },
-        { Name: 'TO Pack', Path: '/remainingOrders' },
-        { Name: 'All Orders', Path: '/allOrders' },
-        { Name: 'Inventory', Path: '/inventory' },
-        { Name: 'To Deliver', Path: '/toDeliver' },
-        { Name: 'All Users', Path: '/allUsers' },
+        { Name: 'SHOP', Path: '/' , roles:['CUSTOMER'] },
+        { Name: 'ORDERS', Path: '/orders' , roles:['CUSTOMER'] },
+        { Name: 'TO Pack', Path: '/remainingOrders' , roles:['ADMIN'] },
+        { Name: 'All Orders', Path: '/allOrders' , roles:['ADMIN'] },
+        { Name: 'Inventory', Path: '/inventory' , roles:['ADMIN'] },
+        { Name: 'To Deliver', Path: '/toDeliver' , roles:['DELIVERY']},
+        { Name: 'All Users', Path: '/allUsers' , roles:['ADMIN']},
     ];
     const handleSignOut = () => {
         signOut()
@@ -159,26 +160,28 @@ function Header() {
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             {pages.map((page, index) => (
-                                <Button
-                                    key={index}
-                                    onClick={() => {
-                                        setSelected(page.Path);
+                                <ProtectedRoute isLink={true} roles={page.roles} key={index} element={(
+                                    <Button
+                                        key={index}
+                                        onClick={() => {
+                                            setSelected(page.Path);
 
-                                    }
-                                    }
+                                        }
+                                        }
 
-                                    sx={{
-                                        my: 2,
-                                        color: '#ffffff',
-                                        display: 'block',
-                                        fontFamily: 'roboto',
-                                        fontWeight: 700,
-                                        margin: '0 15px',
-                                    }}
-                                    href={page.Path}
-                                >
-                                    {page.Name}
-                                </Button>
+                                        sx={{
+                                            my: 2,
+                                            color: '#ffffff',
+                                            display: 'block',
+                                            fontFamily: 'roboto',
+                                            fontWeight: 700,
+                                            margin: '0 15px',
+                                        }}
+                                        href={page.Path}
+                                    >
+                                        {page.Name}
+                                    </Button>
+                                )} />
                             ))}
                         </Box>
 
