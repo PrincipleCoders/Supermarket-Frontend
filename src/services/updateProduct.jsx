@@ -1,10 +1,13 @@
 import axios from 'axios';
 
-const UpdateProduct = async (productId, product) => {
+const API_URL = import.meta.env.VITE_API_URL + 'inventory/product';
+
+const UpdateProduct = async (product) => {
   try {
+    console.log('Updating product:', product);
     const token = localStorage.getItem('userToken');
     const response = await axios.put(
-      `https://localhost:8081/updateProduct/${productId}`, product , 
+      API_URL, product , 
       {
         headers: {
           Authorization: `Bearer ${token}`,

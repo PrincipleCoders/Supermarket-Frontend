@@ -48,7 +48,8 @@ export default function Inventory() {
         category: '',
         rating: 0.0,
         description: '',
-        newImage: null
+        newImage: null,
+        id: ''
     });
 
     useEffect(() => {
@@ -233,7 +234,8 @@ export default function Inventory() {
             supplier: '',
             category: '',
             rating: 0.0,
-            description: ''
+            description: '',
+            id: ''
         });
 
         console.log(inventory);
@@ -245,6 +247,7 @@ export default function Inventory() {
 
          // Upload the image to firebase storage
          if (newProduct.newImage) {
+            toggleLoading(true);
             await uploadImage(newProduct.newImage)
                 .then((url) => {
                     // Add the image url to the new product object
@@ -256,7 +259,7 @@ export default function Inventory() {
                     showAlert('Image upload failed', 'error');
                 });
         }
-        const result = await  UpdateProduct(newProduct.id, newProduct);
+        const result = await  UpdateProduct({...newProduct,newImage:null});
         if (result) {
             fetchInventoryItems();
             console.log('Product updated:', result);
@@ -265,6 +268,7 @@ export default function Inventory() {
         else {
             showAlert('Something went wrong', 'error');
         }
+        toggleLoading(false);
  
         setNewProduct({
             name: '',
