@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL + 'order/cart/add'
+const API_URL = import.meta.env.VITE_API_URL + 'order/cart'
 
 const UpdateCart = async (userId, productId,quantity) => {
   try {
@@ -21,8 +21,10 @@ const UpdateCart = async (userId, productId,quantity) => {
 
 
     console.log('Cart updated successfully:', response.data);
+    return response.data;
   } catch (error) {
-    console.error('Error updating cart:', error);
+    console.log('Error updating cart:', error);
+    return null;
     // Handle the error, e.g., display an error message to the user
   }
 };

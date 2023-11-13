@@ -16,6 +16,7 @@ import Header from "../components/header";
 import Footer from "../components/footer";
 import PostNewOrder from "../services/postNewOrder";
 import { useAlert } from "../components/AlertContext";
+import UpdateCart from "../services/updateCart";
 
 
 
@@ -71,7 +72,6 @@ export default function Cart() {
         const updatedItems = [...cartItems];
         updatedItems[index].quantity = newQuantity;
         setCartItems(updatedItems);
-        
     };
 
     const removeItem = async(index,productId) => {
@@ -128,6 +128,18 @@ export default function Cart() {
             document.getElementById('cartLoading').style.display = 'none';
         }
     }
+
+    const saveQuantity = async (productId, newQuantity) => {
+        const response = await UpdateCart(userId, productId, newQuantity)
+        if (response) {
+            console.log('Quantity updated:', response);
+            showAlert("Quantity updated", "success");
+        }
+        else{
+            showAlert("Error updating quantity", "error");
+            fetchUserCart();
+        }
+    };
 
 
     return (
@@ -187,6 +199,9 @@ export default function Cart() {
                                         color='success'
                                         sx={{ width: '70px' }}
                                         size="small"
+                                        onBlur={(e) => {
+                                            saveQuantity(item.productId, parseInt(e.target.value));
+                                        }}
                                     />
                                 </td>
                                 <td>
