@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'inventory/product';
+
 const AddNewProduct = async (newItem) => {
   try {
     const token = localStorage.getItem('userToken');
-    const response = await axios.post('https://localhost:8081/addNewItem', newItem, {
+    const response = await axios.post(API_URL, newItem, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
