@@ -40,18 +40,19 @@ export default function Cart() {
 
     const [cartItems, setCartItems] = useState([]);
 
+    const fetchUserCart = async () => {
+        await GetCartItems(userId)
+        .then((response) => {
+            setCartItems(response);
+        })
+        .catch((error) => {
+            showAlert("Error fetching cart items", "error");
+        });
+        toggleLoading(false);
+    };
+
     useEffect(() => {
         toggleLoading(true);
-        const fetchUserCart = async () => {
-            await GetCartItems(userId)
-            .then((response) => {
-                setCartItems(response);
-            })
-            .catch((error) => {
-                showAlert("Error fetching cart items", "error");
-            });
-            toggleLoading(false);
-        };
         fetchUserCart();
     }, []);
 
@@ -77,11 +78,17 @@ export default function Cart() {
         const updatedItems = [...cartItems];
         updatedItems.splice(index, 1);
         setCartItems(updatedItems);
-        // console.log(productId,userId);
-        const result = await RemoveItemFromCart(productId,userId);
-        if (result) {
-            console.log('Item removed:', result);
-          }
+        showAlert("Item removed from cart", "success");
+
+        const response = await RemoveItemFromCart(productId,userId);
+        console.log(response);
+        if (response) {
+            console.log('Item removed from cart:', response);
+        }
+        else{
+            showAlert("Error removing item from cart", "error");
+            fetchUserCart();
+        }
     };
 
     const [openDialog, setOpenDialog] = useState(false);
@@ -105,6 +112,9 @@ export default function Cart() {
 
     useEffect(() => {
         // Calculate the grand total based on cart items
+        if (cartItems === null || cartItems.length === 0) {
+            return;
+        }
         const total = cartItems.reduce((sum, item) => sum + (item.quantity * item.price), 0);
         setGrandTotal(total);
     }, [cartItems]);
@@ -140,7 +150,7 @@ export default function Cart() {
                 </Button>}
             </div>
             <div className="cart-container">
-                {cartItems.length === 0 && <h3 className="product-name">Nothing Here :( <br />Please add items to your cart.</h3>}
+                {cartItems.length === 0 && <h3 className="product-name">Nothing Here :<br />Please add items to your cart.</h3>}
                 {cartItems.length != 0 && <table className="cart-tabel">
                     <thead>
                         <tr className="headding">
@@ -183,7 +193,7 @@ export default function Cart() {
                                     <h4 className="product-subtotal">Rs.{item.quantity * item.price}</h4>
                                 </td>
                                 <td>
-                                    <IconButton aria-label="delete" onClick={() => removeItem(index,item.productId)}>
+                                    <IconButton aria-label="delete" onClick={()=>removeItem(index,item.productId)} >
                                         <RemoveCircleOutlineIcon fontSize="inherit" />
                                     </IconButton>
                                 </td>

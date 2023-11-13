@@ -1,25 +1,22 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'order/cart/user/';
+
 const RemoveItemFromCart = async (itemId,userId) => {
-  try {
-    const token = localStorage.getItem('userToken');
-    const response = await axios.delete(`http://localhost:8087/cart/user/${userId}/product/${itemId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    try {
+        const token = localStorage.getItem('userToken');
+        const response = await axios.delete(API_URL + userId + '/product/' + itemId, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-    // Assuming the server responds with a success message or updated cart data
-    const responseData = response.data;
-
-    // Handle the response as needed, e.g., update local state or display a success message
-    console.log('Item removed successfully:', responseData);
-    return responseData;
-  } catch (error) {
-    console.error('Error removing item from the cart:', error);
-    // Handle the error, e.g., display an error message to the user
-    return null; // Return null or a default value indicating failure
-  }
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching orders:', error);
+        throw error;
+    }
 };
 
 export default RemoveItemFromCart;
