@@ -30,7 +30,7 @@ export default function App() {
                         <Route path="/login" element={<LoginReg/>}/>
                         <Route path="/" element={<ProtectedRoute element={<Shop/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/account' element={<ProtectedRoute element={<AccountDetails/>} roles={['CUSTOMER']}/>}/>
-                        <Route path='/inventory' element={<ProtectedRoute element={<Inventory/>} roles={['ADMIN']}/>}/>
+                        <Route path='/inventory' element={<ProtectedRoute element={<Inventory/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/remainingOrders' element={<ProtectedRoute element={<RemainingOrders/>} roles={['ADMIN']}/>}/>
                         <Route path='/toDeliver' element={<ProtectedRoute element={<ToDeliver/>} roles={['ADMIN']}/>}/>
                         <Route path='/allOrders' element={<ProtectedRoute element={<AllOrders/>} roles={['ADMIN']}/>}/>

@@ -11,16 +11,22 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { Box, IconButton, Select, InputLabel } from '@mui/material';
 import '../styles/inventory.css';
 
 import AllProducts from '../services/allProducts';
 import AddNewProduct from '../services/addNewProduct';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
-import UpdateProductQuantity from '../services/updateIQuantity.jsx';
+import UpdateProduct from '../services/updateProduct.jsx';
+import DeleteProduct from '../services/deleteProduct.jsx';
 import { uploadFile } from '../services/firebase-service';
 import { useAlert } from '../components/AlertContext.jsx';
 import { CircularProgress } from '@mui/material';
@@ -31,15 +37,7 @@ export default function Inventory() {
     const [searchTerm, setSearchTerm] = useState('');
     const [isAddProductOpen, setIsAddProductOpen] = useState(false);
     const [isEditProductOpen, setIsEditProductOpen] = useState(false);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [quantityToUpdate, setQuantityToUpdate] = useState(0);
-
-    useEffect(() => {
-      if(quantityToUpdate < 0){
-        setQuantityToUpdate(0);
-      }
-    }, [quantityToUpdate])
-    
+    const [isDeleteProductOpen, setIsDeleteProductOpen] = useState(false);
 
     const [newProduct, setNewProduct] = useState({
         name: '',
@@ -49,8 +47,27 @@ export default function Inventory() {
         supplier: '',
         category: '',
         rating: 0.0,
-        description: ''
+        description: '',
+        newImage: null
     });
+
+    useEffect(() => {
+        if (newProduct.quantity < 0) {
+            setNewProduct(prevProduct => ({ ...prevProduct, quantity: 0 }));
+        }
+        if (newProduct.price < 0) {
+            setNewProduct(prevProduct => ({ ...prevProduct, price: 0 }));
+        }
+        if (newProduct.rating < 0) {
+            setNewProduct(prevProduct => ({ ...prevProduct, rating: 0 }));
+        }
+        if (newProduct.rating >= 5) {
+            setNewProduct(prevProduct => ({ ...prevProduct, rating: 5 }));
+        }
+    }, [newProduct])
+
+
+
     // const [inventory, setInventory] = useState([
     //     { id: 1001, name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png', supplier: 'Beverages Inc.' },
     //     { id: 1002, name: 'Chips', quantity: 3, price: 150, image: 'chips.png', supplier: 'Snacks and Chips Ltd.' },
@@ -77,33 +94,64 @@ export default function Inventory() {
         fetchInventoryItems();
     }, []);
 
+    const openAddProductDialog = () => {
+        setIsAddProductOpen(true);
+    };
+
+    const closeAddProductDialog = () => {
+        setIsAddProductOpen(false);
+        setNewProduct({
+            name: '',
+            quantity: 0,
+            price: 0,
+            image: '',
+            supplier: '',
+            category: '',
+            rating: 0.0,
+            description: '',
+            newImage: null
+        });
+    };
+
     const openEditProductDialog = (product) => {
+        setNewProduct(product);
         setIsEditProductOpen(true);
-        setSelectedProduct(product);
-        setQuantityToUpdate(product.quantity);
     };
 
     const closeEditProductDialog = () => {
         setIsEditProductOpen(false);
-        setSelectedProduct(null);
-        setQuantityToUpdate(0);
-    };
-
-    const handleQuantityChange = (event) => {
-        setQuantityToUpdate(parseInt(event.target.value) || 0);
-    };
-
-    const updateProductQuantity = () => {
-        const updatedInventory = inventory.map((product) => {
-            if (product.id === selectedProduct.id) {
-                UpdateProductQuantity(selectedProduct.id,quantityToUpdate)
-                return { ...product, quantity: quantityToUpdate };
-            }
-            return product;
+        setNewProduct({
+            name: '',
+            quantity: 0,
+            price: 0,
+            image: '',
+            supplier: '',
+            category: '',
+            rating: 0.0,
+            description: '',
+            newImage: null
         });
-        setInventory(updatedInventory);
-        closeEditProductDialog();
     };
+    const openDeleteProductDialog = (product) => {
+        setNewProduct(product);
+        setIsDeleteProductOpen(true);
+    };
+
+    const closeDeleteProductDialog = () => {
+        setIsDeleteProductOpen(false);
+        setNewProduct({
+            name: '',
+            quantity: 0,
+            price: 0,
+            image: '',
+            supplier: '',
+            category: '',
+            rating: 0.0,
+            description: '',
+            newImage: null
+        });
+    };
+
 
     const columns = [
         { id: 'id', label: 'Id', minWidth: 50, align: 'center' },
@@ -131,23 +179,15 @@ export default function Inventory() {
             label: 'Supplier',
             minWidth: 100,
         },
-        { id: 'edit', label: 'Update Quantity', minWidth: 50, align: 'center' },
+        { id: 'edit', label: 'Edit / Delete', minWidth: 50, align: 'center' },
     ];
 
     const filteredInventory = inventory.filter((item) =>
         item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    const openAddProductDialog = () => {
-        setIsAddProductOpen(true);
-    };
-
-    const closeAddProductDialog = () => {
-        setIsAddProductOpen(false);
-    };
-
     const uploadImage = async (image) => {
-        const path = `product/${image.name+Date.now()}`; // path on firebase storage
+        const path = `product/${image.name + Date.now()}`; // path on firebase storage
         const url = await uploadFile(path, image);
         return url;
     }
@@ -157,19 +197,19 @@ export default function Inventory() {
         toggleLoading(true);
 
         // Upload the image to firebase storage
-        if (newProduct.image) {
-            await uploadImage(newProduct.image)
-            .then((url) => {
-                // Add the image url to the new product object
-                console.log(url);
-                newProduct.image = url;
-            })
-            .catch((error) => {
-                console.error(error);
-                showAlert('Image upload failed', 'error');
-            });
+        if (newProduct.newImage) {
+            await uploadImage(newProduct.newImage)
+                .then((url) => {
+                    // Add the image url to the new product object
+                    console.log(url);
+                    newProduct.image = url;
+                })
+                .catch((error) => {
+                    console.error(error);
+                    showAlert('Image upload failed', 'error');
+                });
         }
-        
+
         console.log(newProduct);
         // Add the new product to the inventory
         const result = await AddNewProduct(newProduct);
@@ -200,20 +240,241 @@ export default function Inventory() {
         console.log(newProduct);
     };
 
-    const handleUpdate = async (productId, newQuantity) => {
-        const result = await UpdateProductQuantity(productId, newQuantity); 
-        if (result) {
-          console.log('Product quantity updated:', result);
+    const handleUpdate = async () => {
+ 
+
+         // Upload the image to firebase storage
+         if (newProduct.newImage) {
+            await uploadImage(newProduct.newImage)
+                .then((url) => {
+                    // Add the image url to the new product object
+                    console.log(url);
+                    newProduct.image = url;
+                })
+                .catch((error) => {
+                    console.error(error);
+                    showAlert('Image upload failed', 'error');
+                });
         }
-      };
+        const result = await  UpdateProduct(newProduct.id, newProduct);
+        if (result) {
+            fetchInventoryItems();
+            console.log('Product updated:', result);
+            showAlert('Product Updated successfully', 'success');
+        }
+        else {
+            showAlert('Something went wrong', 'error');
+        }
+ 
+        setNewProduct({
+            name: '',
+            quantity: 0,
+            price: 0,
+            image: '',
+            supplier: '',
+            category: '',
+            rating: 0.0,
+            description: ''
+        });
+        
+        closeEditProductDialog();
+    };
+
+    const handleDelete = async() =>{
+        
+        const result = await  DeleteProduct(newProduct.id);
+        if (result) {
+            fetchInventoryItems();
+            console.log('Product deleted:', result);
+            showAlert('Product Deleted successfully', 'success');
+        }
+        else {
+            showAlert('Something went wrong', 'error');
+        }
+     
+        setNewProduct({
+            name: '',
+            quantity: 0,
+            price: 0,
+            image: '',
+            supplier: '',
+            category: '',
+            rating: 0.0,
+            description: ''
+        });
+        
+        closeDeleteProductDialog();
+    }
 
     const toggleLoading = (isLoading) => {
         if (isLoading) {
-            document.getElementById('addingProduct').style.display = 'block';
+            document.getElementById('loading').style.display = 'block';
         } else {
-            document.getElementById('addingProduct').style.display = 'none';
+            document.getElementById('loading').style.display = 'none';
         }
-      };
+    };
+
+    const formContent = () => {
+
+        return (
+            <DialogContent>
+                <TextField
+                    label="Product Name"
+                    name="name"
+                    value={newProduct.name}
+                    onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    required
+                    color='success'
+                    size='small'
+                />
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-evenly', gap: '10px' }}>
+                    <TextField
+                        label="Quantity"
+                        name="quantity"
+                        type="number"
+                        value={newProduct.quantity}
+                        onChange={(e) => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
+                        fullWidth
+                        margin="normal"
+                        required
+                        color='success'
+                        size='small'
+                    />
+                    <FormControl sx={{ mt: 1, minWidth: 160, alignSelf: 'center' }} size="small">
+                        <InputLabel id="category-label" color='success'>Category</InputLabel>
+
+                        <Select
+                            name="category"
+                            value={newProduct.category}
+                            label="Category"
+                            onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                            required
+                            color='success'
+                            fullWidth
+
+                        >
+                            <MenuItem value={'Fresh Produce'}>Fresh Produce</MenuItem>
+                            <MenuItem value={'Dairy and Eggs'}>Dairy and Eggs</MenuItem>
+                            <MenuItem value={'Bakery'}>Bakery</MenuItem>
+                            <MenuItem value={'Meat and Seafood'}>Meat and Seafood</MenuItem>
+                            <MenuItem value={'Frozen Foods'}>Frozen Foods</MenuItem>
+                            <MenuItem value={'Canned Goods'}>Canned Goods</MenuItem>
+                            <MenuItem value={'Pasta and Grains'}>Pasta and Grains</MenuItem>
+                            <MenuItem value={'Condiments'}>Condiments</MenuItem>
+                            <MenuItem value={'Snacks'}>Snacks</MenuItem>
+                            <MenuItem value={'Beverages'}>Beverages</MenuItem>
+                            <MenuItem value={'Household and Cleaning'}>Household and Cleaning</MenuItem>
+                            <MenuItem value={'Personal Care'}>Personal Care</MenuItem>
+                            <MenuItem value={'Baby and Kids'}>Baby and Kids</MenuItem>
+                            <MenuItem value={'Pet Supplies'}>Pet Supplies</MenuItem>
+                            <MenuItem value={'Health and Wellness'}>Health and Wellness</MenuItem>
+                            <MenuItem value={'Electronics'}>Electronics</MenuItem>
+
+                        </Select>
+                    </FormControl>
+                </Box>
+
+                <TextField
+                    label="Supplier"
+                    name="supplier"
+                    value={newProduct.supplier}
+                    onChange={(e) => setNewProduct({ ...newProduct, supplier: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    required
+                    color='success'
+                    size='small'
+                />
+
+                <Box sx={{ display: 'flex', justifyContent: 'space-evenly', gap: '10px' }}>
+                    <TextField
+                        label="Price Rs."
+                        name="price"
+                        type="number"
+                        value={newProduct.price}
+                        onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
+                        fullWidth
+                        margin="normal"
+                        required
+                        color='success'
+                        size='small'
+                    />
+                    <TextField
+                        label="Rating"
+                        name="rating"
+                        fullWidth
+                        type='number'
+                        value={newProduct.rating}
+                        onChange={(e) => setNewProduct({ ...newProduct, rating: parseFloat(e.target.value) })}
+                        size='small'
+                        margin="normal"
+                        required
+                        color='success'
+                    />
+                </Box>
+
+                <TextField
+                    label="Description"
+                    name="description"
+                    color='success'
+
+                    value={newProduct.description}
+                    onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                    fullWidth
+                    margin="normal"
+                    required
+                />
+
+                <div className="image-upload">
+
+                    <img
+                        src={newProduct.newImage ? window.URL.createObjectURL(newProduct.newImage) : ''}
+                        alt="Selected Image"
+                        id="product-image"
+                        style={{
+                            maxHeight: '200px',
+                            maxWidth: '200px',
+                            margin: '10px 0px',
+                            display: newProduct.newImage ? 'block' : 'none'
+                        }}
+                    />
+                    <img
+                        src={newProduct.image}
+                        alt="Selected Image"
+                        id="product-image"
+                        style={{
+                            maxHeight: '200px',
+                            maxWidth: '200px',
+                            margin: '10px 0px',
+                            display: newProduct.image && !newProduct.newImage ? 'block' : 'none'
+                        }}
+                    />
+                    <br />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setNewProduct({ ...newProduct, newImage: e.target.files[0] })}
+                        id="image-upload"
+                        style={{ display: 'none' }}
+                    />
+                    <label htmlFor="image-upload" style={{
+                        backgroundColor: '#3bb77e',
+                        color: 'white',
+                        padding: '10px 5px',
+                        borderRadius: '5px',
+                        cursor: 'pointer',
+                        margin: '20px 0px'
+                    }}>
+                        Upload Image
+                    </label>
+                </div>
+
+            </DialogContent>
+        );
+    }
 
     return (
         <>
@@ -268,9 +529,15 @@ export default function Inventory() {
                                                         column.id === 'image' ? (
                                                             <img src={value} alt={value} style={{ height: '35px', width: 'auto' }} />
                                                         ) : column.id === 'edit' ? (
-                                                            <Button onClick={() => openEditProductDialog(row)} color="primary">
-                                                                Update
-                                                            </Button>
+                                                            <>
+                                                            <IconButton aria-label="edit" onClick={() => openEditProductDialog(row)} >
+                                                                <EditIcon />
+                                                            </IconButton>
+                                                            <IconButton aria-label="delete" onClick={() => openDeleteProductDialog(row)} color="error">
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                            
+                                                            </>
                                                         ) : (
                                                             value
                                                         )}
@@ -285,158 +552,56 @@ export default function Inventory() {
                 </Paper>
                 <Dialog open={isAddProductOpen} onClose={closeAddProductDialog}>
                     <form onSubmit={handleAddProduct}>
-                        <DialogTitle>Add Product</DialogTitle>
-                        <DialogContent>
-                            <TextField
-                                label="Product Name"
-                                name="name"
-                                value={newProduct.name}
-                                onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
-                                fullWidth
-                                margin="normal"
-                                required
-                            />
-                            <TextField
-                                label="Quantity"
-                                name="quantity"
-                                type="number"
-                                value={newProduct.quantity}
-                                onChange={(e) => setNewProduct({ ...newProduct, quantity: parseInt(e.target.value) })}
-                                fullWidth
-                                margin="normal"
-                                required
-                            />
-                            <TextField
-                                label="category"
-                                name="category"
-
-                                value={newProduct.category}
-                                onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                                fullWidth
-                                margin="normal"
-                                required
-                            />
-                            <TextField
-                                label="Description"
-                                name="description"
-
-                                value={newProduct.description}
-                                onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
-                                fullWidth
-                                margin="normal"
-                                required
-                            />
-                            <TextField
-                                label="Price"
-                                name="price"
-                                type="number"
-                                value={newProduct.price}
-                                onChange={(e) => setNewProduct({ ...newProduct, price: parseInt(e.target.value) })}
-                                fullWidth
-                                margin="normal"
-                                required
-                            />
-                            <TextField
-                                label="Rating"
-                                name="rating"
-                                fullWidth
-                                type='number'
-                                value={newProduct.rating}
-                                onChange={(e) => setNewProduct({ ...newProduct, rating: parseFloat(e.target.value) })}
-
-                                margin="normal"
-                                required
-                            />
-
-                            <TextField
-                                label="Supplier"
-                                name="supplier"
-                                value={newProduct.supplier}
-                                onChange={(e) => setNewProduct({ ...newProduct, supplier: e.target.value })}
-                                fullWidth
-                                margin="normal"
-                                required
-                            />
-                            <br />
-                            <br />
-
-                            <div className="image-upload">
-
-                                <img
-                                    src={newProduct.image ? window.URL.createObjectURL(newProduct.image) : ''}
-                                    alt="Selected Image"
-                                    id="product-image"
-                                    style={{
-                                        maxHeight: '200px',
-                                        maxWidth: '200px',
-                                        margin: '10px 0px',
-                                        display: newProduct.image ? 'block' : 'none'
-                                    }}
-                                />
-                                <br />
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => setNewProduct({ ...newProduct, image: e.target.files[0] })}
-                                    id="image-upload"
-                                    style={{ display: 'none' }}
-                                />
-                                <label htmlFor="image-upload" style={{
-                                    backgroundColor: '#3bb77e',
-                                    color: 'white',
-                                    padding: '10px 5px',
-                                    borderRadius: '5px',
-                                    cursor: 'pointer',
-                                    margin: '20px 0px'
-                                }}>
-                                    Upload Image
-                                </label>
-                            </div>
-
-                        </DialogContent>
+                        <DialogTitle sx={{ textAlign: 'center' }} >Add Product</DialogTitle>
+                        
+                        {formContent()}
+                        
                         <DialogActions>
-                        <CircularProgress size={30} id='addingProduct' sx={{display:'none'}}/>
+                            <CircularProgress size={30} id='loading' sx={{ display: 'none' }} />
                             <Button onClick={closeAddProductDialog} color="error">
                                 Cancel
                             </Button>
                             <Button type="submit" color="success"  >
                                 Add
                             </Button>
-                            
+
                         </DialogActions>
                     </form>
                 </Dialog>
                 <Dialog open={isEditProductOpen} onClose={closeEditProductDialog} >
-                    <DialogTitle sx={{ backgroundColor: '#fffff', textAlign:'center',width:'350px'}} >Update Product Quantity</DialogTitle>
-                    <Divider/>
-                    <DialogContent>
-                        <Typography variant="subtitle1" sx={{ marginBottom: '10px' ,mt:'25px'}}>
-                            <div className='product-sub-titile'> <b>Product:</b> {selectedProduct?.name}</div>
-                        </Typography>
-                        
-                        <Typography variant="subtitle1" sx={{ marginBottom: '25px' }}>
-                            <div className='product-sub-titile'>  <span><b>Current Quantity:</b></span>   {selectedProduct?.quantity}</div>
-                        </Typography>
-                        <TextField
-                            label="New Quantity"
-                            type="number"
-                            value={quantityToUpdate}
-                            onChange={handleQuantityChange}
-                            fullWidth
-                            margin="normal"
-                            sx={{ marginBottom: '20px' }}
-                            color='success'
-                        />
-                    </DialogContent>
-                    <DialogActions sx={{p:'0px 24px 15px 24px',justifyContent:'space-between'}}>
+                    <DialogTitle sx={{ textAlign: 'center' }}>Edit Product</DialogTitle>
+            
+                    {formContent()}
+
+                    <DialogActions >
+                    <CircularProgress size={30} id='loading' sx={{ display: 'none' }} color='success' />
                         <Button onClick={closeEditProductDialog} color="error">
                             Cancel
                         </Button>
-                        <Button onClick={updateProductQuantity}  sx={{ backgroundColor: '#3bb77e', color: 'white' }} color="success" variant="contained">
-                            Update Quantity
+                        <Button onClick={handleUpdate} color="success">
+                            Confirm
                         </Button>
                     </DialogActions>
                 </Dialog>
+                
+                <Dialog open={isDeleteProductOpen} onClose={closeDeleteProductDialog} >
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Do you want to delete this product?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <CircularProgress size={30} id='loading' sx={{ display: 'none' }} color='success'/>
+                    <Button onClick={closeDeleteProductDialog} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDelete} color="error" >
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
 
             </div>
             <Footer />
