@@ -15,12 +15,14 @@ import RemoveItemFromCart from "../services/deleteFromCart";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import PostNewOrder from "../services/postNewOrder";
+import { useAlert } from "../components/AlertContext";
 
 
 
-export default function Cart({showAlert}) {
+export default function Cart() {
+    const showAlert = useAlert();
 
-    const userId = 'user1234' ;
+    const userId = JSON.parse(localStorage.getItem('user')).id;
 
     // const [cartItems, setCartItems] = useState([
     //     { name: 'Coca Cola 1L', quantity: 5, price: 250, image: 'cocacola.png' },

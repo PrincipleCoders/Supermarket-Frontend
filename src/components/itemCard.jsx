@@ -6,8 +6,10 @@ import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import UpdateCart from "../services/updateCart";
+import { useAlert } from "../components/AlertContext";
 
 export default function ItemCard(props) {
+    const showAlert = useAlert();
 
     const name = props.name ;
     const image = props.image;
@@ -15,12 +17,19 @@ export default function ItemCard(props) {
     const rating = props.rating;
     const price = props.price;
     const id = props.id;
-    const userId = 'user1234'
+    const userId = JSON.parse(localStorage.getItem('user')).id;
  
     const addedCart = async() => {
         console.log(userId,id,1);
-        await UpdateCart(userId,id,1);
-        alert('Item added');
+        await UpdateCart(userId,id,1)
+        .then((response) => {
+            console.log(response);
+            showAlert('Item Added to Cart','success');
+        })
+        .catch((error) => {
+            console.log(error);
+            showAlert('Item Not Added to Cart','error');
+        });
     }
 
     return (
