@@ -13,67 +13,74 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
-import { FormControl, Select, MenuItem } from '@mui/material';
+import { FormControl, Select, MenuItem, CircularProgress } from '@mui/material';
 import '../styles/inventory.css';
 import GetAllUsers from '../services/getAllUsers.jsx';
 import UpdateUserRole from '../services/updateUserRole.jsx';
-
+import { useAlert } from '../components/AlertContext.jsx';
 import Header from '../components/header.jsx';
 import Footer from '../components/footer.jsx';
 
 
-export default function Users({ showAlert }) {
+export default function Users() {
+    const showAlert = useAlert();
     const [searchTerm, setSearchTerm] = useState('');
 
 
     //   const [allUsers, setAllUsers] = useState([
-    //     { "id": "1002", "firstName": "John", "lastName": "Doe", "email": "john.doe@example.com", "telephone": "0712345678", "address": "Colombo, Sri Lanka", "userRole": "ADMIN" },
-    //     { "id": "1003", "firstName": "Jane", "lastName": "Smith", "email": "jane.smith@example.com", "telephone": "0723456789", "address": "Kandy, Sri Lanka", "userRole": "DELIVERY" },
+    //     { "id": "1002", "firstName": "John", "lastName": "Doe", "email": "john.doe@example.com", "telephone": "0712345678", "address": "Colombo, Sri Lanka", "role": "ADMIN" },
+    //     { "id": "1003", "firstName": "Jane", "lastName": "Smith", "email": "jane.smith@example.com", "telephone": "0723456789", "address": "Kandy, Sri Lanka", "role": "DELIVERY" },
     //     // ... (your other user data)
     //   ]);
 
     const [allUsers, setAllUsers] = useState([]);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            const users = await GetAllUsers();
-            if (users) {
-                // Update local state or perform other actions with the users
-                setAllUsers(users);
-                console.log('Fetched Users:', users);
-            }
-        };
+    const fetchUsers = async () => {
+        const users = await GetAllUsers();
+        if (users) {
+            // Update local state or perform other actions with the users
+            setAllUsers(users);
+            console.log('Fetched Users:', users);
+        }
+    };
 
-        fetchUsers();
+    useEffect(() => {
+        toggleLoading(true);
+        fetchUsers().finally(() => toggleLoading(false));
     }, []);
 
-    const handleUpdateUserRole = async (userId, newRole) => {
+    const handleUpdateRole = async (userId, newRole) => {
+        toggleLoading(true);
         const updatedUser = await UpdateUserRole(userId, newRole);
         if (updatedUser) {
           console.log('User role updated:', updatedUser);
           // Update local state or perform other actions
+          showAlert('User role updated successfully', 'success');
         }
+        else {
+          showAlert('Error updating user role', 'error');
+        }
+        toggleLoading(false);
+        fetchUsers();
       };
 
     const columns = [
         { id: 'id', label: 'ID', minWidth: 50, align: 'center' },
-        { id: 'firstName', label: 'First Name', minWidth: 100, align: 'center' },
-        { id: 'lastName', label: 'Last Name', minWidth: 100, align: 'left' },
+        { id: 'name', label: 'Name', minWidth: 100, align: 'center' },
         { id: 'email', label: 'Email', minWidth: 100, align: 'left' },
         { id: 'telephone', label: 'Telephone', minWidth: 100, align: 'center' },
         { id: 'address', label: 'Address', minWidth: 100, align: 'left' },
-        { id: 'userRole', label: 'User Role', minWidth: 100, align: 'center' },
+        { id: 'role', label: 'User Role', minWidth: 100, align: 'center' }
     ];
 
     const filteredUsers = allUsers.filter(
         (user) =>
-            user.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+            user.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const [selectedUserId, setSelectedUserId] = useState('');
     const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
-    const [userRole, setUserRole] = useState('');
+    const [role, setRole] = useState('');
 
     const openConfirmation = () => {
         setOpenConfirmationDialog(true);
@@ -85,27 +92,34 @@ export default function Users({ showAlert }) {
     };
 
     const handleChange = (event, userId) => {
-        setUserRole(event.target.value);
+        setRole(event.target.value);
         setSelectedUserId(userId);
         openConfirmation()
     };
 
     const handleConfirmation = (confirm) => {
         if (confirm) {
-            handleUpdateUserRole(selectedUserId,userRole);
-            const updatedUsers = allUsers.map((user) =>
-                user.id === selectedUserId ? { ...user, userRole: userRole } : user
-            );
-            setAllUsers(updatedUsers);
+            handleUpdateRole(selectedUserId,role);
         }
         closeConfirmationDialog();
     };
+
+
+    const toggleLoading = (isLoading) => {
+        if (isLoading) {
+            document.getElementById('loading').style.display = 'block';
+        } else {
+            document.getElementById('loading').style.display = 'none';
+        }
+    }
+
 
     return (
         <>
             <Header />
             <div className="inventory-container">
                 <h2>All Users</h2>
+                <CircularProgress id='loading' sx={{ display: 'none', margin: '15px auto' }} />
                 <div className="search-field">
                     <TextField
                         label="Search Users.."
@@ -141,7 +155,7 @@ export default function Users({ showAlert }) {
                                             const value = row[column.id];
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {column.id === 'userRole' ? (
+                                                    {column.id === 'role' ? (
                                                         <FormControl fullWidth size="small">
                                                             <Select
                                                                 id="user-Role-select"

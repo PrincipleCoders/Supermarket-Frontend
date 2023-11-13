@@ -1,12 +1,16 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'auth/user/role';
+
 const UpdateUserRole = async (userId, newRole) => {
   try {
     const token = localStorage.getItem('userToken');
+    console.log('Updating user role:', userId, newRole);
     const response = await axios.put(
-      `https://localhost:8081/updateUserRole/${userId}`,
+      API_URL,
       {
-        userRole: newRole,
+        userId: userId,
+        role: newRole,
       },
       {
         headers: {
