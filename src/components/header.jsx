@@ -23,9 +23,7 @@ function Header() {
     const showAlert = useAlert();
     const navigate = useNavigate();
     const DP = JSON.parse(localStorage.getItem('user')).imageUrl;
-    console.log(DP);
-
-
+    
     const pages = [
         { Name: 'SHOP', Path: '/' , roles:['CUSTOMER'] },
         { Name: 'ORDERS', Path: '/orders' , roles:['CUSTOMER'] },
