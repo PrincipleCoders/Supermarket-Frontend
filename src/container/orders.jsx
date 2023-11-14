@@ -10,7 +10,16 @@ import GetUserOrders from '../services/allUserOrders';
 import { useState, useEffect } from 'react';
 import Header from '../components/header';
 import Footer from '../components/footer';
-
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Typography from '@mui/material/Typography';
+import DateTime from '../components/dateTime'
+import GetOrderItems from '../services/getOrderItems'
+import { CircularProgress } from '@mui/material';
+import Button from '@mui/material/Button';
 
 
 // const orders = [
@@ -38,6 +47,9 @@ export default function Orders() {
 
     // const orders = GetUserOrders();
     const [orders, setOrders] = useState([]);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [selectedItems, setSelectedItems] = useState([]);
 
     useEffect(() => {
         const fetchUserOrders = async () => {
@@ -47,11 +59,13 @@ export default function Orders() {
             }
         };
         fetchUserOrders();
+
     }, []);
 
     const columns = [
         { id: 'id', label: 'Order', minWidth: 100, align: 'center', },
         { id: 'date', label: 'Date', minWidth: 170, align: 'center', },
+        { id: 'time', label: 'Time', minWidth: 170, align: 'center', },
         {
             id: 'status',
             label: 'Status',
@@ -86,6 +100,37 @@ export default function Orders() {
         }
     };
 
+    const fetchItems = async (orderId) => {
+        toggleLoading(true);
+        const result = await GetOrderItems(userId,orderId);
+        if (result) {
+           setSelectedItems(result);
+           console.log('selectedItems :',result)
+        }
+        toggleLoading(false);  
+        console.log(newProduct);
+    };
+
+    const handleClickRow = (row) => {
+        setSelectedOrder(row);
+        setDialogOpen(true);
+        fetchItems(row.id);
+    };
+
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+        setSelectedOrder(null);
+        setSelectedItems([]);
+    };
+
+    const toggleLoading = (isLoading) => {
+        if (isLoading) {
+            document.getElementById('loading').style.display = 'block';
+        } else {
+            document.getElementById('loading').style.display = 'none';
+        }
+    };
+
 
 
     return (
@@ -114,13 +159,17 @@ export default function Orders() {
                                 {orders
                                     .map((row) => {
                                         return (
-                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                            <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={() => handleClickRow(row)}>
                                                 {columns.map((column) => {
                                                     const value = row[column.id];
                                                     const cellColor = column.id === 'status' ? getStatusColor(value) : 'inherit';
                                                     return (
                                                         <TableCell key={column.id} align={column.align} style={{ color: cellColor }}>
-                                                            {column.id === 'id' ? `#${value}` : column.id === 'total' ? `Rs.${value}` : value}
+                                                            {column.id === 'id' ? `#${value}` :
+                                                                column.id === 'total' ? `Rs.${value}` :
+                                                                    column.id === 'date' ? DateTime(value)[0] :
+                                                                        column.id === 'time' ? DateTime(row.date)[1] :
+                                                                            value}
                                                         </TableCell>
                                                     );
                                                 })}
@@ -132,6 +181,36 @@ export default function Orders() {
                     </TableContainer>
 
                 </Paper>
+
+                <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+                    <DialogTitle>Order Details</DialogTitle>
+                    <DialogContent>
+
+                        {selectedOrder && (
+                            <div style={{ display: "flex", flexDirection: 'column', gap: 5 }}>
+                                {/* Add order details here */}
+                                <Typography><b>Order ID: </b>{selectedOrder.id}</Typography>
+                                <Typography><b>Status : </b>
+                                    <span style={{ color: getStatusColor(selectedOrder.status) }}>
+                                        {selectedOrder.status}
+                                    </span>
+                                </Typography>
+                              <b>Items: </b>
+                              <CircularProgress size={30} id='loading' sx={{ display: 'none' }} color='success' />
+                                <ul>
+                                    {selectedItems.map((item, index) => (
+                                        <li key={index}>{item.name} - {item.quantity}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button color='success' onClick={handleCloseDialog} variant='contained'>
+                            Ok
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
             <Footer />
         </>
