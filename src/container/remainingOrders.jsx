@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -17,6 +17,7 @@ import GetRemainingOrders from '../services/getRemainingOrders';
 import UpdateRemainingOrders from '../services/updateRemainingOrders';
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
+import DateTime from '../components/dateTime.jsx';
 
 export default function RemainingOrders() {
 
@@ -120,6 +121,7 @@ export default function RemainingOrders() {
     const columns = [
         { id: 'id', label: 'ID', minWidth: 50, align: 'center' },
         { id: 'date', label: 'Date', minWidth: 100, align: 'center' },
+        { id: 'time', label: 'Time', minWidth: 100, align: 'center' },
         { id: 'customer', label: 'Customer', minWidth: 100, align: 'left' },
         { id: 'items', label: 'Items', minWidth: 100, align: 'left' },
         { id: 'isPacked', label: 'Mark as Packed', minWidth: 100, align: 'center' },
@@ -147,16 +149,16 @@ export default function RemainingOrders() {
                 return order;
             }
         }));
-    
+
         setRemainingOrders(updatedOrders);
         closeConfirmationDialog();
         setSelectedOrderId(null);
     };
-    
+
 
     return (
         <>
-            <Header/>
+            <Header />
             <div className="inventory-container">
                 <h2>Remaining Orders To Pack</h2>
 
@@ -197,9 +199,11 @@ export default function RemainingOrders() {
                                                             onChange={() => openConfirmationDialog(row.id)}
                                                             color='success'
                                                         />
-                                                    ) : (
-                                                        value
-                                                    )}
+                                                    ) : column.id === 'date' ? DateTime(value)[0] :
+                                                        column.id === 'time' ? DateTime(row.date)[1]
+                                                            : (
+                                                                value
+                                                            )}
                                                 </TableCell>
                                             );
                                         })}
@@ -229,7 +233,7 @@ export default function RemainingOrders() {
                     </DialogActions>
                 </Dialog>
             </div>
-            <Footer/>
+            <Footer />
         </>
     );
 }
