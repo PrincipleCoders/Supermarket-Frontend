@@ -103,13 +103,15 @@ export default function RemainingOrders() {
 
     const [remainingOrders, setRemainingOrders] = useState([]);
 
+    const fetchRemainingOrders = async () => {
+        const orders = await GetRemainingOrders();
+        if (orders) {
+            setRemainingOrders(orders);
+        }
+    };
+
     useEffect(() => {
-        const fetchRemainingOrders = async () => {
-            const orders = await GetRemainingOrders();
-            if (orders) {
-                setRemainingOrders(orders);
-            }
-        };
+        
 
         fetchRemainingOrders();
     }, []);
@@ -134,6 +136,7 @@ export default function RemainingOrders() {
     const closeConfirmationDialog = () => {
         setConfirmationDialogOpen(false);
         setSelectedOrderId(null);
+
     };
 
     const markAsPacked = () => {
