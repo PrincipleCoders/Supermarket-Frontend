@@ -23,15 +23,15 @@ function Header() {
     const showAlert = useAlert();
     const navigate = useNavigate();
     const DP = JSON.parse(localStorage.getItem('user')).imageUrl;
-    
+
     const pages = [
-        { Name: 'SHOP', Path: '/' , roles:['CUSTOMER'] },
-        { Name: 'ORDERS', Path: '/orders' , roles:['CUSTOMER'] },
-        { Name: 'TO Pack', Path: '/remainingOrders' , roles:['ADMIN'] },
-        { Name: 'All Orders', Path: '/allOrders' , roles:['ADMIN'] },
-        { Name: 'Inventory', Path: '/inventory' , roles:['ADMIN'] },
-        { Name: 'To Deliver', Path: '/toDeliver' , roles:['DELIVERY']},
-        { Name: 'All Users', Path: '/allUsers' , roles:['ADMIN']},
+        { Name: 'SHOP', Path: '/', roles: ['CUSTOMER'] },
+        { Name: 'ORDERS', Path: '/orders', roles: ['CUSTOMER'] },
+        { Name: 'TO Pack', Path: '/remainingOrders', roles: ['ADMIN'] },
+        { Name: 'All Orders', Path: '/allOrders', roles: ['ADMIN'] },
+        { Name: 'Inventory', Path: '/inventory', roles: ['ADMIN'] },
+        { Name: 'To Deliver', Path: '/toDeliver', roles: ['DELIVERY'] },
+        { Name: 'All Users', Path: '/allUsers', roles: ['ADMIN'] },
     ];
     const handleSignOut = () => {
         signOut()
@@ -219,12 +219,16 @@ function Header() {
                                     </MenuItem>
                                 ))} */}
                                 <MenuItem >
-                                    <Link to="/account" style={{ textDecoration: 'none',color:'inherit' }}>
-                                        <Typography textAlign="center">My Account</Typography>
-                                    </Link>
+                                    <Button href='/account' color='primary' sx={{ textDecoration: 'none' }} >
+                                        <Typography textAlign="center" >My Account</Typography>
+                                    </Button>
+                                    {/* <Link to="/account" style={{ textDecoration: 'none',color:'inherit' }}>
+                                    </Link> */}
                                 </MenuItem>
-                                <MenuItem onClick={handleSignOut}>
-                                        <Typography textAlign="center">Sign Out</Typography>                    
+                                <MenuItem>
+                                    <Button onClick={handleSignOut} color='error' >
+                                        <Typography textAlign="center" sx={{ textDecoration: 'none' }}>Sign Out</Typography>
+                                    </Button>
                                 </MenuItem>
                             </Menu>
                         </Box>}
