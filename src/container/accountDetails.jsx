@@ -17,37 +17,16 @@ import Header from '../components/header';
 
 const AccountDetails = () => {
 
-    // const userInfo = {
-    //     Id:'1001',
-    //     fname:'Harshana',
-    //     lname:'Batagalla',
-    //     address:'25, Kandy RD, Matale.', 
-    //     telephone:'0710770569',
-    //     email:'hbatagalla@gmail.com'
-    // }
+    const userInfo = JSON.parse(localStorage.getItem('user'));
 
-    // const userInfo = GetUserInfo();
-
-    const [userInfo, setUserInfo] = useState([]);
-
-    useEffect(() => {
-        const fetchUserInfo = async () => {
-            const Info = await GetUserInfo();
-            if (Info) {
-                setUserInfo(Info);
-            }
-        };
-
-        fetchUserInfo();
-    }, []);
-
-    const [fname, setfName] = useState(userInfo.fname);
-    const [lname, setlName] = useState(userInfo.lname);
+    const [fname, setfName] = useState(userInfo.name.split(' ')[0]);
+    const [lname, setlName] = useState(userInfo.name.split(' ')[1]);
     const [address, setAddress] = useState(userInfo.address);
     const [email, setEmail] = useState(userInfo.email);
     const [telephone, setTelephone] = useState(userInfo.telephone);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
+    console.log(userInfo);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -134,6 +113,16 @@ const AccountDetails = () => {
                         onChange={(e) => setAddress(e.target.value)}
                         color='success'
                         required
+                    />
+                    <TextField
+                        id="image"
+                        type='file'
+                        label="image"
+                        color='success'
+                        inputProps={{ accept: 'image/*' }}
+                        style={{ display: userInfo.socialLogin ? 'none' : 'block' }}
+                        focused
+                        fullWidth
                     />
                     <Button type="submit" variant='contained' color='success' sx={{ backgroundColor: "#3bb77e", width: '150px' }}>Save Changes</Button>
                 </div>
