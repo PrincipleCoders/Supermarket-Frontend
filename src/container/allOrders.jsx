@@ -6,9 +6,15 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import GetAllOrders from '../services/getAllOrders';
+import GetUserOrders from '../services/allUserOrders.jsx'
 import Header from "../components/header.jsx";
 import Footer from "../components/footer.jsx";
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useAlert } from '../components/AlertContext.jsx';
 import { CircularProgress } from '@mui/material';
@@ -72,7 +78,7 @@ export default function AllOrders() {
   useEffect(() => {
     toggleLoading(true);
     const fetchAllOrders = async () => {
-      const orders = await GetAllOrders();
+      const orders = await GetUserOrders();
       if (orders) {
         setAllOrders(orders);
         console.log('All Orders:', orders);
