@@ -18,6 +18,7 @@ import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { useAlert } from '../components/AlertContext.jsx';
 import { CircularProgress } from '@mui/material';
+import getAllOrders from '../services/getAllOrders.jsx';
 
 
 
@@ -75,18 +76,22 @@ export default function AllOrders() {
     const [allOrders, setAllOrders] = useState([]);
     const isEmpty = (allOrders == []) ? true : false ;
 
-  useEffect(() => {
-    toggleLoading(true);
     const fetchAllOrders = async () => {
-      const orders = await GetUserOrders();
-      if (orders) {
-        setAllOrders(orders);
-        console.log('All Orders:', orders);
-      }
-    };
+        toggleLoading(true);
+        const response = await getAllOrders();
+        console.log(response);
+        if (response) {
+            setAllOrders(response.data);
+        } else {
+            showAlert('Something went wrong', 'error');
+        }
+        toggleLoading(false);
+      };
 
-    fetchAllOrders().finally(() => toggleLoading(false));
-  }, []);
+    useEffect(() => {
+        // toggleLoading(true);
+        fetchAllOrders();
+    }, []);
     
     const columns = [
         { id: 'id', label: 'Order', minWidth: 100, align: 'center', },

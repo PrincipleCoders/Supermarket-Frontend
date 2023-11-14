@@ -2,21 +2,14 @@ import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL + 'order/user/all';
 
-const GetAllOrders = async() => {
+export default async function getAllOrders() {
     try {
-
-        const token = localStorage.getItem('token');
-        const response = await axios.get(API_URL, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return (response.data);
+        const response = await axios.get(API_URL);
+        return response;
     } catch (error) {
-        console.error('Error fetching products:', error);
-        return null;
+        console.log(error);
+        throw error;
     }
-};
-export default GetAllOrders;
+}
 
 
