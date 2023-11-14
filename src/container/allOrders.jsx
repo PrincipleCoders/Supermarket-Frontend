@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { useAlert } from '../components/AlertContext.jsx';
 import { CircularProgress } from '@mui/material';
 import getAllOrders from '../services/getAllOrders.jsx';
+import DateTime from '../components/dateTime'
 
 
 
@@ -96,6 +97,7 @@ export default function AllOrders() {
     const columns = [
         { id: 'id', label: 'Order', minWidth: 100, align: 'center', },
         { id: 'date', label: 'Date', minWidth: 170, align: 'center', },
+        { id: 'time', label: 'Time', minWidth: 170, align: 'center', },
         { id: 'customer', label: 'Customer', minWidth: 170, align: 'left', },
         { id: 'address', label: 'Address', minWidth: 170, align: 'left', },
         { id: 'telephone', label: 'Contact No.', minWidth: 170, align: 'center', },
@@ -178,7 +180,8 @@ export default function AllOrders() {
                                                     const cellColor = column.id === 'status' ? getStatusColor(value) : 'inherit';
                                                     return (
                                                         <TableCell key={column.id} align={column.align} style={{ color: cellColor }}>
-                                                            {column.id === 'id' ? `#${value}` : column.id === 'total' ? `Rs.${value}` : value}
+                                                            {column.id === 'id' ? `#${value}` : column.id === 'total' ? `Rs.${value}` : column.id === 'date' ? DateTime(value)[0] :
+                                                                        column.id === 'time' ? DateTime(row.date)[1] : value}
                                                         </TableCell>
                                                     );
                                                 })}
