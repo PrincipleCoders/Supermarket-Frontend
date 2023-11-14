@@ -103,15 +103,13 @@ export default function RemainingOrders() {
 
     const [remainingOrders, setRemainingOrders] = useState([]);
 
-    const fetchRemainingOrders = async () => {
-        const orders = await GetRemainingOrders();
-        if (orders) {
-            setRemainingOrders(orders);
-        }
-    };
-
     useEffect(() => {
-        
+        const fetchRemainingOrders = async () => {
+            const orders = await GetRemainingOrders();
+            if (orders) {
+                setRemainingOrders(orders);
+            }
+        };
 
         fetchRemainingOrders();
     }, []);
@@ -136,35 +134,25 @@ export default function RemainingOrders() {
     const closeConfirmationDialog = () => {
         setConfirmationDialogOpen(false);
         setSelectedOrderId(null);
-
     };
 
-    const markAsPacked = () => {
+    const markAsPacked = async () => {
         // Find the order by selectedOrderId and update its isPacked status
-        const updatedOrders = remainingOrders.map(async(order) => {
-            if (order.id === selectedOrderId && order.isPacked == true) {
-                const result = await UpdateRemainingOrders(selectedOrderId, false);
+        const updatedOrders = await Promise.all(remainingOrders.map(async (order) => {
+            if (order.id === selectedOrderId) {
+                const result = await UpdateRemainingOrders(selectedOrderId, !order.isPacked);
                 console.log(result);
-                return { ...order, isPacked: false };
-
-            } else if (order.id === selectedOrderId && order.isPacked == false) {
-                const result = await UpdateRemainingOrders(selectedOrderId, true);
-                console.log(result);
-                return { ...order, isPacked: true };
+                return { ...order, isPacked: !order.isPacked };
             } else {
-                console.log(result);
-                return (order);
+                return order;
             }
-        });
-
-
+        }));
+    
         setRemainingOrders(updatedOrders);
         closeConfirmationDialog();
         setSelectedOrderId(null);
-
-        console.log(remainingOrders);
-
     };
+    
 
     return (
         <>
@@ -205,7 +193,7 @@ export default function RemainingOrders() {
                                                         </ul>
                                                     ) : column.id === 'isPacked' ? (
                                                         <Checkbox
-                                                            checked={row.isPacked}
+                                                            checked={row.isPacked || false}
                                                             onChange={() => openConfirmationDialog(row.id)}
                                                             color='success'
                                                         />
