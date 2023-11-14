@@ -22,6 +22,8 @@ import ProtectedRoute from "./ProtectedRoute.jsx";
 function Header() {
     const showAlert = useAlert();
     const navigate = useNavigate();
+    const DP = JSON.parse(localStorage.getItem('user')).imageUrl;
+    console.log(DP);
 
 
     const pages = [
@@ -194,7 +196,7 @@ function Header() {
                         {isSigned && <Box sx={{ flexGrow: 0 }}>
                             <Tooltip title="Open settings">
                                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    <Avatar alt="Remy Sharp" src={DP} />
                                 </IconButton>
                             </Tooltip>
                             <Menu
