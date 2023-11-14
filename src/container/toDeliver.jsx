@@ -88,14 +88,16 @@ export default function ToDeliver() {
 
     const markAsDelivered = async () => {
         const updatedOrders = await Promise.all(remainingOrders.map(async (order) => {
-            if (order.id === selectedOrderId && order.isDelivered == true) {
+            if (order.id === selectedOrderId && order.delivered == true) {
                 await UpdateDelivered(selectedOrderId, false);
-            } else if (order.id === selectedOrderId && order.isDelivered == false) {
+                return { ...order, delivered: false };
+            } else if (order.id === selectedOrderId && order.delivered == false) {
                 await UpdateDelivered(selectedOrderId, true);
+                return { ...order, delivered: true };
+            } else {
+                return order;
             }
-            return order;
         }));
-
         setRemainingOrders(updatedOrders);
         closeConfirmationDialogDeliver();
         setSelectedOrderId(null);
@@ -132,7 +134,7 @@ export default function ToDeliver() {
                                                 <TableCell key={column.id} align={column.align}>
                                                     {column.id === 'items' ? (
                                                         <ul style={{ padding: 0, margin: 0 }}>
-                                                            {row.items.map((item, index) => (
+                                                            {row.items && row.items.map((item, index) => (
                                                                 <li key={index}>
                                                                     {item.item} - {item.quantity}
                                                                 </li>
@@ -143,11 +145,11 @@ export default function ToDeliver() {
                                                             checked={row.markToDeliver}
                                                             onChange={() => openConfirmationDialog(row.id)}
                                                             color='success'
-                                                            disabled={row.isDelivered}
+                                                            disabled={row.delivered}
                                                         />
                                                     ) : column.id === 'isDelivered' ? (
                                                         <Checkbox
-                                                            checked={row.isDelivered}
+                                                            checked={row.delivered}
                                                             onChange={() => openConfirmationDialogDeliver(row.id)}
                                                             color='success'
                                                             disabled={!row.markToDeliver}
