@@ -95,27 +95,25 @@ export default function AllOrders() {
     }, []);
     
     const columns = [
-        { id: 'id', label: 'Order', minWidth: 100, align: 'center', },
-        { id: 'date', label: 'Date', minWidth: 170, align: 'center', },
-        { id: 'time', label: 'Time', minWidth: 170, align: 'center', },
-        { id: 'customer', label: 'Customer', minWidth: 170, align: 'left', },
-        { id: 'address', label: 'Address', minWidth: 170, align: 'left', },
-        { id: 'telephone', label: 'Contact No.', minWidth: 170, align: 'center', },
+        { id: 'id', label: 'Order', align: 'center', },
+        { id: 'date', label: 'Date', align: 'center', },
+        { id: 'time', label: 'Time', align: 'center', },
+        { id: 'customer', label: 'Customer',  align: 'left', },
+        { id: 'address', label: 'Address',  align: 'left', },
+        { id: 'telephone', label: 'Contact No.',  align: 'center', },
         {
             id: 'items',
             label: 'Items',
-            minWidth: 150,
             align: 'center',
         },
         {
             id: 'total',
             label: 'Total',
-            minWidth: 170,
+            
         },
         {
             id: 'status',
             label: 'Status',
-            minWidth: 100,
         },
     
     ];
@@ -126,7 +124,7 @@ export default function AllOrders() {
             return 'red'; 
           case 'delivered':
             return 'green'; 
-          case 'ready to delivery':
+          case 'ready to deliver':
             return 'orange'; 
           case 'on the way':
             return 'blue'; 

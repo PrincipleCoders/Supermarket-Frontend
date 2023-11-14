@@ -13,6 +13,7 @@ import Orders from './container/orders.jsx';
 import Cart from './container/cart.jsx';
 import AccountDetails from './container/accountDetails.jsx';
 import Users from './container/users.jsx';
+import NotFound404 from './components/404.jsx';
 
 export default function App() {
     const [alertStatus, setAlertStatus] = useState({type:'success',message:'',open:false});
@@ -37,7 +38,7 @@ export default function App() {
                         <Route path='/orders' element={<ProtectedRoute element={<Orders/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/cart' element={<ProtectedRoute element={<Cart/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/allUsers' element={<ProtectedRoute element={<Users/>} roles={['ADMIN']}/>}/>
-                        <Route path='*' element={<h1 style={{textAlign:'center'}}>404 Page Not Found</h1>}/>
+                        <Route path='*' element={<NotFound404/>}/>
                     </Routes>
                 </BrowserRouter>
             </AlertProvider>
