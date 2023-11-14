@@ -169,7 +169,8 @@ export default function Orders() {
                                                                 column.id === 'total' ? `Rs.${value}` :
                                                                     column.id === 'date' ? DateTime(value)[0] :
                                                                         column.id === 'time' ? DateTime(row.date)[1] :
-                                                                            value}
+                                                                            column.id === 'items' ? `${value.length} items` :
+                                                                                value}
                                                         </TableCell>
                                                     );
                                                 })}
@@ -198,8 +199,8 @@ export default function Orders() {
                               <b>Items: </b>
                               <CircularProgress size={30} id='loading' sx={{ display: 'none' }} color='success' />
                                 <ul>
-                                    {selectedItems.map((item, index) => (
-                                        <li key={index}>{item.name} - {item.quantity}</li>
+                                    {selectedOrder.items.map((item, index) => (
+                                        <li key={index}>{item.item} - {item.quantity}</li>
                                     ))}
                                 </ul>
                             </div>
