@@ -137,7 +137,7 @@ export default function ToDeliver() {
             setRemainingOrders(orders);
         }
     };
-    
+
     useEffect(() => {
         fetchOrdersToDeliver();
     }, []);
@@ -207,11 +207,13 @@ export default function ToDeliver() {
             if (order.id === selectedOrderId && order.isDelivered == true) {
                 const result = await UpdateDelivered(selectedOrderId, false);
                 console.log(result);
-                return { ...order, isDelivered: false };
+                fetchOrdersToDeliver();
+                // return { ...order, isDelivered: false };
             } else if (order.id === selectedOrderId && order.isDelivered == false) {
                 const result = await UpdateDelivered(selectedOrderId, true);
                 console.log(result);
-                return { ...order, isDelivered: true };
+                fetchOrdersToDeliver();
+                // return { ...order, isDelivered: true };
             } else {
                 console.log(result);
                 return (order);

@@ -1,13 +1,13 @@
 import axios from 'axios';
 
+const API_URL = import.meta.env.VITE_API_URL + 'delivery/delivered/';
+
 const UpdateDelivered = async (orderId, markStatus) => {
   try {
     const token = localStorage.getItem('userToken');
+    console.log(orderId, markStatus)
     const response = await axios.put(
-      `https://localhost:8081/updateDelivered/${orderId}`,
-      {
-        isDelivered: markStatus,
-      },
+      API_URL + orderId + '/' + markStatus,
       {
         headers: {
           Authorization: `Bearer ${token}`,
