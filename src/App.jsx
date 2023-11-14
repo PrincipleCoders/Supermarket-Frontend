@@ -31,7 +31,7 @@ export default function App() {
                         <Route path="/" element={<ProtectedRoute element={<Shop/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/account' element={<ProtectedRoute element={<AccountDetails/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/inventory' element={<ProtectedRoute element={<Inventory/>} roles={['CUSTOMER']}/>}/>
-                        <Route path='/remainingOrders' element={<ProtectedRoute element={<RemainingOrders/>} roles={['ADMIN']}/>}/>
+                        <Route path='/remainingOrders' element={<ProtectedRoute element={<RemainingOrders/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/toDeliver' element={<ProtectedRoute element={<ToDeliver/>} roles={['ADMIN']}/>}/>
                         <Route path='/allOrders' element={<ProtectedRoute element={<AllOrders/>} roles={['CUSTOMER']}/>}/>
                         <Route path='/orders' element={<ProtectedRoute element={<Orders/>} roles={['CUSTOMER']}/>}/>
