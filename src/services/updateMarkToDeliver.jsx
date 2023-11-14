@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL + 'deliver/markToDeliverStatus/';
+const API_URL = import.meta.env.VITE_API_URL + 'delivery/markToDeliverStatus/';
 
 const UpdateMarkToDeliver = async (orderId, markStatus) => {
   try {
