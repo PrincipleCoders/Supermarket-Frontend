@@ -131,13 +131,14 @@ export default function ToDeliver() {
 
     const [remainingOrders, setRemainingOrders] = useState([]);
 
+    const fetchOrdersToDeliver = async () => {
+        const orders = await GetOrdersToDeliver();
+        if (orders) {
+            setRemainingOrders(orders);
+        }
+    };
+    
     useEffect(() => {
-        const fetchOrdersToDeliver = async () => {
-            const orders = await GetOrdersToDeliver();
-            if (orders) {
-                setRemainingOrders(orders);
-            }
-        };
         fetchOrdersToDeliver();
     }, []);
 
