@@ -11,11 +11,13 @@ import '../styles/AccountDetails.css';
 import GetUserInfo from '../services/getUserInfo';
 import UpdateUserInfo from '../services/updateUserInfo';
 import { useEffect } from 'react';
-import {updateAdditionalData} from "../services/firebase-service.jsx";
+import {updateAdditionalData, uploadFile} from "../services/firebase-service.jsx";
 import Footer from '../components/footer';
 import Header from '../components/header';
+import { useAlert } from '../components/AlertContext.jsx';
 
 const AccountDetails = () => {
+    const showAlert = useAlert();
 
     const userInfo = JSON.parse(localStorage.getItem('user'));
 
@@ -24,9 +26,20 @@ const AccountDetails = () => {
     const [address, setAddress] = useState(userInfo.address);
     const [email, setEmail] = useState(userInfo.email);
     const [telephone, setTelephone] = useState(userInfo.telephone);
+    const [image, setImage] = useState();
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     console.log(userInfo);
+
+    const updateLocalUserInfo = async () => {
+        await GetUserInfo(userInfo.id)
+        .then((data) => {
+            localStorage.setItem('user', JSON.stringify(data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -36,25 +49,56 @@ const AccountDetails = () => {
     const handleConfirm = async () => {
         setIsDialogOpen(false);
         const additionalData = {
-            displayName: fname + ' ' + lname,
+            name: fname + ' ' + lname,
+        };
+
+        if(userInfo.socialLogin && image){
+            if (image.type.includes('image')) {
+                showAlert('Profile Picture should be of image type', 'error');
+                return;
+            }
+            if (image.size > 5000000) {
+                showAlert('Profile Picture size must be less than 5MB', 'error');
+                return;
+            }
+
+            const url = await uploadProfilePicture(userInfo.id, image);
+            additionalData.photoURL = url;
         }
-        await updateAdditionalData(additionalData)
-            .then(async () => {
-                await UpdateUserInfo(address, telephone)
-                    .then(() => {
-                        showAlert('Account details updated successfully', 'success');
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                        showAlert('Error while updating account details. Please try again', 'error');
-                    })
-            })
-            .catch((error) => {
-                console.error(error);
-                showAlert('Error while updating account details. Please try again', 'error');
-            })
+
+        updateAdditionalData(additionalData)
+        .then(async () => {
+            await UpdateUserInfo(userInfo.id, address, telephone);
+            showAlert('Details updated successfully', 'success');
+            // await updateLocalUserInfo();
+        })
+        .catch((error) => {
+            console.log(error);
+            showAlert('Error updating user details', 'error');
+        });
+
     }
 
+    const uploadProfilePicture = async (userID, file) => {
+        const path = 'profilePictures/' + userID;
+        // let result = null;
+        return await uploadFile(path, file)
+            .then((url) => {
+                showAlert('Profile Picture uploaded successfully', 'success');
+                return url;
+            })
+            .catch((error) => {
+                console.log(error);
+                if (error.code === 'storage/canceled') {
+                    showAlert('Profile Picture upload cancelled', 'warning');
+                } else {
+                    showAlert('Profile Picture upload failed, Please try again', 'error');
+                }
+                throw error;
+            });
+    }
+
+    
     const handleCancel = () => {
         // Cancel changes and close the dialog
         console.log('Canceled changes');

@@ -1,13 +1,16 @@
 import axios from "axios";
 
-const UpdateUserInfo = async (address, telephone) => {
+const API_URL = import.meta.env.VITE_API_URL + 'user'
+
+const UpdateUserInfo = async (userId, address, telephone) => {
     try {
-        const token = localStorage.getItem('userToken');
+        const token = localStorage.getItem('token');
         const response = await axios.put(
-            'https://localhost:8081/updateUserInfo',
+            API_URL,
             {
+                userId: userId,
                 address: address,
-                telephone: telephone
+                phone: telephone
             },
             {
                 headers: {

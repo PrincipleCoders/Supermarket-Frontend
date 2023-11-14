@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-const GetUserInfo = async () => {
+const API_URL = import.meta.env.VITE_API_URL + 'auth/user/';
+
+const GetUserAuthInfo = async (userId) => {
   try {
     const token = localStorage.getItem('userToken');
-    const response = await axios.get('https://localhost:8081/userInfo', {
+    const response = await axios.get(API_URL + userId, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -20,4 +22,4 @@ const GetUserInfo = async () => {
   }
 };
 
-export default GetUserInfo;
+export default GetUserAuthInfo;
