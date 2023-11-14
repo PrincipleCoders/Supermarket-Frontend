@@ -22,26 +22,27 @@ const ProtectedRoute = ({ element, roles, isLink = false }) => {
     }
 
 
-    useEffect(() => {
-        if (!user) {
-            showAlert('Please log in to access the page.', 'warning');
-            setElementToRender(<Navigate to="/login" />);
-        }
-        else if (!roles.includes(user.role)) {
-            if (isLink) {
-                setElementToRender(null)
-            }
-            else {
-                showAlert('You are not authorized to access the page.', 'warning');
-                setElementToRender(<Navigate to={getHomeOfRole()}/>);
-            }
-        }
-        else {
-            setElementToRender(element);
-        }
-    }, [location]);
+    // useEffect(() => {
+    //     if (!user) {
+    //         showAlert('Please log in to access the page.', 'warning');
+    //         setElementToRender(<Navigate to="/login" />);
+    //     }
+    //     else if (!roles.includes(user.role)) {
+    //         if (isLink) {
+    //             setElementToRender(null)
+    //         }
+    //         else {
+    //             showAlert('You are not authorized to access the page.', 'warning');
+    //             setElementToRender(<Navigate to={getHomeOfRole()}/>);
+    //         }
+    //     }
+    //     else {
+    //         setElementToRender(element);
+    //     }
+    // }, [location]);
+    
 
-    return elementToRender;
+    return element;
 };
 
 export default ProtectedRoute;
